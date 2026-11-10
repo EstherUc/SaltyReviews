@@ -1,120 +1,107 @@
+-- Datos NUEVOS de prueba compatibles con el esquema actualizado de pgAdmin.
+-- PostgreSQL. Ejecutar tras crear las cinco tablas.
+-- Incluye title y comment obligatorios en Reviews.
+-- Clave de las cuentas demo: Demo1234! (hash bcrypt; solo desarrollo).
+-- Es repetible sin duplicar los registros de este lote, suponiendo nombres únicos.
+
 BEGIN;
 
--- 1. CATEGORÍAS
-INSERT INTO "Categories" (name_category)
-SELECT v.name_category
-FROM (VALUES
-  ('Italiana'), ('Japonesa'), ('Mexicana'), ('Hamburguesas'),
-  ('Tradicional'), ('Vegetariana'), ('India'), ('Mediterránea')
+INSERT INTO public."Categories" (name_category)
+SELECT v.name_category FROM (VALUES
+  ('Vasca'), ('China'), ('Tailandesa'), ('Peruana'),
+  ('Pizzería'), ('Cafetería')
 ) AS v(name_category)
 WHERE NOT EXISTS (
-  SELECT 1 FROM "Categories" c WHERE c.name_category = v.name_category
+  SELECT 1 FROM public."Categories" c WHERE c.name_category = v.name_category
 );
 
--- 2. USUARIOS
--- La aplicación debe permitir 'admin' solo mediante una operación autorizada.
-INSERT INTO "Users" (username, email, password_hash, rol)
+INSERT INTO public."Users" (username, email, password_hash, rol)
 SELECT v.username, v.email,
        '$2a$10$RirBfTcH.ZogWWLRg8wxQOn4o1Qx4hHRvNB/E9F0kg/Cp8KC6ONRy',
        v.rol
 FROM (VALUES
-  ('admin',   'admin@demo.test',   'admin'),
-  ('ana',     'ana@demo.test',     'user'),
-  ('carlos',  'carlos@demo.test',  'user'),
-  ('lucia',   'lucia@demo.test',   'user'),
-  ('marcos',  'marcos@demo.test',  'user'),
-  ('sara',    'sara@demo.test',    'user'),
-  ('diego',   'diego@demo.test',   'user'),
-  ('nerea',   'nerea@demo.test',   'user')
+  ('irene',  'irene@demo.test',  'user'),
+  ('pablo',  'pablo@demo.test',  'user'),
+  ('aitor',  'aitor@demo.test',  'user'),
+  ('maite',  'maite@demo.test',  'user'),
+  ('julia',  'julia@demo.test',  'user'),
+  ('hugo',   'hugo@demo.test',   'user')
 ) AS v(username, email, rol)
-WHERE NOT EXISTS (SELECT 1 FROM "Users" u WHERE u.email = v.email);
+WHERE NOT EXISTS (SELECT 1 FROM public."Users" u WHERE u.email = v.email);
 
--- 3. RESTAURANTES
--- Relación: Restaurants.id_category -> Categories.id_category
-INSERT INTO "Restaurants" (name_restaurant, address, id_category)
-SELECT v.name_restaurant, v.address, c.id_category
+INSERT INTO public."Restaurants" (name_restaurant, address, id_category)
+SELECT v.restaurant_name, v.address, c.id_category
 FROM (VALUES
-  ('La Trattoria',       'Calle Mayor 12, Bilbao',       'Italiana'),
-  ('Pasta Bella',        'Calle Arenal 8, Bilbao',       'Italiana'),
-  ('Sakura Sushi',       'Gran Via 24, Bilbao',          'Japonesa'),
-  ('Nori House',         'Calle Ercilla 16, Bilbao',     'Japonesa'),
-  ('Taco Loco',          'Calle Ledesma 5, Bilbao',      'Mexicana'),
-  ('El Mariachi',        'Calle Colon 18, Bilbao',       'Mexicana'),
-  ('Burger Station',     'Calle Autonomia 30, Bilbao',   'Hamburguesas'),
-  ('La Parrilla',        'Calle San Mames 14, Bilbao',   'Tradicional'),
-  ('Huerta Viva',        'Calle Diputacion 9, Bilbao',   'Vegetariana'),
-  ('Curry Corner',       'Calle Hurtado 21, Bilbao',     'India'),
-  ('Mar y Oliva',        'Paseo Campo Volantin 7',       'Mediterránea'),
-  ('Bistro del Casco',   'Calle Somera 11, Bilbao',      'Tradicional')
-) AS v(name_restaurant, address, category_name)
-JOIN "Categories" c ON c.name_category = v.category_name
+  ('Asador Arriaga',    'Calle Ribera 10, Bilbao',          'Vasca'),
+  ('Itsas Etxea',       'Calle Jardines 6, Bilbao',        'Vasca'),
+  ('Dragón Rojo',      'Calle Iparraguirre 22, Bilbao',    'China'),
+  ('Bambú Oriental',    'Calle Buenos Aires 13, Bilbao',   'China'),
+  ('Bangkok Sabores',   'Calle Licenciado Poza 19, Bilbao','Tailandesa'),
+  ('Lima Limón',       'Calle Henao 31, Bilbao',           'Peruana'),
+  ('Ceviche Norte',     'Calle Alameda Mazarredo 4',      'Peruana'),
+  ('Forno 21',         'Calle Santutxu 21, Bilbao',        'Pizzería'),
+  ('Masa Madre',       'Calle Egaña 15, Bilbao',          'Pizzería'),
+  ('Café Nube',        'Calle Bidebarrieta 3, Bilbao',     'Cafetería')
+) AS v(restaurant_name, address, category_name)
+JOIN public."Categories" c ON c.name_category = v.category_name
 WHERE NOT EXISTS (
-  SELECT 1 FROM "Restaurants" r
-  WHERE r.name_restaurant = v.name_restaurant AND r.address = v.address
+  SELECT 1 FROM public."Restaurants" r
+  WHERE r.name_restaurant = v.restaurant_name AND r.address = v.address
 );
 
--- 4. RESEÑAS
--- Relación: Reviews.id_user -> Users.id_user;
---           Reviews.id_restaurant -> Restaurants.id_restaurant
-INSERT INTO "Reviews" (id_user, id_restaurant, rating, comment)
-SELECT u.id_user, r.id_restaurant, v.rating, v.comment
+-- El campo title es nuevo y obligatorio. Comment ya era obligatorio.
+INSERT INTO public."Reviews" (id_user, id_restaurant, title, rating, comment)
+SELECT u.id_user, r.id_restaurant, v.title, v.rating, v.comment
 FROM (VALUES
-  ('ana',    'La Trattoria',     5, 'Pasta excelente y trato muy amable.'),
-  ('carlos', 'La Trattoria',     4, 'Buena pizza y servicio rápido.'),
-  ('lucia',  'Pasta Bella',      5, 'La lasaña estaba deliciosa.'),
-  ('marcos', 'Pasta Bella',      3, 'Rico, pero tardaron bastante.'),
-  ('sara',   'Sakura Sushi',     5, 'Sushi fresco y bien presentado.'),
-  ('diego',  'Sakura Sushi',     4, 'Gran variedad de nigiris.'),
-  ('nerea',  'Nori House',       4, 'El ramen estaba muy bueno.'),
-  ('ana',    'Nori House',       3, 'Buena comida, local pequeño.'),
-  ('carlos', 'Taco Loco',        5, 'Los tacos tienen mucho sabor.'),
-  ('lucia',  'Taco Loco',        4, 'Salsas caseras y buen ambiente.'),
-  ('marcos', 'El Mariachi',      4, 'Nachos muy completos.'),
-  ('sara',   'El Mariachi',      3, 'Correcto, aunque algo caro.'),
-  ('diego',  'Burger Station',   5, 'Hamburguesa jugosa y patatas crujientes.'),
-  ('nerea',  'Burger Station',   4, 'Opciones variadas y buen pan.'),
-  ('ana',    'La Parrilla',      5, 'Carne en su punto.'),
-  ('carlos', 'Huerta Viva',      4, 'Platos vegetarianos originales.'),
-  ('lucia',  'Curry Corner',     5, 'El curry estaba espectacular.'),
-  ('marcos', 'Mar y Oliva',      4, 'Arroz sabroso y buenas raciones.'),
-  ('sara',   'Bistro del Casco', 4, 'Comida casera y ambiente acogedor.'),
-  ('diego',  'Mar y Oliva',      3, 'Buena calidad, pero servicio lento.')
-) AS v(username, restaurant_name, rating, comment)
-JOIN "Users" u ON u.username = v.username
-JOIN "Restaurants" r ON r.name_restaurant = v.restaurant_name
+  ('irene', 'Asador Arriaga',  'Muy recomendable', 5, 'Buen producto y atención excelente.'),
+  ('pablo', 'Asador Arriaga',  'Buen menú', 4, 'Raciones generosas y buen precio.'),
+  ('aitor', 'Itsas Etxea',    'Pescado fresco', 5, 'El pescado del día estaba perfecto.'),
+  ('maite', 'Itsas Etxea',    'Servicio lento', 3, 'Comida rica, pero esperamos mucho.'),
+  ('julia', 'Dragón Rojo',    'Sabores auténticos', 5, 'Los dumplings estaban deliciosos.'),
+  ('hugo',  'Dragón Rojo',    'Buena opción', 4, 'Comida sabrosa y ambiente tranquilo.'),
+  ('irene', 'Bambú Oriental',  'Menú variado', 4, 'Hay bastantes platos para elegir.'),
+  ('pablo', 'Bangkok Sabores', 'Picante de verdad', 5, 'El pad thai estaba espectacular.'),
+  ('aitor', 'Bangkok Sabores', 'Algo caro', 3, 'Buen sabor, precio un poco elevado.'),
+  ('maite', 'Lima Limón',     'Ceviche increíble', 5, 'Muy fresco y con mucho sabor.'),
+  ('julia', 'Lima Limón',     'Volvería', 4, 'El lomo saltado estuvo muy bueno.'),
+  ('hugo',  'Ceviche Norte',   'Buen descubrimiento', 4, 'Platos diferentes y bien preparados.'),
+  ('irene', 'Forno 21',       'Pizza crujiente', 5, 'Masa fina e ingredientes frescos.'),
+  ('pablo', 'Masa Madre',     'Buena masa', 4, 'La pizza cuatro quesos me encantó.'),
+  ('aitor', 'Café Nube',      'Desayuno perfecto', 5, 'Café delicioso y tostadas recientes.'),
+  ('maite', 'Café Nube',      'Ambiente agradable', 4, 'Un buen sitio para merendar.')
+) AS v(username, restaurant_name, title, rating, comment)
+JOIN public."Users" u ON u.username = v.username
+JOIN public."Restaurants" r ON r.name_restaurant = v.restaurant_name
 WHERE NOT EXISTS (
-  SELECT 1 FROM "Reviews" re
+  SELECT 1 FROM public."Reviews" re
   WHERE re.id_user = u.id_user AND re.id_restaurant = r.id_restaurant
-    AND re.comment = v.comment
+    AND re.title = v.title
 );
 
--- 5. FAVORITOS
--- Relación: Favorites.id_user -> Users.id_user;
---           Favorites.id_restaurant -> Restaurants.id_restaurant
-INSERT INTO "Favorites" (id_user, id_restaurant, want_to_visit)
+INSERT INTO public."Favorites" (id_user, id_restaurant, want_to_visit)
 SELECT u.id_user, r.id_restaurant, v.want_to_visit
 FROM (VALUES
-  ('ana',    'Sakura Sushi',     TRUE),
-  ('ana',    'La Trattoria',     FALSE),
-  ('carlos', 'Burger Station',   FALSE),
-  ('carlos', 'Taco Loco',        TRUE),
-  ('lucia',  'Curry Corner',     FALSE),
-  ('lucia',  'Mar y Oliva',      TRUE),
-  ('marcos', 'Pasta Bella',      FALSE),
-  ('marcos', 'La Parrilla',      TRUE),
-  ('sara',   'Nori House',       TRUE),
-  ('sara',   'Sakura Sushi',     FALSE),
-  ('diego',  'Burger Station',   FALSE),
-  ('diego',  'Bistro del Casco', TRUE),
-  ('nerea',  'Huerta Viva',      TRUE),
-  ('nerea',  'El Mariachi',      TRUE),
-  ('nerea',  'Mar y Oliva',      FALSE)
+  ('irene', 'Asador Arriaga', FALSE),
+  ('irene', 'Bangkok Sabores', TRUE),
+  ('pablo', 'Masa Madre', FALSE),
+  ('pablo', 'Café Nube', TRUE),
+  ('aitor', 'Itsas Etxea', FALSE),
+  ('aitor', 'Lima Limón', TRUE),
+  ('maite', 'Lima Limón', FALSE),
+  ('maite', 'Forno 21', TRUE),
+  ('julia', 'Dragón Rojo', FALSE),
+  ('julia', 'Ceviche Norte', TRUE),
+  ('hugo', 'Ceviche Norte', FALSE),
+  ('hugo', 'Bambú Oriental', TRUE)
 ) AS v(username, restaurant_name, want_to_visit)
-JOIN "Users" u ON u.username = v.username
-JOIN "Restaurants" r ON r.name_restaurant = v.restaurant_name
+JOIN public."Users" u ON u.username = v.username
+JOIN public."Restaurants" r ON r.name_restaurant = v.restaurant_name
 WHERE NOT EXISTS (
-  SELECT 1 FROM "Favorites" f
+  SELECT 1 FROM public."Favorites" f
   WHERE f.id_user = u.id_user AND f.id_restaurant = r.id_restaurant
 );
 
 COMMIT;
+
+-- Totales esperados en una base vacía: 6 categorías, 6 usuarios,
+-- 10 restaurantes, 16 reseñas, 12 favoritos (50 registros).

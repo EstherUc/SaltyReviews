@@ -83,7 +83,7 @@ const favorites = [
 ];
 
 // CommonJS, compatible con require() en Node.js + Express.
-exports { categories, 
+export { categories, 
           users, 
           restaurants, 
           reviews, 
