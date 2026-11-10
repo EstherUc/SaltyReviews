@@ -1,11 +1,3 @@
--- Datos de prueba para la aplicación de reseñas de restaurantes.
--- PostgreSQL. Ejecutar DESPUÉS de crear las cinco tablas.
--- Se usan los nombres con mayúscula inicial tal como aparecen en el diagrama.
--- Si las tablas se crearon SIN comillas (users, restaurants, ...),
--- sustituir "Users" por users, "Categories" por categories, etc.
--- Script repetible: evita volver a insertar registros con las mismas claves lógicas.
--- Password de todos los usuarios DEMO: Demo1234! (hash bcrypt, solo para desarrollo).
-
 BEGIN;
 
 -- 1. CATEGORÍAS
