@@ -24,10 +24,10 @@ router.get("/:id", reviewViewController.getById)
 // ---------------- U (Update) -----------------------------------
 
 // vista de actualización de usuario
-router.get("/:id/edit",reviewViewController.updateForm);
+router.get("/:id/update",reviewViewController.updateForm);
 
 // endpoint para cambiar dato por completo
-router.post("/:id/edit",reviewViewController.update)
+router.post("/:id/update",reviewViewController.update)
 
 
 

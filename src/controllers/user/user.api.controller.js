@@ -201,7 +201,7 @@ const remove = (req,res) => {
     const { id_user, username, email, rol } = user;
 
     res.json({ data: { id_user, username, email, rol } });
-}
+};
 
 
 

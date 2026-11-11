@@ -28,6 +28,22 @@ router.get("/", userViewController.getAll);
 router.get("/:id",userViewController.getById);
 
 
+// ------------------ U (Update) ------------------
+
+//mostrar formulario de actualización
+router.get("/:id/update", userViewController.updateForm);
+
+//actualizar el usuario con los datos cambiados del formulario
+router.post("/:id/update", userViewController.update);
+
+
+// ------------------ D (Delete) ------------------
+
+//eliminar un usuario
+router.post("/:id/delete", userViewController.remove);
+
+
+
 
 
 export default router;

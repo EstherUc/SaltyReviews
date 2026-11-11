@@ -45,7 +45,7 @@ const create = (req,res) => {
     //añadir el usuario al array 
     users.push(user);
 
-    //devolvemos el usuario creado sin la password
+    //volvemos al listado de usuarios
     res.redirect("/user");
 
 };
@@ -90,10 +90,105 @@ const getById = (req,res) => {
 
 
 
+// ------------------ U (Update) ------------------
+
+//actualizar un usuario completamente
+const update = (req,res) => {
+
+    //obtenemos el id de la url
+    const id = parseInt(req.params.id);
+
+    //buscar el usuario
+    const user = users.find(u => u.id_user === id);
+
+    //comprobar si existe 
+    if (!user) {
+        
+        return res.status(404).json({ message: "Usuario no encontrado" });
+    }
+
+    //recogemos los nuevos datos
+    const{ username, email } = req.body;
+
+    //comprobamos que se hayan enviado todos los datos
+    if (!username || !email ) {
+
+        return res.status(400).json({ message: "El nombre de usuario y el email son obligatorios." });  // HTTP 400 - solicitud incorrecta
+    }
+
+    //actualizamos los datos
+    user.username = username;
+    user.email = email;
+
+    //devolvemos el usuario actualizado (sin el password)
+    const { id_user, rol } = user; //cogemos el id y el rol del usuario
+
+
+    //volvemos al listado de usuarios
+    res.redirect("/user");
+
+};
+
+
+//mostrar el formulario para actualizar un usuario
+const updateForm = (req, res) => {
+
+    //obtenemos el id de la URL
+    const id = parseInt(req.params.id);
+
+    //buscamos el usuario
+    const user = users.find(u => u.id_user === id);
+
+    //comprobamos si existe
+    if (!user) {
+        return res.status(404).send("Usuario no encontrado");
+    }
+
+    //obtenemos sus datos sin password
+    const { id_user, username, email, rol } = user;
+
+    //renderizamos el formulario con los datos actuales
+    res.render("user/update", { user: { id_user, username, email, rol } });
+};
+
+
+
+// ------------------ D (Delete) ------------------
+
+//eliminar un usuario
+const remove = (req,res) => {
+
+    //obtenemos el id de la url
+    const id = parseInt(req.params.id);
+    const index = users.findIndex(u => u.id_user === id);
+
+    //comprobar si existe el id
+    if (index === -1) {
+        
+        return res.status(404).json({ message: "Usuario no encontrado" });
+    }
+
+    //eliminamos el usuario dl array
+    let user = users.splice(index,1)[0]; // [0] -> splice devuelve array con el eliminado, para coger el elemento 0 y guardar el eliminado en user
+
+    //devolvemos el usuario eliminado (menos la password)
+    const { id_user, username, email, rol } = user;
+
+    //volvemos al listado de usuarios
+    res.redirect("/user");
+};
+
+
+
+
+
 
 export default {
     createForm,
     create,
     getAll,
-    getById
+    getById,
+    update,
+    updateForm,
+    remove
 }
