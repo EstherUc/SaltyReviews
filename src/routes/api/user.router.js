@@ -20,4 +20,18 @@ router.get("/",userApiController.getAll);
 router.get("/:id",userApiController.getById);
 
 
+// ------------------ U (Update) ------------------
+
+//actualizar un usuario completamente
+router.put("/:id",userApiController.update);
+
+//modificar parcialmente un usuario
+router.patch("/:id",userApiController.modify);
+
+
+// ------------------ D (Delete) ------------------
+
+//eliminar un usuario
+router.delete("/:id",userApiController.remove);
+
 export default router;

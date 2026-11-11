@@ -50,7 +50,7 @@ const create = (req,res) => {
         }
      });
 
-}
+};
 
 
 
@@ -84,12 +84,134 @@ const getById = (req,res) => {
     const { id_user,username,email,rol } = user;
 
     res.json({ data: { id_user,username,email,rol } });
+};
+
+
+
+// ------------------ U (Update) ------------------
+
+//actualizar un usuario completamente
+const update = (req,res) => {
+
+    //obtenemos el id de la url
+    const id = parseInt(req.params.id);
+
+    //buscar el usuario
+    const user = users.find(u => u.id_user === id);
+
+    //comprobar si existe 
+    if (!user) {
+        
+        return res.status(404).json({ message: "Usuario no encontrado" });
+    }
+
+    //recogemos los nuevos datos
+    const{ username, email, password } = req.body;
+
+    //comprobamos que se hayan enviado todos los datos
+    if (!username || !email || !password) {
+
+        return res.status(400).json({ message: "El nombre de usuario, email y constraseña son obligatorios." });  // HTTP 400 - solicitud incorrecta
+    }
+
+    //actualizamos los datos
+    user.username = username;
+    user.email = email;
+    user.password_hash = passwordHash; // temporal la password así. HACK
+
+    //devolvemos el usuario actualizado (sin el password)
+    const { id_user, rol } = user; //cogemos el id y el rol del usuario
+
+    res.json({
+        data: {
+            id_user,
+            username,
+            email,
+            rol
+        }
+    });
+
+};
+
+
+//modificar parcialmente un usuario
+const modify = (req,res) => {
+
+     //obtenemos el id de la url
+    const id = parseInt(req.params.id);
+
+    //buscar el usuario
+    const user = users.find(u => u.id_user === id);
+
+    //comprobar si existe 
+    if (!user) {
+        
+        return res.status(404).json({ message: "Usuario no encontrado" });
+    }
+
+    //recogemos los nuevos datos
+    const{ username, email } = req.body;
+
+    //comprobamos que haya enviado algún campo
+    if (username === undefined && email === undefined) {
+        
+        return res.status(400).json({ message: "Debes enviar al menos un campo para modificar." }); // HTTP 400 - solicitud incorrecta
+    }
+
+    //modificamos solo los campos enviados
+    user.username = username || user.username;
+    user.email = email || user.email;
+
+    //devolvemos el usuario modificado (sin el password)
+    const { id_user, rol } = user; //cogemos el id y el rol del usuario
+
+    res.json({
+        data: {
+            id_user,
+            username: user.username,
+            email: user.email,
+            rol
+        }
+    });
+
+};
+
+
+
+
+// ------------------ D (Delete) ------------------
+
+//eliminar un usuario
+const remove = (req,res) => {
+
+    //obtenemos el id de la url
+    const id = parseInt(req.params.id);
+    const index = users.findIndex(u => u.id_user === id);
+
+    //comprobar si existe el id
+    if (index === -1) {
+        
+        return res.status(404).json({ message: "Usuario no encontrado" });
+    }
+
+    //eliminamos el usuario dl array
+    let user = users.splice(index,1)[0]; // [0] -> splice devuelve array con el eliminado, para coger el elemento 0 y guardar el eliminado en user
+
+    //devolvemos el usuario eliminado (menos la password)
+    const { id_user, username, email, rol } = user;
+
+    res.json({ data: { id_user, username, email, rol } });
 }
+
+
 
 
 
 export default {
     create,
     getAll,
-    getById
+    getById,
+    update,
+    modify,
+    remove
 }
