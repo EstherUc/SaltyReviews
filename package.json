@@ -1,6 +1,7 @@
 {
-  "name": "Reseñas de restaurantes",
+  "name": "saltyreviews",
   "version": "1.0.0",
+  "type": "module",
   "description": "Aplicación web para registrar reseñas de restaurantes, permitiendo a los usuarios compartir sus experiencias gastronómicas y calificar los establecimientos.",
   "main": "src/index.js",
   "directories": {
