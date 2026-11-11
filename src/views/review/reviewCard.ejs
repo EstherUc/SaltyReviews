@@ -1,0 +1,9 @@
+<article class="review-card">
+    <h3><%= review.title %></h3>
+    <p>Puntuación: <%= review.rating %></p>
+    <p>Comentarios: <%= review.comment %></p>
+
+    <form method="post" action="/review/<%=review.id%>/delete">
+        <button>Eliminar</button>
+    </form>
+</article>
