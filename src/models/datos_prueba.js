@@ -87,5 +87,6 @@ export { categories,
           users, 
           restaurants, 
           reviews, 
-          favorites 
+          favorites ,
+          passwordHash
 };
