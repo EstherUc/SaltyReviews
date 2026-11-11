@@ -1,0 +1,16 @@
+<%- include('../layout/header'); -%>
+
+<h2> Nueva review:</h2>
+<form action="/review" method="post">
+    <label for="title">Título</label>
+    <input type="text" name="title" id="title">
+
+    <label for="rating">Puntuación</label>
+    <input type="number" name="rating" id="rating" min="0" max="5">
+
+    <label for="comment">Comentarios</label>
+    <textarea  id="comment" name="comment"></textarea>  
+
+    <button>Publicar</button>
+</form>
+<%- include('../layout/footer'); -%>
