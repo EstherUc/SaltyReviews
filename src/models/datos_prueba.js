@@ -42,26 +42,26 @@ const restaurants = [
 ];
 
 const reviews = [
-  { id_reviews: 1, id_user: 2, id_restaurant: 1, rating: 5, comment: 'Pasta excelente y trato muy amable.' },
-  { id_reviews: 2, id_user: 3, id_restaurant: 1, rating: 4, comment: 'Buena pizza y servicio rápido.' },
-  { id_reviews: 3, id_user: 4, id_restaurant: 2, rating: 5, comment: 'La lasaña estaba deliciosa.' },
-  { id_reviews: 4, id_user: 5, id_restaurant: 2, rating: 3, comment: 'Rico, pero tardaron bastante.' },
-  { id_reviews: 5, id_user: 6, id_restaurant: 3, rating: 5, comment: 'Sushi fresco y bien presentado.' },
-  { id_reviews: 6, id_user: 7, id_restaurant: 3, rating: 4, comment: 'Gran variedad de nigiris.' },
-  { id_reviews: 7, id_user: 8, id_restaurant: 4, rating: 4, comment: 'El ramen estaba muy bueno.' },
-  { id_reviews: 8, id_user: 2, id_restaurant: 4, rating: 3, comment: 'Buena comida, local pequeño.' },
-  { id_reviews: 9, id_user: 3, id_restaurant: 5, rating: 5, comment: 'Los tacos tienen mucho sabor.' },
-  { id_reviews: 10, id_user: 4, id_restaurant: 5, rating: 4, comment: 'Salsas caseras y buen ambiente.' },
-  { id_reviews: 11, id_user: 5, id_restaurant: 6, rating: 4, comment: 'Nachos muy completos.' },
-  { id_reviews: 12, id_user: 6, id_restaurant: 6, rating: 3, comment: 'Correcto, aunque algo caro.' },
-  { id_reviews: 13, id_user: 7, id_restaurant: 7, rating: 5, comment: 'Hamburguesa jugosa y patatas crujientes.' },
-  { id_reviews: 14, id_user: 8, id_restaurant: 7, rating: 4, comment: 'Opciones variadas y buen pan.' },
-  { id_reviews: 15, id_user: 2, id_restaurant: 8, rating: 5, comment: 'Carne en su punto.' },
-  { id_reviews: 16, id_user: 3, id_restaurant: 9, rating: 4, comment: 'Platos vegetarianos originales.' },
-  { id_reviews: 17, id_user: 4, id_restaurant: 10, rating: 5, comment: 'El curry estaba espectacular.' },
-  { id_reviews: 18, id_user: 5, id_restaurant: 11, rating: 4, comment: 'Arroz sabroso y buenas raciones.' },
-  { id_reviews: 19, id_user: 6, id_restaurant: 12, rating: 4, comment: 'Comida casera y ambiente acogedor.' },
-  { id_reviews: 20, id_user: 7, id_restaurant: 11, rating: 3, comment: 'Buena calidad, pero servicio lento.' },
+  { id_reviews: 1, id_user: 2, id_restaurant: 1, title: 'Pasta excelente', rating: 5, comment: 'Pasta excelente y trato muy amable.' },
+  { id_reviews: 2, id_user: 3, id_restaurant: 1, title: 'Buena pizza', rating: 4, comment: 'Buena pizza y servicio rápido.' },
+  { id_reviews: 3, id_user: 4, id_restaurant: 2, title: 'Lasaña deliciosa', rating: 5, comment: 'La lasaña estaba deliciosa.' },
+  { id_reviews: 4, id_user: 5, id_restaurant: 2, title: 'Servicio mejorable', rating: 3, comment: 'Rico, pero tardaron bastante.' },
+  { id_reviews: 5, id_user: 6, id_restaurant: 3, title: 'Sushi espectacular', rating: 5, comment: 'Sushi fresco y bien presentado.' },
+  { id_reviews: 6, id_user: 7, id_restaurant: 3, title: 'Gran variedad', rating: 4, comment: 'Gran variedad de nigiris.' },
+  { id_reviews: 7, id_user: 8, id_restaurant: 4, title: 'Ramen muy bueno', rating: 4, comment: 'El ramen estaba muy bueno.' },
+  { id_reviews: 8, id_user: 2, id_restaurant: 4, title: 'Local pequeño', rating: 3, comment: 'Buena comida, local pequeño.' },
+  { id_reviews: 9, id_user: 3, id_restaurant: 5, title: 'Tacos increíbles', rating: 5, comment: 'Los tacos tienen mucho sabor.' },
+  { id_reviews: 10, id_user: 4, id_restaurant: 5, title: 'Buen ambiente', rating: 4, comment: 'Salsas caseras y buen ambiente.' },
+  { id_reviews: 11, id_user: 5, id_restaurant: 6, title: 'Nachos completos', rating: 4, comment: 'Nachos muy completos.' },
+  { id_reviews: 12, id_user: 6, id_restaurant: 6, title: 'Un poco caro', rating: 3, comment: 'Correcto, aunque algo caro.' },
+  { id_reviews: 13, id_user: 7, id_restaurant: 7, title: 'Hamburguesa excelente', rating: 5, comment: 'Hamburguesa jugosa y patatas crujientes.' },
+  { id_reviews: 14, id_user: 8, id_restaurant: 7, title: 'Buenas opciones', rating: 4, comment: 'Opciones variadas y buen pan.' },
+  { id_reviews: 15, id_user: 2, id_restaurant: 8, title: 'Carne perfecta', rating: 5, comment: 'Carne en su punto.' },
+  { id_reviews: 16, id_user: 3, id_restaurant: 9, title: 'Vegetariano original', rating: 4, comment: 'Platos vegetarianos originales.' },
+  { id_reviews: 17, id_user: 4, id_restaurant: 10, title: 'Curry espectacular', rating: 5, comment: 'El curry estaba espectacular.' },
+  { id_reviews: 18, id_user: 5, id_restaurant: 11, title: 'Arroz muy sabroso', rating: 4, comment: 'Arroz sabroso y buenas raciones.' },
+  { id_reviews: 19, id_user: 6, id_restaurant: 12, title: 'Ambiente acogedor', rating: 4, comment: 'Comida casera y ambiente acogedor.' },
+  { id_reviews: 20, id_user: 7, id_restaurant: 11, title: 'Servicio lento', rating: 3, comment: 'Buena calidad, pero servicio lento.' },
 ];
 
 const favorites = [
@@ -82,7 +82,7 @@ const favorites = [
   { id_favorites: 15, id_user: 8, id_restaurant: 11, want_to_visit: false },
 ];
 
-// CommonJS, compatible con require() en Node.js + Express.
+// Exportamos los arrays para poder utilizarlos en otros archivos
 export { categories, 
           users, 
           restaurants, 
