@@ -1,4 +1,5 @@
 import { Router } from "express";
+import reviewRouter from "./review.router.js"
 
 const router = Router();
 
@@ -6,5 +7,7 @@ const router = Router();
 router.get("/",(req,res) => {
     res.json({message: "Hello, API SaltyReviews working"});
 });
+
+router.use("/review", reviewRouter);
 
 export default router;
