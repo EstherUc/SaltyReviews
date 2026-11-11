@@ -1,5 +1,6 @@
 import { Router } from "express";
 import reviewRouter from "./review.router.js"
+import restaurantRouter from "./restaurant.router.js";
 
 const router = Router();
 
@@ -9,5 +10,6 @@ router.get("/",(req,res) => {
 });
 
 router.use("/review", reviewRouter);
+router.use("/restaurants", restaurantRouter);
 
 export default router;
