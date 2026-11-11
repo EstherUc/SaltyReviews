@@ -2,11 +2,12 @@ import { reviews } from '../../models/datos_prueba.js';
 
 const create = (req,res)=>{
     const id = reviews[reviews.length-1].id + 1
-    const {id_reviews,id_user,id_restaurant,rating,comment} = req.body;
+    const {id_reviews,id_user,id_restaurant,title,rating,comment} = req.body;
     const review = {
         id_reviews,
         id_user,
         id_restaurant,
+        title,
         rating,
         comment
     }
@@ -25,25 +26,27 @@ const getById =(req, res) => {
 };
 
 const update =(req,res)=>{
-    const {id_reviews,id_user,id_restaurant,rating,comment} = req.body;
+    const {id_reviews,id_user,id_restaurant,title,rating,comment} = req.body;
     const id = req.params.id;
     const review  = reviews.find(u=>u.id===id)
     review.id_reviews = id_reviews;
     review.id_user = id_user;
     review.id_restaurant = id_restaurant;
+    review.title = title;
     review.rating = rating;
     review.comment = comment;
     res.json({data:review})
 }
 
 const modify =(req,res)=>{
-    const {id_reviews,id_user,id_restaurant,rating,comment} = req.body;
+    const {id_reviews,id_user,id_restaurant,title,rating,comment} = req.body;
     const id = req.params.id;
     const review  = reviews.find(u=>u.id===id)
 
     review.id_reviews = id_reviews;
     review.id_user = id_user;
     review.id_restaurant = id_restaurant;
+    review.title = title;
     review.rating = rating;
     review.comment = comment;
     res.json({data:review});
