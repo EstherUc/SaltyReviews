@@ -1,4 +1,4 @@
-import { passwordHash, users } from "../../models/datos_prueba.js"; 
+import { passwordHash, users } from "../../models/models.js"; 
 
 
 // ------------------ CRUD de usuarios ------------------

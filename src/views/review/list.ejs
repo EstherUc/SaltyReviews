@@ -1,8 +1,8 @@
 <%- include('../layout/header'); -%>
 
 <h2> Reviews:</h2>
-<%- include('create',{review}) -%>
+<%- include('create') -%>
 <% for (review of reviews) {%>
-    <%- include('reviewCard',{review}) -%>
+    <%- include('reviewCard') -%>
 <% } %>
 <%- include('../layout/footer'); -%>
