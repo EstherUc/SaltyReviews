@@ -5,9 +5,10 @@ CREATE TABLE IF NOT EXISTS public."Users"
 (
     id_user integer NOT NULL GENERATED ALWAYS AS IDENTITY,
     username character varying(100) NOT NULL,
-    email character varying(100) NOT NULL,
+    email character varying(100) NOT NULL UNIQUE,
     password_hash character varying(200) NOT NULL,
-    rol character varying(100) NOT NULL,
+    rol character varying(100) NOT NULL DEFAULT 'user'
+        CHECK (rol IN ('admin', 'user')),
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY (id_user)
