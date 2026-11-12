@@ -2,6 +2,7 @@ import express from "express"; // para crear el servidor y gestionar las peticio
 import dotenv from "dotenv"; // para cargar variables de entorno desde el archivo .env
 import cors from "cors"; // permite recibir peticiones desde otros origenes
 import router from "./routes/router.js"; // enrutador principal
+import connection from "./config/db.js"
 
 
 dotenv.config(); //carga las variables del archivo .env
@@ -26,7 +27,35 @@ app.set("view engine","ejs");
 app.use("/",router);
 
 // Arrancar el servidor
-app.listen(PORT, () => {
-    console.log(`Servidor en marcha en http://localhost:${PORT}`);
+// app.listen(PORT, () => {
+//     console.log(`Servidor en marcha en http://localhost:${PORT}`);
     
-});
+// });
+
+
+async function startServer() {
+    const maxAttempts = 5;
+    let attempts = maxAttempts;
+    while (attempts) {
+        try {
+            await connection.authenticate();
+            console.log("Conexión establecida con la base de datos");
+            app.listen(PORT, () => {
+                console.log("Aplicación en marcha")
+            })
+            break;
+        } catch (error) {
+            console.error(`Intento ${maxAttempts - attempts} No se ha podido conectar a la base de datos`, error);
+        }
+        attempts--;
+        await new Promise((resolve,reject)=>setTimeout(()=>{resolve()},5000));
+    }
+    if(attempts === 0){
+        console.error(`no se ha podido conectar a la base de datos en ${maxAttempts} intentos`);
+        process.exit(1);
+    }
+
+}
+
+
+startServer();
