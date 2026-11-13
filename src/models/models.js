@@ -10,7 +10,7 @@ import Favorite from './favorite.model.js';
 // ------------ CATEGORIES Y RESTAURANTS ----------
 
 //una categoria tiene muchos restaurantes
-Category.hasMany(Restaurant,{foreignKey: 'id_category', as: 'category'});
+Category.hasMany(Restaurant,{foreignKey: 'id_category', as: 'restaurants'});
 
 //un restaurante pertenece a una categoria
 Restaurant.belongsTo(Category, {foreignKey: 'id_category', as: 'category'});
