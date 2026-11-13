@@ -19,9 +19,9 @@ CREATE TABLE IF NOT EXISTS public."Reviews"
     id_reviews integer NOT NULL GENERATED ALWAYS AS IDENTITY,
     id_user integer NOT NULL,
     id_restaurant integer NOT NULL,
-    title character varying(300) NOT NULL,
+    title character varying(100) NOT NULL,
     rating integer NOT NULL,
-    comment character varying(100) NOT NULL,
+    comment character varying(300) NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY (id_reviews)
