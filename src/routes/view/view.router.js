@@ -1,9 +1,9 @@
 import { Router } from "express";
 import reviewRouter from "./review.router.js"
 import userRouter from "./user.router.js";
-import categoryRouter from "./category.router.js";
-import restaurantRouter from "./restaurant.router.js";
-import favoriteRouter from "./favorite.router.js";
+//import categoryRouter from "./category.router.js";
+//import restaurantRouter from "./restaurant.router.js";
+//import favoriteRouter from "./favorite.router.js";
 
 const router = Router();
 
@@ -19,12 +19,12 @@ router.use("/review", reviewRouter);
 router.use("/user", userRouter);
 
 //Rutas de categorias
-router.use("/category",categoryRouter); 
+//router.use("/category",categoryRouter); 
 
 //Rutas de favoritos
-router.use("/favorite",favoriteRouter); 
+//router.use("/favorite",favoriteRouter); 
 
 //Rutas de restaurantes
-router.use("/restaurant",restaurantRouter); 
+//router.use("/restaurant",restaurantRouter); 
 
 export default router;

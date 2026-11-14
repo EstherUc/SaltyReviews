@@ -1,4 +1,10 @@
-import { Review,User } from "../models/models.js";
+//import { Review,User } from "../models/models.js";
+
+import User from '../models/user.model.js';  //HACK borrar y descomentar el otro import - pruebas
+import Review from '../models/review.model.js';  //HACK borrar y descomentar el otro import - pruebas
+
+Review.belongsTo(User, {foreignKey: 'id_user', as: 'user'}); // HACK temporal para pruebas (hasta que estén los modelos terminados)
+
 
 // ------------------ CRUD de review ----------------------------
 
@@ -10,9 +16,15 @@ const create = async (data)=>{
 }
 
 // ------------------ R (Read)---------------------------------------------
-// endpoint lista de datos
+// endpoint lista de todas las reseñas con sus usuarios 
 const getAll = async() => {
-    const reviews = await Review.findAll();
+    const reviews = await Review.findAll({
+        include: {
+            model: User,
+            as: "user",
+            attributes: ["username", "email"]
+        }
+    });
     return reviews;
 };
 
@@ -21,12 +33,18 @@ const getById = async (id) => {
     const review = await Review.findByPk(id,{
         include:{
             model: User,
-            as: "owner",
+            as: "user",
             attributes: ["username","email"]
         }
     });
     return review;
 };
+
+//HACK es para pruebas
+// const getById = async (id) => {
+//     const review = await Review.findByPk(id);
+//     return review;
+// };
 
 // ---------------- U (Update) -----------------------------------
 // endpoint para cambiar dato por completo

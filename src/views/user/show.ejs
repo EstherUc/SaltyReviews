@@ -4,6 +4,26 @@
 
 <%- include('userCard', { user }) -%>
 
+<h3>Reseñas de este usuario</h3>
+
+<% if (user.reviews.length > 0) { %>
+
+    <% user.reviews.forEach(review => { %>
+
+        <h4><%= review.title %></h4>
+        <p>Puntuación: <%= review.rating %></p>
+        <p><%= review.comment %></p>
+        <a href="/review/<%= review.id_reviews %>">Ver reseña</a>
+
+    <% }) %>
+
+<% } else { %>
+
+    <p>Este usuario todavía no tiene reseñas.</p>
+
+<% } %>
+
+
 <a href="/user">Volver</a>
 
 <!-- <%# include('../layout/footer'); -%> -->
