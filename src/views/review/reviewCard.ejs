@@ -1,9 +1,15 @@
 <article class="review-card">
-    <h3><%= review.title %></h3>
-    <p>Puntuación: <%= review.rating %></p>
-    <p>Comentarios: <%= review.comment %></p>
+    <h3>
+        <%= review.title %>
+    </h3>
+    <p>Puntuación: <%= review.rating %>
+    </p>
+    <p>Comentarios: <%= review.comment %>
+    </p>
 
-    <form method="post" action="/review/<%=review.id_reviews%>/delete">
+    <form method="post" action="/review/<%= review.id_reviews %>/delete">
         <button type="submit">Eliminar</button>
     </form>
+
+    <a href="/review/<%= review.id_reviews %>/edit">Modificar</a>
 </article>

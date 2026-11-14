@@ -22,18 +22,13 @@ router.get("/",reviewViewController.getAll);
 router.get("/:id", reviewViewController.getById)
 
 // ---------------- U (Update) -----------------------------------
-
 // vista de actualización de usuario
 router.get("/:id/update",reviewViewController.updateForm);
 
 // endpoint para cambiar dato por completo
 router.post("/:id/update",reviewViewController.update)
 
-
-
 // ------------------------ D (Delete)------------
-
-
 router.post("/:id/delete",reviewViewController.remove)
 
 
