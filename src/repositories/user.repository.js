@@ -1,7 +1,7 @@
 // import { User, Favorite, Review } from "../models/models.js"; 
 import { Op } from "sequelize";
 
-import User from '../models/user.model';  //HACK borrar y descomentar el otro import - pruebas
+import User from '../models/user.model.js';  //HACK borrar y descomentar el otro import - pruebas
 
 
 

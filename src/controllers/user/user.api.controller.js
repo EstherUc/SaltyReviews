@@ -10,11 +10,10 @@ const PASSWORD_HASH_PRUEBA = "HASH_TEMPORAL_PRUEBAS";
 
 // ------------------ C (Create) ------------------
 
-//crear un usuario
+//CREAR un usuario
 const create = async(req,res) => {
 
-    //recogemos los datos enviados por el usuario
-    const { username, email, password } = req.body;
+    const { username, email, password } = req.body; //recogemos los datos enviados por el usuario
 
     //comprobamos que se hayan enviado los datos obligatorios
     if (!username || !email || !password) {
@@ -22,14 +21,11 @@ const create = async(req,res) => {
         return res.status(400).json({ message: "El nombre de usuario, email y contraseña son obligatorios"}); // HTTP 400 - solicitud incorrecta
     }
 
-    //comprobamos si el email ya está registrado
-    const existUser = await userRepository.findEmail(email);
-
+    const existUser = await userRepository.findEmail(email); //comprobamos si el email ya está registrado
 
     if (existUser) {
         return res.status(409).json({ message: "El email ya está registrado" }); // HTTP 409 - Conflicto - Intento de crear un recurso duplicado    
     }
-
 
     //creamos el usuario
     const user = await userRepository.create({
@@ -76,7 +72,6 @@ const getAll = async(req, res) => {
 const getById = async(req,res) => {
 
     const id = parseInt(req.params.id);
-
     const user = await userRepository.getById(id);
 
     if(!user){
@@ -93,7 +88,7 @@ const getById = async(req,res) => {
 
 // ------------------ U (Update) ------------------
 
-//actualizar un usuario completamente
+//ACTUALIZAR un usuario completamente
 const update = async(req,res) => {
     
     const id = parseInt(req.params.id); //obtenemos el id de la url
@@ -159,7 +154,7 @@ const update = async(req,res) => {
 };
 
 
-//modificar parcialmente un usuario
+//MODIFICAR parcialmente un usuario
 const modify = async(req,res) => {
 
     const id = parseInt(req.params.id); //obtenemos el id de la url
@@ -232,14 +227,14 @@ const modify = async(req,res) => {
 
 // ------------------ D (Delete) ------------------
 
-//eliminar un usuario
+//ELIMINAR un usuario
 const remove = async (req,res) => {
 
     //obtenemos el id de la url
     const id = parseInt(req.params.id);
     const user = await userRepository.remove(id);
 
-    //si existe usuario es que lo ha borrado
+    //si existe usuario es que lo ha borrado y existía en bd
     if (!user) {
         
         return res.status(404).json({ message: "Usuario no encontrado" });
