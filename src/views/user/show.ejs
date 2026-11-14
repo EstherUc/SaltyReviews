@@ -1,29 +1,34 @@
 <!-- <%# include('../layout/header'); -%> -->
 
-<h2>Detalle del usuario</h2>
+<main>
+    <h1>Perfil de usuario</h1>
 
-<%- include('userCard', { user }) -%>
+    <section>
+        <%- include('userCard', { user }) -%>
+    </section>
 
-<h3>Reseñas de este usuario</h3>
+    <section>
+        <h2>Reseñas del usuario</h2>
 
-<% if (user.reviews.length > 0) { %>
+        <% if (user.reviews.length > 0) { %>
 
-    <% user.reviews.forEach(review => { %>
+            <% user.reviews.forEach(review => { %>
+            
+                <h4><%= review.title %></h4>
+                <p>Puntuación: <%= review.rating %></p>
+                <p><%= review.comment %></p>
+                <a href="/review/<%= review.id_reviews %>">Ver reseña</a>
+            
+            <% }) %>
 
-        <h4><%= review.title %></h4>
-        <p>Puntuación: <%= review.rating %></p>
-        <p><%= review.comment %></p>
-        <a href="/review/<%= review.id_reviews %>">Ver reseña</a>
+        <% } else { %>
+        
+            <p>Este usuario todavía no tiene reseñas.</p>
+        
+        <% } %>
+    </section>
 
-    <% }) %>
-
-<% } else { %>
-
-    <p>Este usuario todavía no tiene reseñas.</p>
-
-<% } %>
-
-
-<a href="/user">Volver</a>
+    <a href="/user">Volver</a>
+</main>
 
 <!-- <%# include('../layout/footer'); -%> -->
