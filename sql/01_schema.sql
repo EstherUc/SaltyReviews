@@ -35,6 +35,8 @@ CREATE TABLE IF NOT EXISTS public."Favorites"
     id_user integer NOT NULL,
     id_restaurant integer NOT NULL,
     want_to_visit boolean,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY (id_favorites)
 );
 
@@ -44,6 +46,8 @@ CREATE TABLE IF NOT EXISTS public."Restaurants"
     name_restaurant character varying(100) NOT NULL,
     address character varying(150) NOT NULL,
     id_category integer NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY (id_restaurant)
 );
 
@@ -51,6 +55,8 @@ CREATE TABLE IF NOT EXISTS public."Categories"
 (
     id_category integer NOT NULL GENERATED ALWAYS AS IDENTITY,
     name_category character varying(100) NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY (id_category)
 );
 
