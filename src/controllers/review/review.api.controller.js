@@ -1,7 +1,8 @@
 import reviewRepository from '../../repositories/review.repository.js';
 
 const create = async (req, res) => {
-    const review = await reviewRepository.create({ ...req.body, id_user: 1, id_restaurant: 1 })
+    console.log("***********Datos que llegan del formulario:***************", req.body);
+    const review = await reviewRepository.create({ ...req.body, id_restaurant: 1 })
     res.json({ data: review })
 }
 
