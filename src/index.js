@@ -17,12 +17,14 @@ app.use(cors());
 app.use(express.json()); // permite leer el body de los POST en json
 app.use(express.urlencoded({ extended: true })); // permite leer el body de los POST en formularios
 
+//MIDDLEWARES PARA VISTAS
 app.use(session({ // solo para cuando tenemos vistas
     secret: process.env.SESSION_SECRET,
     resave: false,
     saveUninitialized: false
 }))
 
+//MIDDLEWARE PARA PASAR VARIABLES A LAS VISTAS
 app.use((req, res, next) => {
     res.locals.query = req.query;
     res.locals.user = req.session?.user || null;
