@@ -1,19 +1,26 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mi página</title>
     <link rel="stylesheet" href="/css/style.css">
 </head>
+
 <body>
-<header>
-    <nav>
-        <h1>Mi página</h1>
-        <ul>
-            <li></li>
-            <li></li>
-            <li></li>
-        </ul>
-    </nav>
-</header>
+    <header>
+        <nav>
+            <h1>Mi página</h1>
+            <ul>
+                <li><a href="/restaurant">Restaurantes</a></li>
+                <% if(!user){ %>
+                    <li><a href="/auth/login">Iniciar sesión</a></li>
+                    <% }else{ %>
+                        <li><a href="/auth/logout">Cerrar sesión</a></li>
+                        <li><a href="/user">Perfil</a></li>
+                        <li><a href="/favorites">Favoritos</a></li>
+                        <%}%>
+            </ul>
+        </nav>
+    </header>
