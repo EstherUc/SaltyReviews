@@ -17,13 +17,13 @@ router.post("/", favoriteViewController.create);
 router.get("/user/:userId", favoriteViewController.getAllByUser);
 
 // Mostrar un favorito concreto
-router.get("/:id", favoriteViewController.getById);
+//router.get("/:id", favoriteViewController.getById);
 
 
 // ------------------ U (Update) ------------------
 
 // Actualizar want_to_visit de un favorito
-router.post("/:id/update", favoriteViewController.update);
+//router.post("/:id/update", favoriteViewController.update);
 
 
 // ------------------ D (Delete) ------------------

@@ -9,12 +9,7 @@ const create = async(req,res) => {
 
     const { id_user, id_restaurant, want_to_visit } = req.body;
 
-    //comprobar que se han enviado los datos 
-    if (!id_user || !id_restaurant) {
-
-        return res.status(400).send("El usuario y el restaurante son obligatorios");
-    }
-
+  
     const favorite = await favoriteRepository.create({
         id_user,
         id_restaurant,
@@ -33,6 +28,7 @@ const getAllByUser = async(req,res) => {
 
     const userId = parseInt(req.params.userId);
 
+
     //consulta los favoritos del usuario
     const favorites = await favoriteRepository.getAllByUser(userId);
 
@@ -41,10 +37,8 @@ const getAllByUser = async(req,res) => {
 
 };
 
-//muestra un favorito por su ID
+/* //muestra un favorito por su ID
 const getById = async(req,res) => {
-
-    const id = parseInt(req.params.id);
 
     const favorite = await favoriteRepository.getById(id);
 
@@ -54,9 +48,7 @@ const getById = async(req,res) => {
         return res.status(404).send("Favorito no encontrado");
     }
 
-    
-
-};
+}; */
 
 // ------------------ U (Update) ------------------
 
@@ -122,7 +114,9 @@ const removeAllByUser = async(req,res) => {
 
     const userId = parseInt(req.params.userId); 
 
-    await favoriteRepository.removeAllByUser(userId);
+    const deleted = await favoriteRepository.removeAllByUser(userId);
+    console.log("Usuario:", userId);
+    console.log("Favoritos eliminados:", deleted);
 
     res.redirect("/favorite/user/" + userId);
 
@@ -131,7 +125,7 @@ const removeAllByUser = async(req,res) => {
 export default {
     create,
     getAllByUser,
-    getById,
+    //getById,
     //update,
     remove,
     removeAllByUser

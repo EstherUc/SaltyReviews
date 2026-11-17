@@ -1,4 +1,12 @@
-import { Favorite, Restaurant} from "../models/models.js"
+//import { Favorite, Restaurant} from "../models/models.js"
+import User from '../models/user.model.js';  //HACK borrar y descomentar el otro import - pruebas
+import Favorite from '../models/favorite.model.js'; //HACK borrar y descomentar el otro import - pruebas
+
+
+
+
+Favorite.belongsTo(User, {foreignKey: 'id_user', as: 'user'});//HACK para pruebas. Cuando estén todos los modelos borrar 
+
 
 // ------------------ CRUD de favoritos ------------------
 
@@ -6,7 +14,9 @@ import { Favorite, Restaurant} from "../models/models.js"
 // ------------------ C (Create)------------------------------------
 // endpoint para crear un favorito evitando duplicados
 const create = async (data) => {
-    const existingFav = await Favorite.findOne({
+    const favorite = await Favorite.create(data);
+    return favorite;
+    /* const existingFav = await Favorite.findOne({
         where: {
             id_user: data.id_user,
             id_restaurant: data.id_restaurant
@@ -18,10 +28,7 @@ const create = async (data) => {
         
         return existingFav;
 
-    }
-
-    const favorite = await Favorite.create(data);
-    return favorite;
+    } */
 };
 
 
@@ -30,13 +37,18 @@ const create = async (data) => {
 const getAllByUser = async(id_user) => {
     const favorites = await Favorite.findAll({
         where: {
-            id_user: id_user
+            id_user : id_user
         },
-        include: {
+        include: [
+            {
+            model: User,
+            as: "user"
+        },
+            /* {
             model: Restaurant,
-            as: "restaurant"
+            as: "restaurants"
 
-        } 
+        } */] 
     });
 
     return favorites;
@@ -45,10 +57,16 @@ const getAllByUser = async(id_user) => {
 // endpoint dato individual
 const getById = async (id) =>{
     const favorite = await Favorite.findByPk(id, {
-        include:{
+        include: [
+            {
+            model: User,
+            as: "user"
+        },
+            /* {
             model: Restaurant,
-            as: "restaurant"
-        }
+            as: "restaurants"
+
+        } */] 
     
     });
         return favorite;
@@ -85,12 +103,13 @@ const remove = async (id)=>{
 }
 
 //borrar todos los favoritos
-const removeAllByUser = async (id_user) =>{
+const removeAllByUser = async (userId) =>{
     const deletedFavs = await Favorite.destroy({
         where:{
-            id_user : id_user
+            id_user : userId
         }
     });
+    
 
     return deletedFavs;
 

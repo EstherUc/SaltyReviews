@@ -17,13 +17,13 @@ router.post("/", favoriteApiController.create);
 router.get("/user/:userId", favoriteApiController.getAllByUser);
 
 // Obtener un favorito por su ID
-router.get("/:id", favoriteApiController.getById);
+//router.get("/:id", favoriteApiController.getById);
 
 
 // ------------------ U (Update) ------------------
 
 // Actualizar want_to_visit de un favorito
-router.put("/:id", favoriteApiController.update);
+//router.put("/:id", favoriteApiController.update);
 
 
 // ------------------ D (Delete) ------------------
