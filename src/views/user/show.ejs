@@ -1,52 +1,61 @@
+
 <%- include('../layout/header'); -%>
 
 <main>
     <h1>Perfil de usuario</h1>
 
-    <section>
-        <%- include('userCard', { user }) -%>
-    </section>
+    <% if (user) { %>
 
-    <section>
-        <h2>Reseñas del usuario</h2>
+        <section>
+            <%- include('userCard', { user }) -%>
+        </section>
 
-        <% if (user.reviews.length > 0) { %>
+        <section>
+            <h2>Reseñas del usuario</h2>
 
-            <% user.reviews.forEach(review => { %>
-            
-                <h4><%= review.title %></h4>
-                <p>Puntuación: <%= review.rating %></p>
-                <p><%= review.comment %></p>
-                <a href="/review/<%= review.id_reviews %>">Ver reseña</a>
-            
-            <% }) %>
+            <% if (user.reviews.length > 0) { %>
 
-        <% } else { %>
-        
-            <p>Este usuario todavía no tiene reseñas.</p>
-        
-        <% } %>
-    </section>
-      <section>
-        <h2>Favoritos del usuario</h2>
+                <% user.reviews.forEach(review => { %>
 
-        <% if (user.favorites.length > 0) { %>
+                    <h4><%= review.title %></h4>
+                    <p>Puntuación: <%= review.rating %></p>
+                    <p><%= review.comment %></p>
+                    <a href="/review/<%= review.id_reviews %>">Ver reseña</a>
 
-            <% user.favorites.forEach(favorite => { %>
-            
-                <h4><%= favorite.id_restaurant %></h4>
-             
-                <%- include("../favorite/favCard", { favorite }) %>
-            
-            <% }) %>
+                <% }) %>
 
-        <% } else { %>
-        
-            <p>Este usuario todavía no tiene favoritos</p>
-        
-        <% } %>
-    </section>
+            <% } else { %>
 
+                <p>Este usuario todavía no tiene reseñas.</p>
+
+            <% } %>
+        </section>
+
+        <section>
+            <h2>Favoritos del usuario</h2>
+
+            <% if (user.favorites.length > 0) { %>
+
+                <% user.favorites.forEach(favorite => { %>
+
+                    <h4><%= favorite.id_restaurant %></h4>
+
+                    <%- include("../favorite/favCard", { favorite }) %>
+
+                <% }) %>
+
+            <% } else { %>
+
+                <p>Este usuario todavía no tiene favoritos</p>
+
+            <% } %>
+        </section>
+
+    <% } else { %>
+
+        <%- include('../layout/error') -%>
+
+    <% } %>
 
     <a href="/">Volver</a>
 </main>

@@ -1,5 +1,6 @@
 // import { User, Favorite, Review } from "../models/models.js"; 
 import { Op } from "sequelize";
+import { throwError, NotFoundError } from "../utils/errors.js";
 
 import User from '../models/user.model.js';  //HACK borrar y descomentar el otro import - pruebas
 import Review from '../models/review.model.js';  //HACK borrar y descomentar el otro import - pruebas
@@ -17,9 +18,16 @@ User.hasMany(Favorite, {foreignKey: 'id_user', as: 'favorites'}); //HACK para pr
 
 //crear un usuario
 const create = async (data) => {
+    
+    try {
 
-    const user = await User.create(data);
-    return user;
+        const user = await User.create(data);
+        return user;
+        
+    } catch (error) {
+        console.error(error);
+        throwError(error);
+    }
 
 };
 
@@ -30,25 +38,47 @@ const create = async (data) => {
 //obtener todos los usuarios
 const getAll = async() => {
 
-    const users = await User.findAll();
-    return users;
+    try {
+        
+        const users = await User.findAll();
+        return users;
+        
+    } catch (error) {
+        console.error(error);
+        throwError(error);
+    }
+
 };
 
 //obtener un usuario por su ID
 const getById = async (id) => {
-    const user = await User.findByPk(id,{
-        include:[
+
+    try {
+        
+        const user = await User.findByPk(id,{
+            include:[
+                {
+                model: Favorite,
+                as: "favorites",
+            },
             {
-            model: Favorite,
-            as: "favorites",
-        },
-        {
-            model: Review,
-            as: "reviews",
-            attributes: ["id_reviews", "title", "rating", "comment"]
-        }]
-    });
-    return user;
+                model: Review,
+                as: "reviews",
+                attributes: ["id_reviews", "title", "rating", "comment"]
+            }]
+        });
+
+        if(!user){
+            throw new NotFoundError("Usuario no encontrado");
+        }
+
+        return user;
+
+    } catch (error) {
+        console.error(error);
+        throwError(error);
+    }
+
 };
 
 

@@ -9,7 +9,7 @@ import userRepository from "../../repositories/user.repository.js";
 
 //mostrar el formulario para crear un usuario
 const createForm = (req,res) => {
-    res.render("user/create");
+    res.render("user/create", {user: {}, error: null});
 }
 
 //CREAR un usuario
@@ -17,32 +17,44 @@ const create = async(req,res) => {
 
     const { username, email, password, passwordRepeat } = req.body; //recogemos los datos enviados por el usuario
 
+    //guardar los datos del formulario por si hay algún error
+    const formData = { username, email };
+
     //comprobamos que se hayan enviado los datos obligatorios
     if (!username || !email || !password || !passwordRepeat) {
         
-        return res.status(400).send("El nombre de usuario, email y las contraseñas son obligatorios"); // HTTP 400 - solicitud incorrecta
+        // HTTP 400 - solicitud incorrecta
+        return res.status(400).render("user/create", { user: formData, error: "El nombre de usuario, email y las contraseñas son obligatorios" });
+
     }
 
     //comprobamos que las dos contraseñas coincidan
     if (password !== passwordRepeat) {
-        return res.status(400).send("Las contraseñas no coinciden.");
+        return res.status(400).render("user/create", { user: formData, error: "Las contraseñas no coinciden." }); // HTTP 400 - solicitud incorrecta
     }
 
-    const existUser = await userRepository.findEmail(email); //comprobamos si el email ya está registrado
+    try {
+        
+        const existUser = await userRepository.findEmail(email); //comprobamos si el email ya está registrado
+    
+        if (existUser) {
+            return res.status(409).render("user/create", { user: formData, error: "El email ya está registrado" }); // HTTP 409 - Conflicto - Intento de crear un recurso duplicado    
+        }
+    
+        //creamos el usuario
+        const user = await userRepository.create({
+            username,
+            email,
+            password_hash: password
+        });
+    
+        //volvemos al listado de usuarios
+        res.redirect("/user/" + user.id_user);
 
-    if (existUser) {
-        return res.status(409).send("El email ya está registrado" ); // HTTP 409 - Conflicto - Intento de crear un recurso duplicado    
+    } catch (error) {
+        console.error(error);
+        res.status(error.status || 500).render("user/create", { user: formData, error: error.message });
     }
-
-    //creamos el usuario
-    const user = await userRepository.create({
-        username,
-        email,
-        password_hash: password
-    });
-
-    //volvemos al listado de usuarios
-    res.redirect("/user/" + user.id_user);
 
 };
 
@@ -55,35 +67,47 @@ const create = async(req,res) => {
 //mostrar todos los usuarios
 const getAll = async(req, res) => {
 
-    const users = await userRepository.getAll(); //consultamos los usuarios mediante el repositorio
+    try {
+        
+        const users = await userRepository.getAll(); //consultamos los usuarios mediante el repositorio
+    
+        //mapeamos para crear otro array con la info de los usuarios sin el password_hash
+        const publicUsers = users.map(({ id_user, username, email, rol }) => ({
+            id_user,
+            username,
+            email,
+            rol
+        }));
+    
+        //renderizamos la vista y le pasamos los usuarios
+        res.render("user/list", {users: publicUsers});
 
-    //mapeamos para crear otro array con la info de los usuarios sin el password_hash
-    const publicUsers = users.map(({ id_user, username, email, rol }) => ({
-        id_user,
-        username,
-        email,
-        rol
-    }));
+    } catch (error) {
+        console.error(error);
+        res.status(error.status || 500).render("user/list", { users: [], error: error.message });
+    }
 
-    //renderizamos la vista y le pasamos los usuarios
-    res.render("user/list", {users: publicUsers});
 };
 
 
 //mostrar un usuario por su ID
 const getById = async(req,res) => {
 
-    const id = parseInt(req.params.id);
-    const user = await userRepository.getById(id);
+    try {
+        
+        const id = parseInt(req.params.id);
+        const user = await userRepository.getById(id);
+    
+        //desestruturamos el objeto para no devolver el password_hash
+        const { id_user,username,email,rol,reviews, favorites} = user;
+    
+        res.render("user/show", { user: { id_user,username,email,rol,reviews,favorites }, error: null });
 
-    if(!user){
-        return res.status(404).send("Usuario no encontrado");
+    } catch (error) {
+        console.error(error);
+        res.status(error.status || 500).render("user/show", { user: null, error: error.message });
     }
 
-    //desestruturamos el objeto para no devolver el password_hash
-    const { id_user,username,email,rol,reviews, favorites} = user;
-
-    res.render("user/show", { user: { id_user,username,email,rol,reviews,favorites } });
 };
 
 
