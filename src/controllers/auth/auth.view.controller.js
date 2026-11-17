@@ -98,7 +98,7 @@ const login = async (req, res) => {
             rol: user.rol
         };
 
-        redirect(res, "/", {message: "Login exitoso"});
+        redirect(res, "/home", {message: "Login exitoso"});
 
     } catch (error) {
         console.error(error);
@@ -113,7 +113,7 @@ const login = async (req, res) => {
 const logout = async (req, res) => {
 
     req.session.destroy();
-    res.redirect("/");
+    res.redirect("/home");
 
 };
 
