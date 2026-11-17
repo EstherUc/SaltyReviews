@@ -1,0 +1,14 @@
+<!-- <%#- include('../layout/header'); -%> -->
+
+<main>
+    <h1>Categorias</h1>
+
+    <section>
+       <h2>Listado de categorias</h2>
+        <% for (const category of categories) {%>
+            <%- include('categoryCard',{category}) -%>
+        <% } %> 
+    </section>
+</main>
+
+<!-- <%#- include('../layout/footer'); -%> -->

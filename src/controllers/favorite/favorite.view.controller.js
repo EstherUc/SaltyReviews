@@ -7,17 +7,23 @@ import favoriteRepository from "../../repositories/favorite.repository.js";
 //crear un favorito
 const create = async(req,res) => {
 
-    const { id_user, id_restaurant, want_to_visit } = req.body;
+    const id_user = req.session.user.id_user;
+
+    const id_restaurant = Number(req.body.id_restaurant);
+
+    if(!Number.isInteger(id_restaurant) || id_restaurant <=0){
+        return res.status(400).send("ID de restaurante es incorrecta")
+    }
 
   
-    const favorite = await favoriteRepository.create({
+    await favoriteRepository.create({
         id_user,
         id_restaurant,
-        want_to_visit
+        
     });
 
     //vuelve a la lista de favoritos del usuario
-    res.redirect("/favorite/user/" + id_user);
+    res.redirect("/favorite");
 
 };
 
@@ -26,14 +32,14 @@ const create = async(req,res) => {
 //mostrar lista con todos los favoritos del usuario
 const getAllByUser = async(req,res) => {
 
-    const userId = parseInt(req.params.userId);
+    const id_user = req.session.user.id_user;
 
 
     //consulta los favoritos del usuario
-    const favorites = await favoriteRepository.getAllByUser(userId);
+    const favorites = await favoriteRepository.getAllByUser(id_user);
 
     //pasamos al render los favoritos segun usuario
-    res.render("favorite/list", { favorites, userId });
+    res.render("favorite/list", { favorites });
 
 };
 
@@ -94,31 +100,29 @@ const want_to_visit = req.body.want_to_visit === "true";
 //eliminar un favorito
 const remove = async(req,res) => {
 
-    const id = parseInt(req.params.id);
-
-    const favorite = await favoriteRepository.remove(id);
+    const id_favorite = parseInt(req.params.id);
+    const deleted = await favoriteRepository.remove(id_favorite);
 
     //comprobar si existe el favorito
-    if (!favorite) {
+    if (!id_favorite) {
 
         return res.status(404).send("Favorito no encontrado");
     }
 
     
-    res.redirect("/favorite/user/" + favorite.id_user);
+    res.redirect("/favorite");
 
 };
 
 //eliminar todos los favoritos de un usuario
 const removeAllByUser = async(req,res) => {
 
-    const userId = parseInt(req.params.userId); 
+    const id_user = req.session.user.id_user;
 
-    const deleted = await favoriteRepository.removeAllByUser(userId);
-    console.log("Usuario:", userId);
-    console.log("Favoritos eliminados:", deleted);
+    await favoriteRepository.removeAllByUser(id_user);
+    
 
-    res.redirect("/favorite/user/" + userId);
+    res.redirect("/favorite");
 
 };
 

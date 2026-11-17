@@ -1,5 +1,6 @@
 import { Router } from "express";
 import favoriteApiController from "../../controllers/favorite/favorite.api.controller.js";
+import { isAuthenticated } from "../../middlewares/auth.middleware.js";
 
 const router = Router();
 
@@ -7,14 +8,15 @@ const router = Router();
 
 // ------------------ C (Create) ------------------
 
-// Añadir un favorito
-router.post("/", favoriteApiController.create);
+
+
+
 
 
 // ------------------ R (Read) ------------------
 
 // Obtener todos los favoritos de un usuario
-router.get("/user/:userId", favoriteApiController.getAllByUser);
+router.get("/:userId", favoriteApiController.getAllByUser);
 
 // Obtener un favorito por su ID
 //router.get("/:id", favoriteApiController.getById);
@@ -29,10 +31,10 @@ router.get("/user/:userId", favoriteApiController.getAllByUser);
 // ------------------ D (Delete) ------------------
 
 // Eliminar un favorito concreto
-router.delete("/:id", favoriteApiController.remove);
+router.delete("/:id/delete", favoriteApiController.remove);
 
 // Eliminar todos los favoritos de un usuario
-router.delete("/user/:userId", favoriteApiController.removeAllByUser);
+router.delete("/:userId", favoriteApiController.removeAllByUser);
 
 
 export default router;

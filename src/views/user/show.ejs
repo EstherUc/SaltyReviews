@@ -1,4 +1,4 @@
-<!-- <%# include('../layout/header'); -%> -->
+<%- include('../layout/header'); -%>
 
 <main>
     <h1>Perfil de usuario</h1>
@@ -27,8 +27,28 @@
         
         <% } %>
     </section>
+      <section>
+        <h2>Favoritos del usuario</h2>
 
-    <a href="/user">Volver</a>
+        <% if (user.favorites.length > 0) { %>
+
+            <% user.favorites.forEach(favorite => { %>
+            
+                <h4><%= favorite.id_restaurant %></h4>
+             
+                <%- include("../favorite/favCard", { favorite }) %>
+            
+            <% }) %>
+
+        <% } else { %>
+        
+            <p>Este usuario todavía no tiene favoritos</p>
+        
+        <% } %>
+    </section>
+
+
+    <a href="/">Volver</a>
 </main>
 
-<!-- <%# include('../layout/footer'); -%> -->
+<%- include('../layout/footer'); -%>
