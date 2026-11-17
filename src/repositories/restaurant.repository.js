@@ -1,0 +1,140 @@
+// import { User, Favorite, Review } from "../models/models.js"; 
+import { Op, fn, col } from "sequelize";
+
+import User from '../models/user.model.js';  //HACK borrar y descomentar el otro import - pruebas
+import Review from '../models/review.model.js';  //HACK borrar y descomentar el otro import - pruebas
+import Restaurant from "../models/restaurant.model.js";
+
+Review.belongsTo(Restaurant, { foreignKey: 'id_restaurant', as: 'restaurant' }); //HACK para pruebas. Cuando estén todos los modelos borrar 
+
+
+
+// ------------------ CRUD de usuarios ------------------
+
+
+// ------------------ C (Create) ------------------
+
+//crear un resturante
+const create = async (data) => {
+
+    const restaurant = await Restaurant.create(data);
+    return restaurant;
+
+};
+
+
+
+// ------------------ R (Read) ------------------
+
+//obtener todos los restaurantes
+const getAll = async() => {
+
+    const restaurant = await Restaurant.findAll();
+    return restaurant;
+};
+
+
+// Obtener un restaurante por su ID
+const getById = async (id) => {
+    const restaurant = await Restaurant.findByPk(id)
+    return restaurant;
+};
+
+
+// Buscar un restaurante por su nombre
+const getByRestaurant = async (name_restaurant) => {
+    const restaurant = await Restaurant.findOne({
+        where: {
+            name_restaurant: name_restaurant
+        }
+    });
+
+    return restaurant;
+};
+// Calcular la puntuación media de un restaurante
+const getAverageRating = async (id) => {
+
+    const result = await Review.findOne({
+        attributes: [
+            [fn("AVG", col("rating")), "averageRating"]
+        ],
+        where: {
+            id_restaurant: id
+        },
+        raw: true
+    });
+
+    return result.averageRating;
+};
+// ------------------ U (Update) ------------------
+
+//Actualizar completamente un restaurante
+const update = async (id, data) => {
+
+    const restaurant = await Restaurant.findByPk(id);
+
+    if (!restaurant) {
+        return null;
+    }
+        
+   restaurant.name_restaurant = data.name_restaurant;
+    restaurant.address = data.address;
+    restaurant.id_category = data.id_category;
+
+    await restaurant.save();
+return restaurant;
+};
+
+
+
+// Modificar parcialmente un restaurante
+const modify = async (id, data) => {
+    const restaurant = await Restaurant.findByPk(id);
+
+    if (!restaurant) {
+        return null;
+    }
+
+     // Modificar únicamente los campos enviados
+    if (data.name_restaurant !== undefined) {
+        restaurant.name_restaurant = data.name_restaurant;
+    }
+
+    if (data.address !== undefined) {
+        restaurant.address = data.address;
+    }
+
+    if (data.id_category !== undefined) {
+        restaurant.id_category = data.id_category;
+    }
+
+    await restaurant.save();
+
+    return restaurant;
+};
+
+// ------------------ D (Delete) ------------------
+
+// Eliminar un restaurante
+const remove = async (id) => {
+    const restaurant = await Restaurant.findByPk(id);
+
+    if (!restaurant) {
+        return null;
+    }
+
+    await restaurant.destroy();
+
+    return restaurant;
+};
+
+export default {
+    create,
+    getAll,
+    getById,
+    getByRestaurant,
+    getAverageRating,
+    update,
+    modify,
+    remove
+};

@@ -1,16 +1,8 @@
-<%- include('../layout/header'); -%>
 <h1>Restaurantes</h1>
 
-<!-- Lista de restaurantes -->
-<ul>
-   <% for (const restaurant of restaurants) { %>
-<li><%= restaurant.name_restaurant %>
-<%= restaurant.address %>
-</li>
 
 
+
+<% for (const restaurant of restaurants) { %>
+    <%- include('./restCard', { restaurant }) -%>
 <% } %>
-</ul>
-
-
-<%- include('../layout/footer'); -%>
