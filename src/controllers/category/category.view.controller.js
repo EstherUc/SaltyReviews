@@ -16,7 +16,7 @@ const create = async (req, res) => {
     if (existCat) {
         return res.status(409).send("Ya existe una categoria con ese nombre"); // HTTP 409 - Conflicto - Intento de crear un recurso duplicado    
     }
-    
+
     const category = await categoriesRepo.create({
         name_category
     });
