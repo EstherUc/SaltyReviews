@@ -8,8 +8,7 @@ const router = Router();
 // ------------------ C (Create) ------------------------------------------
 // endpoint para crear dato
 
-// vista de formulario
-router.get("/new",categoryViewController.createForm);
+router.get("/create",categoryViewController.createForm);
 
 // creación de dato
 router.post("/",categoryViewController.create);
