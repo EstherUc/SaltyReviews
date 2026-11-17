@@ -1,7 +1,28 @@
-<h2> Nueva categoría:</h2>
-<form action="/category" method="post">
-    <label for="name_category">Nombre</label>
-    <input type="text" name="name_category" id="name_category">
+<%- include('../layout/header'); -%>
 
-    <button>Publicar</button>
-</form>
+<main>
+
+    <h1>Crear categoria</h1>
+
+    <section>
+
+        <h2>Datos de la nueva categoria</h2>
+
+        <form action="/category" method="post">
+
+            <div>
+                <label for="name_category">Nombre de la categoria</label>
+                <input type="text" name="name_category" id="name_category" required>
+            </div>
+            
+            <button>Crear</button>
+
+        </form>
+
+    </section>
+
+    <a href="/category">Volver</a>
+    
+</main>
+
+<%- include('../layout/footer'); -%>

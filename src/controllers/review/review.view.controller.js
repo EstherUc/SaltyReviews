@@ -1,8 +1,9 @@
 import reviewRepository from '../../repositories/review.repository.js';
 
+
 const create = async (req, res) => {
     console.log("***********Datos que llegan del formulario:***************", req.body);
-    const review = await reviewRepository.create({ ...req.body, id_restaurant: 1 })
+    const review = await reviewRepository.create({ ...req.body, id_user: req.session.user.id_user, id_restaurant: 1 })
     res.redirect("/review/" + review.id_reviews);
 }
 
@@ -40,6 +41,11 @@ const updateForm = async (req, res) => {
 const remove = async (req, res) => {
     const id = parseInt(req.params.id);
     const review = await reviewRepository.remove(id);
+
+    if(!review) {
+        return res.status(404).send("Reseña no encontrada");
+    }
+
     res.redirect("/review");
 }
 

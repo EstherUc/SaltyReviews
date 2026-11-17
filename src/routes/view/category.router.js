@@ -1,5 +1,6 @@
 import { Router } from "express";
 import categoryViewController from "../../controllers/category/category.view.controller.js";
+import { isAdmin } from "../../middlewares/auth.middleware.js";
 
 const router = Router();
 
@@ -8,11 +9,10 @@ const router = Router();
 // ------------------ C (Create) ------------------------------------------
 // endpoint para crear dato
 
-// vista de formulario
-router.get("/new",categoryViewController.createForm);
+router.get("/create", isAdmin, categoryViewController.createForm);
 
 // creación de dato
-router.post("/",categoryViewController.create);
+router.post("/", isAdmin, categoryViewController.create);
 
 
 // ------------------ R (Read) --------------------------------------------
@@ -27,16 +27,16 @@ router.get("/:id", categoryViewController.getById)
 // ------------------ U (Update) ------------------------------------------
 
 // vista de actualización de usuario
-router.get("/:id/edit",categoryViewController.updateForm);
+router.get("/:id/edit", isAdmin, categoryViewController.updateForm);
 
 // endpoint para cambiar dato por completo
-router.post("/:id/edit",categoryViewController.update)
+router.post("/:id/edit", isAdmin, categoryViewController.update)
 
 
 // ------------------ D (Delete) ------------------------------------------
 
 // endpoint para eliminar un dato
-router.post("/:id/delete",categoryViewController.remove)
+router.post("/:id/delete", isAdmin, categoryViewController.remove)
 
 
 export default router;
