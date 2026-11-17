@@ -1,5 +1,6 @@
 import { Router } from "express";
 import userViewController from "../../controllers/user/user.view.controller.js";
+import { isAuthenticated, isAdmin, isOwnerOrAdmin } from "../../middlewares/auth.middleware.js";
 
 
 const router = Router();
@@ -12,35 +13,35 @@ const router = Router();
 // ------------------ C (Create) ------------------
 
 //mostrar el formulario para crear un usuario
-router.get("/create",userViewController.createForm);
+router.get("/create", isAdmin , userViewController.createForm);
 
 //crear un usuario con los datos del formulario
-router.post("/create",userViewController.create);
+router.post("/create", isAdmin , userViewController.create);
 
 
 
 // ------------------ R (Read) ------------------
 
 //mostrar todos los usuarios
-router.get("/", userViewController.getAll);
+router.get("/", isAdmin, userViewController.getAll);
 
 //mostrar un usuario por su ID
-router.get("/:id",userViewController.getById);
+router.get("/:id", isOwnerOrAdmin, userViewController.getById);
 
 
 // ------------------ U (Update) ------------------
 
 //mostrar formulario de actualización
-router.get("/:id/update", userViewController.updateForm);
+router.get("/:id/update", isOwnerOrAdmin, userViewController.updateForm);
 
 //actualizar el usuario con los datos cambiados del formulario
-router.post("/:id/update", userViewController.update);
+router.post("/:id/update", isOwnerOrAdmin, userViewController.update);
 
 
 // ------------------ D (Delete) ------------------
 
 //eliminar un usuario
-router.post("/:id/delete", userViewController.remove);
+router.post("/:id/delete", isAdmin, userViewController.remove);
 
 
 
