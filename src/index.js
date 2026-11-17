@@ -6,6 +6,7 @@ import connection from "./config/db.js";
 import session from "express-session";
 
 
+
 dotenv.config(); //carga las variables del archivo .env
 
 const PORT = process.env.PORT || 3000;
@@ -17,17 +18,17 @@ app.use(cors());
 app.use(express.json()); // permite leer el body de los POST en json
 app.use(express.urlencoded({ extended: true })); // permite leer el body de los POST en formularios
 
-//MIDDLEWARES PARA VISTAS
-app.use(session({ // solo para cuando tenemos vistas
+// Sesiones solo para las vistas
+app.use(session({
     secret: process.env.SESSION_SECRET,
     resave: false,
     saveUninitialized: false
-}))
+}));
 
-//MIDDLEWARE PARA PASAR VARIABLES A LAS VISTAS
+// Variables para las vistas EJS
 app.use((req, res, next) => {
     res.locals.query = req.query;
-    res.locals.user = req.session?.user || null;
+    res.locals.authUser = req.session?.user; 
     next();
 });
 

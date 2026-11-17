@@ -1,9 +1,5 @@
 import userRepository from "../../repositories/user.repository.js";
 
-//HACK: sustituir por un hash real cuando demos hashing
-//Solo es para pruebas locales. No sirve para iniciar sesión.
-const PASSWORD_HASH_PRUEBA = "HASH_TEMPORAL_PRUEBAS";
-
 
 // ------------------ CRUD de usuarios ------------------
 
@@ -31,7 +27,7 @@ const create = async(req,res) => {
     const user = await userRepository.create({
         username,
         email,
-        password_hash: PASSWORD_HASH_PRUEBA, //temporal hasta tener la teoría de hash. HACK
+        password_hash: password
     });
 
 
@@ -126,7 +122,7 @@ const update = async(req,res) => {
         userUpdate = await userRepository.update(id, {
             username,
             email,
-            password_hash: PASSWORD_HASH_PRUEBA //HACK temporal
+            password_hash: password
         });
 
     }else{
@@ -196,7 +192,7 @@ const modify = async(req,res) => {
         userUpdate = await userRepository.modify(id, {
             username,
             email,
-            password_hash: PASSWORD_HASH_PRUEBA //HACK temporal
+            password_hash: password
         });
 
     }else{

@@ -2,8 +2,9 @@
 -- PostgreSQL. Ejecutar tras crear las cinco tablas.
 -- Incluye title y comment obligatorios en Reviews, con opiniones variadas de 1 a 5.
 -- created_at y updated_at se asignan automáticamente en la base de datos.
--- Clave de las cuentas demo: Demo1234! (hash bcrypt; solo desarrollo).
--- Es repetible sin duplicar los registros de este lote, suponiendo nombres únicos.
+-- Clave de las cuentas user demo: Demo1234! (hash bcrypt; solo desarrollo).
+-- Clave de la cuenta admin demo: Admin (hash bcrypt; solo desarrollo).
+
 
 BEGIN;
 
@@ -17,18 +18,19 @@ WHERE NOT EXISTS (
 );
 
 INSERT INTO public."Users" (username, email, password_hash, rol)
-SELECT v.username, v.email,
-       '$2a$10$RirBfTcH.ZogWWLRg8wxQOn4o1Qx4hHRvNB/E9F0kg/Cp8KC6ONRy',
-       v.rol
+SELECT v.username, v.email, v.password_hash, v.rol
 FROM (VALUES
-  ('irene',  'irene@demo.test',  'user'),
-  ('pablo',  'pablo@demo.test',  'user'),
-  ('aitor',  'aitor@demo.test',  'user'),
-  ('maite',  'maite@demo.test',  'user'),
-  ('julia',  'julia@demo.test',  'user'),
-  ('hugo',   'hugo@demo.test',   'user')
-) AS v(username, email, rol)
-WHERE NOT EXISTS (SELECT 1 FROM public."Users" u WHERE u.email = v.email);
+  ('irene', 'irene@demo.test', '$2a$10$RirBfTcH.ZogWWLRg8wxQOn4o1Qx4hHRvNB/E9F0kg/Cp8KC6ONRy', 'user'),
+  ('pablo', 'pablo@demo.test', '$2a$10$RirBfTcH.ZogWWLRg8wxQOn4o1Qx4hHRvNB/E9F0kg/Cp8KC6ONRy', 'user'),
+  ('aitor', 'aitor@demo.test', '$2a$10$RirBfTcH.ZogWWLRg8wxQOn4o1Qx4hHRvNB/E9F0kg/Cp8KC6ONRy', 'user'),
+  ('maite', 'maite@demo.test', '$2a$10$RirBfTcH.ZogWWLRg8wxQOn4o1Qx4hHRvNB/E9F0kg/Cp8KC6ONRy', 'user'),
+  ('julia', 'julia@demo.test', '$2a$10$RirBfTcH.ZogWWLRg8wxQOn4o1Qx4hHRvNB/E9F0kg/Cp8KC6ONRy', 'user'),
+  ('hugo', 'hugo@demo.test', '$2a$10$RirBfTcH.ZogWWLRg8wxQOn4o1Qx4hHRvNB/E9F0kg/Cp8KC6ONRy', 'user'),
+  ('admin', 'admin@demo.test', '$2b$10$i/x/yfwFmno.vY86S3xOzuT.4uQtrFSSxYmgxntG6xFineBSvdxRG', 'admin')
+) AS v(username, email, password_hash, rol)
+WHERE NOT EXISTS (
+  SELECT 1 FROM public."Users" u WHERE u.email = v.email
+);
 
 INSERT INTO public."Restaurants" (name_restaurant, address, id_category)
 SELECT v.restaurant_name, v.address, c.id_category

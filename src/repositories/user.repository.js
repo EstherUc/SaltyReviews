@@ -43,6 +43,7 @@ const getAll = async() => {
 //         {
 //             model: Review,
 //             as: "reviews",
+//             attributes: ["id_reviews", "title", "rating", "comment"]
 //         }]
 //     });
 //     return user;
@@ -66,6 +67,52 @@ const getById = async (id) => {
     return user;
 };
 
+
+//buscar por email
+//para buscar si el email pertenece a algún otro usaurio (distinto del usuario del id mandado)
+// o sin id mandado sería buscar cualquier usuario que ya tenga ese email
+const findEmail = async (email, id=null) => { 
+
+    let existEmail = null;
+
+    //si recibimos id miramos emails de otros usuarios  
+    if(id !== null){
+        
+        existEmail = await User.findOne({
+            where: {
+                email: email,
+                id_user : {
+                    [Op.ne]: id  //no miramos ese id (usario) en la busqueda (ne = not equal, distinto)
+                }
+            }
+        });
+
+    }else{
+
+        //si no recibimos id (buscamos en todos los usuarios)
+        existEmail = await User.findOne({
+            where: {
+                email: email
+            }
+        });
+
+    }
+
+    return existEmail;
+
+}
+
+//buscar un usuario por su nombre
+const getByUsername = async (username) => {
+
+    const user = await User.findOne({
+        where: {
+            username: username
+        }
+    });
+
+    return user;
+};
 
 
 // ------------------ U (Update) ------------------
@@ -134,54 +181,15 @@ const remove = async (id) => {
 };
 
 
-//--------------------------------------------------------
-
-
-//buscar por email
-//para buscar si el email pertenece a algún otro usaurio (distinto del usuario del id mandado)
-// o sin id mandado sería buscar cualquier usuario que ya tenga ese email
-const findEmail = async (email, id=null) => { 
-
-    let existEmail = null;
-
-    //si recibimos id miramos emails de otros usuarios  
-    if(id !== null){
-        
-        existEmail = await User.findOne({
-            where: {
-                email: email,
-                id_user : {
-                    [Op.ne]: id  //no miramos ese id (usario) en la busqueda (ne = not equal, distinto)
-                }
-            }
-        });
-
-    }else{
-
-        //si no recibimos id (buscamos en todos los usuarios)
-        existEmail = await User.findOne({
-            where: {
-                email: email
-            }
-        });
-
-    }
-
-
-    return existEmail;
-
-}
-
-
-
 
 
 export default {
     create,
     getAll,
     getById,
+    findEmail,
+    getByUsername,
     update,
     modify,
-    remove,
-    findEmail
+    remove
 }
