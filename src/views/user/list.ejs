@@ -1,0 +1,16 @@
+<%- include('../layout/header'); -%>
+
+<main>
+    <h1>Usuarios</h1>
+
+    <a href="/user/create">Crear usuario</a>
+
+    <section>
+       <h2>Listado de usuarios</h2>
+        <% for (const user of users) {%>
+            <%- include('userCard',{user}) -%>
+        <% } %> 
+    </section>
+</main>
+
+<%- include('../layout/footer'); -%>

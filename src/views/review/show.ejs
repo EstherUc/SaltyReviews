@@ -1,0 +1,10 @@
+<%- include('../layout/header'); -%>
+<% if(review){%>
+    <%- include('reviewCard',{review}) -%>
+
+<%}else{ %>
+    <p>No existe la reseña</p>
+<%}%>
+
+    <a href="/review">Volver</a>
+<%- include('../layout/footer'); -%>

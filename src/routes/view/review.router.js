@@ -1,5 +1,6 @@
 import { Router } from "express";
 import reviewViewController from "../../controllers/review/review.view.controller.js";
+import { isAuthenticated } from "../../middlewares/auth.middleware.js";
 
 const router = Router();
 
@@ -9,10 +10,10 @@ const router = Router();
 // endpoint para crear dato
 
 // vista de formulario
-router.get("/new",reviewViewController.createForm);
+router.get("/new",isAuthenticated, reviewViewController.createForm);
 
 // creación de dato
-router.post("/",reviewViewController.create);
+router.post("/", isAuthenticated, reviewViewController.create);
 
 // ------------------ R (Read)---------------------------------------------
 // endpoint lista de datos
@@ -22,18 +23,13 @@ router.get("/",reviewViewController.getAll);
 router.get("/:id", reviewViewController.getById)
 
 // ---------------- U (Update) -----------------------------------
-
 // vista de actualización de usuario
-router.get("/:id/edit",reviewViewController.updateForm);
+router.get("/:id/update",reviewViewController.updateForm);
 
 // endpoint para cambiar dato por completo
-router.post("/:id/edit",reviewViewController.update)
-
-
+router.post("/:id/update",reviewViewController.update)
 
 // ------------------------ D (Delete)------------
-
-
 router.post("/:id/delete",reviewViewController.remove)
 
 
