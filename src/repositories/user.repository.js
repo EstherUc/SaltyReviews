@@ -3,8 +3,10 @@ import { Op } from "sequelize";
 
 import User from '../models/user.model.js';  //HACK borrar y descomentar el otro import - pruebas
 import Review from '../models/review.model.js';  //HACK borrar y descomentar el otro import - pruebas
+import Favorite from '../models/favorite.model.js'; //HACK borrar y descomentar el otro import - pruebas
 
 User.hasMany(Review, {foreignKey: 'id_user', as: 'reviews'}); //HACK para pruebas. Cuando estén todos los modelos borrar 
+User.hasMany(Favorite, {foreignKey: 'id_user', as: 'favorites'}); //HACK para pruebas. Cuando estén todos los modelos borrar 
 
 
 
@@ -33,39 +35,35 @@ const getAll = async() => {
 };
 
 //obtener un usuario por su ID
-// const getById = async (id) => {
-//     const user = await User.findByPk(id,{
-//         include:[
-//             {
-//             model: Favorite,
-//             as: "favorites",
-//         },
-//         {
-//             model: Review,
-//             as: "reviews",
-//             attributes: ["id_reviews", "title", "rating", "comment"]
-//         }]
-//     });
-//     return user;
-// };
-
-// HACK cuando esté favorite y review tengo que quitar
-// const getById = async (id) => {
-//     const user = await User.findByPk(id);
-//     return user;
-// };
-
-//HACK cuando esté favorite quitar y dejar la buena
 const getById = async (id) => {
-    const user = await User.findByPk(id, {
-        include: {
+    const user = await User.findByPk(id,{
+        include:[
+            {
+            model: Favorite,
+            as: "favorites",
+        },
+        {
             model: Review,
             as: "reviews",
             attributes: ["id_reviews", "title", "rating", "comment"]
-        }
+        }]
     });
     return user;
 };
+
+
+
+// //HACK cuando esté favorite quitar y dejar la buena
+// const getById = async (id) => {
+//     const user = await User.findByPk(id, {
+//         include: {
+//             model: Review,
+//             as: "reviews",
+//             attributes: ["id_reviews", "title", "rating", "comment"]
+//         }
+//     });
+//     return user;
+// };
 
 
 //buscar por email
