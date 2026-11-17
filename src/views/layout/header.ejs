@@ -25,6 +25,12 @@
                         <li><a href="/user/<%= authUser.id_user %>">Mi perfil</a></li>
                         <li><a href="/favorite">Favoritos</a></li>
                         <%}%>
+
+                        <% if (authUser && authUser.rol === "admin") { %>
+                            <li><a href="/user">Gestionar usuarios</a></li>
+                            <li><a href="/review">Gestionar reseñas</a></li>
+                            <li><a href="/category">Gestionar categorías</a></li>
+                        <% } %>
             </ul>
         </nav>
     </header>

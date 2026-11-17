@@ -3,7 +3,9 @@
 <main>
     <h1>Categorias</h1>
 
-    <a href="/category/create">Crear categoria</a>
+    <% if (authUser && authUser.rol === "admin") { %>
+        <a href="/category/create">Crear categoria</a>
+    <% } %>
 
     <section>
        <h2>Listado de categorias</h2>

@@ -1,6 +1,6 @@
 import { Router } from "express";
 import reviewViewController from "../../controllers/review/review.view.controller.js";
-import { isAuthenticated } from "../../middlewares/auth.middleware.js";
+import { isAuthenticated, isReviewOwnerOrAdmin } from "../../middlewares/auth.middleware.js";
 
 const router = Router();
 
@@ -24,13 +24,13 @@ router.get("/:id", reviewViewController.getById)
 
 // ---------------- U (Update) -----------------------------------
 // vista de actualización de usuario
-router.get("/:id/update",reviewViewController.updateForm);
+router.get("/:id/update", isReviewOwnerOrAdmin, reviewViewController.updateForm);
 
 // endpoint para cambiar dato por completo
-router.post("/:id/update",reviewViewController.update)
+router.post("/:id/update", isReviewOwnerOrAdmin, reviewViewController.update)
 
 // ------------------------ D (Delete)------------
-router.post("/:id/delete",reviewViewController.remove)
+router.post("/:id/delete", isReviewOwnerOrAdmin, reviewViewController.remove)
 
 
 export default router;
