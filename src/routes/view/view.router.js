@@ -3,8 +3,9 @@ import reviewRouter from "./review.router.js"
 import userRouter from "./user.router.js";
 //import categoryRouter from "./category.router.js";
 //import restaurantRouter from "./restaurant.router.js";
-//import favoriteRouter from "./favorite.router.js";
+import favoriteRouter from "./favorite.router.js";
 import authRouter from "./auth.router.js";
+
 
 const router = Router();
 
@@ -23,7 +24,7 @@ router.use("/user", userRouter);
 //router.use("/category",categoryRouter); 
 
 //Rutas de favoritos
-//router.use("/favorite",favoriteRouter); 
+router.use("/favorite",favoriteRouter); 
 
 //Rutas de restaurantes
 //router.use("/restaurant",restaurantRouter); 

@@ -81,9 +81,9 @@ const getById = async(req,res) => {
     }
 
     //desestruturamos el objeto para no devolver el password_hash
-    const { id_user,username,email,rol,reviews} = user;
+    const { id_user,username,email,rol,reviews, favorites} = user;
 
-    res.render("user/show", { user: { id_user,username,email,rol,reviews } });
+    res.render("user/show", { user: { id_user,username,email,rol,reviews,favorites } });
 };
 
 
