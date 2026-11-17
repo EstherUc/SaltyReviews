@@ -4,11 +4,11 @@
         <%= category.name_category %>
     </h3>
 
-    <!-- <%# if (authUser && authUser.rol === "admin") { %> -->
+     <% if (authUser && authUser.rol === "admin") { %>
 
     <form method="post" action="/category/<%= category.id_category %>/delete">
         <button type="submit">Eliminar</button>
     </form>
-    <!-- <%# } %> -->
+    <% } %>
 
 </article>
