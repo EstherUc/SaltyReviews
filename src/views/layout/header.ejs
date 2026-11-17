@@ -14,11 +14,15 @@
             <h1>Mi página</h1>
             <ul>
                 <li><a href="/restaurant">Restaurantes</a></li>
-                <% if(!user){ %>
+                <% if(!authUser){ %>
                     <li><a href="/auth/login">Iniciar sesión</a></li>
                     <% }else{ %>
-                        <li><a href="/auth/logout">Cerrar sesión</a></li>
-                        <li><a href="/user">Perfil</a></li>
+                        <li>
+                            <form action="/auth/logout" method="post">
+                                <button type="submit">Cerrar sesión</button>
+                            </form>
+                        </li>
+                        <li><a href="/user/<%= authUser.id_user %>">Mi perfil</a></li>
                         <li><a href="/favorites">Favoritos</a></li>
                         <%}%>
             </ul>

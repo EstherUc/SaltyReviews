@@ -1,5 +1,6 @@
 import { Router } from "express";
 import reviewViewController from "../../controllers/review/review.view.controller.js";
+import isAuthenticated from "../../middlewares/auth.middleware.js";
 
 const router = Router();
 
@@ -9,10 +10,10 @@ const router = Router();
 // endpoint para crear dato
 
 // vista de formulario
-router.get("/new",reviewViewController.createForm);
+router.get("/new",isAuthenticated, reviewViewController.createForm);
 
 // creación de dato
-router.post("/",reviewViewController.create);
+router.post("/", isAuthenticated, reviewViewController.create);
 
 // ------------------ R (Read)---------------------------------------------
 // endpoint lista de datos

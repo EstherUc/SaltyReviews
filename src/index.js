@@ -6,6 +6,7 @@ import connection from "./config/db.js";
 import session from "express-session";
 
 
+
 dotenv.config(); //carga las variables del archivo .env
 
 const PORT = process.env.PORT || 3000;
@@ -27,7 +28,21 @@ app.use(session({ // solo para cuando tenemos vistas
 //MIDDLEWARE PARA PASAR VARIABLES A LAS VISTAS
 app.use((req, res, next) => {
     res.locals.query = req.query;
-    res.locals.user = req.session?.user || null;
+    res.locals.authUser = req.session?.user || null;
+    next();
+});
+
+// Sesiones solo para las vistas
+app.use(session({
+    secret: process.env.SESSION_SECRET,
+    resave: false,
+    saveUninitialized: false
+}));
+
+// Variables para las vistas EJS
+app.use((req, res, next) => {
+    res.locals.query = req.query;
+    res.locals.authUser = req.session?.user; 
     next();
 });
 

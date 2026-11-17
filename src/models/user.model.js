@@ -1,5 +1,6 @@
 import { DataTypes } from "sequelize";
 import connection from "../config/db.js";
+import bcrypt from "bcrypt";
 
 const User = connection.define("User", {
     
@@ -35,6 +36,21 @@ const User = connection.define("User", {
     tableName:"Users",
     timestamps:true,
     underscored: true
+});
+
+
+//cifra al crear el usuario
+User.beforeCreate(async (user) => {
+  const hashedPassword = await bcrypt.hash(user.password_hash,10);
+  user.password_hash = hashedPassword;
+});
+
+//cifra cuando se modifica
+User.beforeUpdate(async (user) => {
+    if(user.changed("password_hash")){
+        const hashedPassword = await bcrypt.hash(user.password_hash,10);
+        user.password_hash = hashedPassword;
+    }
 });
 
 
