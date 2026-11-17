@@ -10,8 +10,23 @@ import authRouter from "./auth.router.js";
 const router = Router();
 
 //ruta de prueba de las vistas - http://localhost:3000/
-router.get("/",(req,res) => {
-    res.send("<h1>Welcome from the SaltyReviews view</h1>");
+// router.get("/",(req,res) => {
+//     res.send("<h1>Welcome from the SaltyReviews view</h1>");
+// });
+
+// Redirigir la raíz a Home
+router.get("/", (req, res) => {
+    res.redirect("/home");
+});
+
+// Mostrar la página Home
+router.get("/home", (req, res) => {
+    res.render("home/home");
+});
+
+//Ruta de la vista de inicio - http://localhost:3000/home
+router.get("/home", (req, res) => {
+    res.render("home/home");
 });
 
 //rutas de las vistas de reseñas
