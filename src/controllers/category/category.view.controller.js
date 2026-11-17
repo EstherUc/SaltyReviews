@@ -11,7 +11,9 @@ const createForm = (req, res) => {
 
 const create = async (req, res) => {
 
-    const existCat = await categoriesRepo.findName(req.name_category); //comprobamos si el email ya está registrado
+    const { name_category } = req.body;
+
+    const existCat = await categoriesRepo.findName(name_category); //comprobamos si la categoria ya está registrada
 
     if (existCat) {
         return res.status(409).send("Ya existe una categoria con ese nombre"); // HTTP 409 - Conflicto - Intento de crear un recurso duplicado    
@@ -32,9 +34,10 @@ const getAll = async (req, res) => {
     res.render("category/list", { categories })
 };
 
-const getById = (req, res) => {
+const getById = async (req, res) => {
+
     const id = parseInt(req.params.id);
-    const category = categoriesRepo.getById(id)
+    const category = await categoriesRepo.getById(id)
 
     if (!category) {
         return res.status(404).send("Categoria no encontrada");
@@ -50,7 +53,7 @@ const getById = (req, res) => {
 const update = async (req, res) => {
 
     const id = parseInt(req.params.id);
-    const category = categoriesRepo.getById(id)
+    const category = await categoriesRepo.getById(id)
 
     if (!category) {
         return res.status(404).send("Categoria no encontrada");
@@ -72,9 +75,9 @@ const update = async (req, res) => {
     }
 }
 
-const updateForm = (req, res) => {
+const updateForm = async (req, res) => {
     const id = req.params.id;
-    const category = categoriesRepo.getById(id)
+    const category = await categoriesRepo.getById(id)
 
     if (!category) {
         return res.status(404).send("Categoria no encontrada");

@@ -25,38 +25,23 @@ const getAll = async () => {
 // endpoint dato individual
 const getById = async (id) => {
     const category = await Category.findByPk(id);
-    return category
-        ;
+    return category;
 };
 
 //buscar por nombre
 const findName = async (name_category) => {
-
-    let existName = null;
-
-    //si recibimos id miramos emails de otros usuarios  
-    if (name_category !== null) {
-
-        existName = await Category.findOne({
-            where: {
-                name_category: name_category
-            }
-        });
-
-    } else {
-
-        //si no recibimos id (buscamos en todos los usuarios)
-        existName = await Category.findOne({
-            where: {
-                name_category: name_category
-            }
-        });
-
+    if (typeof name_category !== "string" || !name_category.trim()) {
+        return null;
     }
 
-    return existName;
+    const existName = await Category.findOne({
+        where: {
+            name_category: name_category.trim()
+        }
+    });
 
-}
+    return existName;
+};
 
 
 // ---------------- U (Update) -----------------------------------
