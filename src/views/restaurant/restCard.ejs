@@ -1,6 +1,7 @@
 <article class="restaurant-card">
     <div class="card-left">
-        <img src="https://placehold.co/400" alt="">
+        <img src="<%= restaurant.image_url || '/uploads/restaurants/Sin_foto.png' %>"
+            alt="<%= restaurant.name_restaurant %>">
 
         <% const isFavorite=typeof favoriteIds !=="undefined" && favoriteIds.includes(Number(restaurant.id_restaurant));
             %>

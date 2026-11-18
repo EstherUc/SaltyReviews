@@ -1,6 +1,8 @@
 <article class="favorite-card">
     <div class="card-left">
-        <img src="https://placehold.co/400" alt="">
+        <img src="<%= favorite.restaurant.image_url || '/uploads/restaurants/Sin_foto.png' %>"
+            alt="<%= favorite.restaurant.name_restaurant %>">
+
         <% if ( authUser && Number(authUser.id_user)===Number(favorite.id_user) ) { %>
 
             <form action="/favorite/toggle" method="POST">

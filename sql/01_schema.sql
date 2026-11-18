@@ -48,6 +48,7 @@ CREATE TABLE IF NOT EXISTS public."Restaurants"
     name_restaurant character varying(100) NOT NULL,
     address character varying(150) NOT NULL,
     id_category integer NOT NULL,
+    image_url character varying(255),
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY (id_restaurant)
