@@ -110,7 +110,9 @@ const getById = async (req, res) => {
         // 5. Enviar restaurante y reseñas a la vista
         return res.render("restaurant/show", {
             restaurant,
-            reviews
+            reviews,
+            formData: {},
+            error: null
         });
 
     } catch (error) {

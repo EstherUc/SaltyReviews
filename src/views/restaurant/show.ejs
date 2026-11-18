@@ -28,11 +28,11 @@
 
             </section>
 
-            <% if (authUser && authUser.rol==="admin" ) { %>
+                    <% if (authUser && authUser.rol==="admin" ) { %>
 
-                <section class="admin-actions">
+                        <section class="admin-actions">
 
-                    <h3>Administrar restaurante</h3>
+                            <h3>Administrar restaurante</h3>
 
                     <!-- EDITAR -->
                     <a   class="btn btn-secondary"  href="/restaurant/<%= restaurant.id_restaurant %>/update">
@@ -46,9 +46,9 @@
                         </button>
                     </form>
 
-                </section>
+                        </section>
 
-                <% } %>
+                        <% } %>
 
                     <!-- FORMULARIO DE RESEÑAS -->
                     <section class="restaurant-reviews-layout">
@@ -76,25 +76,25 @@
                     <!-- RESEÑAS DEL RESTAURANTE -->
                     <div class="restaurant-reviews-list">
 
-                        <h2>Reseñas de <%= restaurant.name_restaurant %>
-                        </h2>
+                                <h2>Reseñas de <%= restaurant.name_restaurant %>
+                                </h2>
 
-                        <% if (reviews.length===0) { %>
+                                <% if (reviews.length===0) { %>
 
-                            <p>
-                                Este restaurante todavía no tiene reseñas.
-                                ¡Sé el primero en valorarlo!
-                            </p>
+                                    <p>
+                                        Este restaurante todavía no tiene reseñas.
+                                        ¡Sé el primero en valorarlo!
+                                    </p>
 
-                            <% } else { %>
+                                    <% } else { %>
 
-                                <% for (const review of reviews) { %>
+                                        <% for (const review of reviews) { %>
 
-                                    <%- include('../review/reviewCard', { review }) -%>
+                                            <%- include('../review/reviewCard', { review }) -%>
 
-                                        <% } %>
+                                                <% } %>
 
-                                            <% } %>
+                                                    <% } %>
 
                                 </div>
                             </section>
@@ -102,7 +102,7 @@
                         <p>No existe el restaurante</p>
                         <% } %>
 
-                            <a href="/restaurant">Volver</a>
+                                    <a href="/restaurant">Volver</a>
 
     </main>
 
