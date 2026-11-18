@@ -1,4 +1,4 @@
-import { Favorite, Restaurant} from "../models/models.js"
+import { Favorite, Restaurant, User } from "../models/models.js"
 
 // ------------------ CRUD de favoritos ------------------
 
@@ -26,42 +26,44 @@ const create = async (data) => {
 
 // ------------------ R (Read)---------------------------------------------
 // endpoint lista de favoritos
-const getAllByUser = async(id_user) => {
+const getAllByUser = async (id_user) => {
     const favorites = await Favorite.findAll({
         where: {
-            id_user : id_user
+            id_user: id_user
         },
         include: [
             {
-            model: User,
-            as: "user"
-        },
-            /* {
-            model: Restaurant,
-            as: "restaurants"
+                model: User,
+                as: "user"
+            }
+            // ,
+            // {
+            //     model: Restaurant,
+            //     as: "restaurants"
 
-        } */] 
+            // }
+        ]
     });
 
     return favorites;
 };
 
 // endpoint dato individual
-const getById = async (id) =>{
+const getById = async (id) => {
     const favorite = await Favorite.findByPk(id, {
         include: [
             {
-            model: User,
-            as: "user"
-        },
+                model: User,
+                as: "user"
+            },
             /* {
             model: Restaurant,
             as: "restaurants"
 
-        } */] 
-    
+        } */]
+
     });
-        return favorite;
+    return favorite;
 };
 
 
@@ -69,12 +71,12 @@ const getById = async (id) =>{
 const update = async (id, data) => {
     const favorite = await Favorite.findByPk(id);
 
-    if(favorite){
+    if (favorite) {
         favorite.want_to_visit = data.want_to_visit;
 
         await favorite.save();
         return favorite;
-    }else{
+    } else {
         return null;
     }
 };
@@ -85,9 +87,9 @@ const update = async (id, data) => {
 
 // ------------------------ D (Delete)----------------------------
 //borrar un solo favorito
-const remove = async (id)=>{
+const remove = async (id) => {
     const favorite = await Favorite.findByPk(id);
-    if(favorite){
+    if (favorite) {
         await favorite.destroy();
         return favorite;
     }
@@ -95,13 +97,13 @@ const remove = async (id)=>{
 }
 
 //borrar todos los favoritos
-const removeAllByUser = async (userId) =>{
+const removeAllByUser = async (userId) => {
     const deletedFavs = await Favorite.destroy({
-        where:{
-            id_user : userId
+        where: {
+            id_user: userId
         }
     });
-    
+
 
     return deletedFavs;
 

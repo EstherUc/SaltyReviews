@@ -1,5 +1,6 @@
 import restaurantRepository from "../../repositories/restaurant.repository.js";
 import categoriesRepo from "../../repositories/category.repository.js";
+import reviewRepository from "../../repositories/review.repository.js";
 
 // ------------------ CRUD de restaurant ----------------------------
 
@@ -90,24 +91,35 @@ const getAll = async (req, res) => {
 const getById = async (req, res) => {
     try {
 
-        // Obtener el ID del restaurante desde la URL
+        // 1. Obtener la ID del restaurante
         const id = req.params.id;
 
-        // Buscar el restaurante en PostgreSQL por su clave primaria
+        // 2. Buscar el restaurante
         const restaurant = await restaurantRepository.getById(id);
 
-        // Si no existe el restaurante, devolver un error 404
+        // 3. Comprobar que existe
         if (!restaurant) {
             return res.status(404).send("Restaurante no encontrado");
         }
-        // Enviar el restaurante encontrado a la vista show.ejs
-        res.render("restaurant/show", { restaurant });
+
+        // 4. Buscar las reseñas de ESTE restaurante
+        const reviews = await reviewRepository.getByRestaurantId(
+            restaurant.id_restaurant
+        );
+
+        // 5. Enviar restaurante y reseñas a la vista
+        return res.render("restaurant/show", {
+            restaurant,
+            reviews
+        });
+
     } catch (error) {
-        // Mostrar el error en la consola si falla la consulta
+
         console.error("Error al obtener el restaurante:", error);
 
-        // Devolver un error 500 al navegador
-        res.status(500).send("Error al cargar el restaurante");
+        return res.status(500).send(
+            "Error al cargar el restaurante"
+        );
     }
 };
 
