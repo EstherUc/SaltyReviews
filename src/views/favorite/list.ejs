@@ -4,6 +4,12 @@
 
     
     <h1>Mis favoritos</h1>
+
+    <%- include('../layout/error') -%>
+    <% if (query.message) { %>
+         <p class="success"><%= query.message %></p> 
+    <% } %>
+
     <form action="/favorite/delete-all" method="POST">
         <button type="submit">Eliminar todos mis favoritos</button>
     </form>
