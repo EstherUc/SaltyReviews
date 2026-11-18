@@ -1,5 +1,6 @@
 import categoriesRepo from "../../repositories/category.repository.js";
 import restaurantRepository from "../../repositories/restaurant.repository.js";
+import favoriteRepository from "../../repositories/favorite.repository.js";
 
 // Mostrar Home con restaurantes filtrados por categoría
 const getHome = async (req, res) => {
@@ -65,11 +66,21 @@ const getHome = async (req, res) => {
             })
         );
 
+        // Obtener los restaurantes favoritos del usuario conectado
+        let favoriteIds = [];
+
+        if (req.session?.user) {
+            favoriteIds = await favoriteRepository.getRestaurantIdsByUser(
+                req.session.user.id_user
+            );
+        }
+
         // 6. Mostrar Home con todos los datos
         return res.render("home/home", {
             categories,
             restaurants: restaurantsWithRating,
-            selectedCategoryId
+            selectedCategoryId,
+            favoriteIds
         });
 
     } catch (error) {
