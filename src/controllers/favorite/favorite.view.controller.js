@@ -83,11 +83,12 @@ const toggle = async (req, res) => {
 
     } catch (error) {
 
-        console.error("Error al modificar favoritos:", error);
+        console.error(error);
 
-        return res.status(500).send(
-            "No se ha podido modificar el favorito"
-        );
+        const id_user = req.session.user.id_user;
+        const favorites = await favoriteRepository.getAllByUser(id_user);
+
+        return res.status(error.status || 500).render("favorite/list", { favorites: favorites, error: error.message });
     }
 };
 
@@ -96,14 +97,22 @@ const toggle = async (req, res) => {
 //mostrar lista con todos los favoritos del usuario
 const getAllByUser = async (req, res) => {
 
-    const id_user = req.session.user.id_user;
+    try {
+        
+        const id_user = req.session.user.id_user;
+    
+    
+        //consulta los favoritos del usuario
+        const favorites = await favoriteRepository.getAllByUser(id_user);
+    
+        //pasamos al render los favoritos segun usuario
+        res.render("favorite/list", { favorites: favorites, error: null });
 
+    } catch (error) {
+        console.error(error);
+        res.status(error.status || 500).render("favorite/list", { favorites: [], error: error.status ? error.message : "Ha ocurrido un error de servidor" });
+    }
 
-    //consulta los favoritos del usuario
-    const favorites = await favoriteRepository.getAllByUser(id_user);
-
-    //pasamos al render los favoritos segun usuario
-    res.render("favorite/list", { favorites });
 
 };
 
@@ -163,30 +172,42 @@ const want_to_visit = req.body.want_to_visit === "true";
 
 //eliminar un favorito
 const remove = async (req, res) => {
+    
+    try {
+        
+        const id_favorite = parseInt(req.params.id);
+        const id_user = req.session.user.id_user;
 
-    const id_favorite = parseInt(req.params.id);
-    const deleted = await favoriteRepository.remove(
-        id_favorite,
-        req.session.user.id_user
-    );
-    //comprobar si existe el favorito
-    if (!id_favorite) {
+        await favoriteRepository.remove(id_favorite,req.session.user.id_user);
+    
+        res.redirect("/favorite");
 
-        return res.status(404).send("Favorito no encontrado");
+    } catch (error) {
+        console.error(error);
+
+        //recuperamos los favoritos del usuario
+        const favorites = await favoriteRepository.getAllByUser(req.session.user.id_user);
+
+        return res.status(error.status || 500).render("favorite/list", { favorites: favorites, error: error.message });
     }
 
-    res.redirect("/favorite");
 };
 
 //eliminar todos los favoritos de un usuario
 const removeAllByUser = async (req, res) => {
 
-    const id_user = req.session.user.id_user;
+    try {
+        
+        const id_user = req.session.user.id_user;
+        await favoriteRepository.removeAllByUser(id_user);
+    
+        res.redirect("/favorite?message=Favoritos+eliminados+correctamente");
 
-    await favoriteRepository.removeAllByUser(id_user);
+    } catch (error) {
+        console.error(error);
+        return res.status(error.status || 500).render("favorite/list", { favorites: [], error: error.status ? error.message : "Ha ocurrido un error de servidor" });
+    }
 
-
-    res.redirect("/favorite");
 
 };
 

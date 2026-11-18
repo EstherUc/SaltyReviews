@@ -1,4 +1,5 @@
 import { Favorite, Restaurant, User } from "../models/models.js"
+import { throwError, NotFoundError } from "../utils/errors.js";
 
 // ------------------ CRUD de favoritos ------------------
 
@@ -15,21 +16,17 @@ import { Favorite, Restaurant, User } from "../models/models.js"
  * @returns {Promise<Favorite>} Favorito creado.
  */
 const create = async (data) => {
-    const favorite = await Favorite.create(data);
-    return favorite;
-    /* const existingFav = await Favorite.findOne({
-        where: {
-            id_user: data.id_user,
-            id_restaurant: data.id_restaurant
-        }
 
-    });
-    
-    if(existingFav){
+    try {
         
-        return existingFav;
+        const favorite = await Favorite.create(data);
+        return favorite;
 
-    } */
+    } catch (error) {
+        console.error(error);
+        throwError(error);
+    }
+    
 };
 /**
  * Añade o elimina un restaurante de los favoritos de un usuario.
@@ -49,36 +46,50 @@ const create = async (data) => {
 
 const toggle = async (id_user, id_restaurant) => {
 
-    // Buscamos si el usuario ya tiene ese restaurante
-    const existingFavorite = await Favorite.findOne({
-        where: {
-            id_user,
-            id_restaurant
+    try {
+
+        const restaurant = await Restaurant.findByPk(id_restaurant);
+
+        if (!restaurant) {
+            throw new NotFoundError("Restaurante no encontrado");
         }
-    });
-
-    if (existingFavorite) {
-
-        // Si existe, quitamos el restaurante de favoritos
-        await Favorite.destroy({
+        
+        // Buscamos si el usuario ya tiene ese restaurante
+        const existingFavorite = await Favorite.findOne({
             where: {
                 id_user,
                 id_restaurant
             }
         });
+    
+        if (existingFavorite) {
+    
+            // Si existe, quitamos el restaurante de favoritos
+            await Favorite.destroy({
+                where: {
+                    id_user,
+                    id_restaurant
+                }
+            });
+    
+            return false;
+        }
+    
+        // Si no existe, lo añadimos
+        await Favorite.findOrCreate({
+            where: {
+                id_user,
+                id_restaurant
+            }
+        });
+    
+        return true;
 
-        return false;
+    } catch (error) {
+        console.error(error);
+        throwError(error);
     }
 
-    // Si no existe, lo añadimos
-    await Favorite.findOrCreate({
-        where: {
-            id_user,
-            id_restaurant
-        }
-    });
-
-    return true;
 };
 
 
@@ -97,42 +108,60 @@ const toggle = async (id_user, id_restaurant) => {
  * @returns {Promise<Favorite[]>} Lista de favoritos del usuario con sus relaciones.
  */
 const getAllByUser = async (id_user) => {
-    const favorites = await Favorite.findAll({
-        where: {
-            id_user: id_user
-        },
-        include: [
-            {
-                model: User,
-                as: "user"
+
+    try {
+        
+        const favorites = await Favorite.findAll({
+            where: {
+                id_user: id_user
             },
-            {
-                model: Restaurant,
-                as: "restaurant"
+            include: [
+                {
+                    model: User,
+                    as: "user"
+                },
+                {
+                    model: Restaurant,
+                    as: "restaurant"
+    
+                }
+            ]
+        });
+    
+        return favorites;
 
-            }
-        ]
-    });
+    } catch (error) {
+        console.error(error);
+        throwError(error);
+    }
 
-    return favorites;
 };
 
 // endpoint dato individual
 const getById = async (id) => {
-    const favorite = await Favorite.findByPk(id, {
-        include: [
-            {
-                model: User,
-                as: "user"
-            },
-            {
-                model: Restaurant,
-                as: "restaurant"
 
-            }]
+    try {
+        
+        const favorite = await Favorite.findByPk(id, {
+            include: [
+                {
+                    model: User,
+                    as: "user"
+                },
+                {
+                    model: Restaurant,
+                    as: "restaurant"
+    
+                }]
+    
+        });
+        return favorite;
 
-    });
-    return favorite;
+    } catch (error) {
+        console.error(error);
+        throwError(error);
+    }
+
 };
 
 
@@ -150,14 +179,22 @@ const getById = async (id) => {
  */
 const getRestaurantIdsByUser = async (id_user) => {
 
-    const favorites = await Favorite.findAll({
-        where: {
-            id_user
-        },
-        attributes: ["id_restaurant"]
-    });
+    try {
+        
+        const favorites = await Favorite.findAll({
+            where: {
+                id_user
+            },
+            attributes: ["id_restaurant"]
+        });
+    
+        return favorites.map(favorite => favorite.id_restaurant);
 
-    return favorites.map(favorite => favorite.id_restaurant);
+    } catch (error) {
+        console.error(error);
+        throwError(error);
+    }
+
 };
 
 
@@ -193,20 +230,28 @@ const update = async (id, data) => {
  */
 const remove = async (id, id_user) => {
 
-    const favorite = await Favorite.findOne({
-        where: {
-            id_favorites: id,
-            id_user
+    try {
+        
+        const favorite = await Favorite.findOne({
+            where: {
+                id_favorites: id,
+                id_user
+            }
+        });
+    
+        if (!favorite) {
+            throw new NotFoundError("Favorito no encontrado");
         }
-    });
+    
+        await favorite.destroy();
+    
+        return favorite;
 
-    if (!favorite) {
-        return null;
+    } catch (error) {
+        console.error(error);
+        throwError(error);
     }
 
-    await favorite.destroy();
-
-    return favorite;
 };
 
 
@@ -223,14 +268,22 @@ const remove = async (id, id_user) => {
  * @returns {Promise<number>} Número de favoritos eliminados.
  */
 const removeAllByUser = async (userId) => {
-    const deletedFavs = await Favorite.destroy({
-        where: {
-            id_user: userId
-        }
-    });
 
+    try {
+        
+        const deletedFavs = await Favorite.destroy({
+            where: {
+                id_user: userId
+            }
+        });
 
-    return deletedFavs;
+        return deletedFavs;
+
+    } catch (error) {
+        console.error(error);
+        throwError(error);
+    }
+
 
 }
 
