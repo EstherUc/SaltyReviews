@@ -1,18 +1,17 @@
 <article class="restaurant.card">
     <div class="card-left">
         <img src="https://placehold.co/400" alt="">
-<form action="/favorite/<%= restaurant.id_restaurant %>/create" method="POST">
 
-            <button id="delete-fav-btn" type="submit">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                    class="icon icon-tabler icons-tabler-outline icon-tabler-heart">
-                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                    <path d="M19.5 12.572l-7.5 7.428l-7.5 -7.428a5 5 0 1 1 7.5 -6.566a5 5 0 1 1 7.5 6.572" />
-                </svg>
+        <form action="/favorite" method="POST">
+
+            <input type="hidden" name="id_restaurant" value="<%= restaurant.id_restaurant %>">
+
+            <button type="submit">
+                ❤️
             </button>
-</form>
-        
+
+        </form>
+
     </div>
     <div class="card-right">
 
@@ -20,22 +19,25 @@
             <%= restaurant.name_restaurant %>
         </h3>
 
-<p>Dirección: <%= restaurant.address %></p>
+        <p>Dirección: <%= restaurant.address %>
+        </p>
         <p>
-    Puntuación:
-    <% if (restaurant.averageRating !== null) { %>
-               <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18"
-     viewBox="0 0 24 24" fill="gold" stroke="gold"
-     stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-    <path d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 21 12 17.77 5.82 21 7 14.14l-5-4.87 6.91-1.01L12 2z"/>
-</svg>
+            Puntuación:
+            <% if (restaurant.averageRating !==null) { %>
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="gold"
+                    stroke="gold" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path
+                        d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 21 12 17.77 5.82 21 7 14.14l-5-4.87 6.91-1.01L12 2z" />
+                </svg>
 
-        <%= Number(restaurant.averageRating).toFixed(1) %> 
-    <% } else { %>
-        Sin valoraciones
-    <% } %>
-</p>
-
+                <%= Number(restaurant.averageRating).toFixed(1) %>
+                    <% } else { %>
+                        Sin valoraciones
+                        <% } %>
+        </p>
+        <a href="/restaurant/<%= restaurant.id_restaurant %>">
+            Ver restaurante
+        </a>
 
     </div>
 

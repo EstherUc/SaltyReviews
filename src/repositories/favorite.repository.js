@@ -1,12 +1,4 @@
-//import { Favorite, Restaurant} from "../models/models.js"
-import User from '../models/user.model.js';  //HACK borrar y descomentar el otro import - pruebas
-import Favorite from '../models/favorite.model.js'; //HACK borrar y descomentar el otro import - pruebas
-
-
-
-
-Favorite.belongsTo(User, {foreignKey: 'id_user', as: 'user'});//HACK para pruebas. Cuando estén todos los modelos borrar 
-
+import { Favorite, Restaurant} from "../models/models.js"
 
 // ------------------ CRUD de favoritos ------------------
 

@@ -1,4 +1,5 @@
 import restaurantRepository from "../../repositories/restaurant.repository.js";
+import categoriesRepo from "../../repositories/category.repository.js";
 
 // ------------------ CRUD de restaurant ----------------------------
 
@@ -32,35 +33,58 @@ const create = async (req, res) => {
     }
 };
 
+// Mostrar formulario de creación de restaurantes
+const createForm = async (req, res) => {
+    try {
+        // Obtener las categorías de PostgreSQL
+        const categories = await categoriesRepo.getAll();
+
+        // Mostrar el formulario
+        res.render("restaurant/create", { categories });
+
+    } catch (error) {
+        console.error("Error al cargar el formulario:", error);
+
+        res.status(500).send("Error al cargar el formulario");
+    }
+};
+
 // ------------------ R (Read) ------------------
 // Mostrar todos los restaurantes
 const getAll = async (req, res) => {
     try {
-        // Consultar todos los restaurantes de la base de datos mediante Sequelize
+        // Obtener todos los restaurantes
         const restaurants = await restaurantRepository.getAll();
-    
-        res.render("restaurant/list", { restaurants: restaurantsWithRating });
-    } catch (error) {
-        // Mostrar el error en la consola si falla la consulta
-        console.error("Error al obtener los restaurantes:", error);
-        res.status(500).send("Error al cargar los restaurantes");
-    }
-};
-const restaurants = await restaurantRepository.getAll();
-// Obtener la puntuación media de cada restaurante
-const restaurantsWithRating = await Promise.all(
-    restaurants.map(async (restaurant) => {
 
-        const averageRating = await restaurantRepository.getAverageRating(
-            restaurant.id_restaurant
+        // Calcular la puntuación media de cada restaurante
+        const restaurantsWithRating = await Promise.all(
+            restaurants.map(async (restaurant) => {
+
+                const averageRating =
+                    await restaurantRepository.getAverageRating(
+                        restaurant.id_restaurant
+                    );
+
+                return {
+                    ...restaurant.toJSON(),
+                    averageRating: averageRating
+                };
+            })
         );
 
-        return {
-            ...restaurant.toJSON(),
-            averageRating: averageRating
-        };
-    })
-);
+        // Mostrar los restaurantes y sus puntuaciones
+        return res.render("restaurant/list", {
+            restaurants: restaurantsWithRating
+        });
+
+    } catch (error) {
+        console.error("Error al obtener los restaurantes:", error);
+
+        return res.status(500).send(
+            "Error al cargar los restaurantes"
+        );
+    }
+};
 
 // Mostrar restaurantes según su ID
 const getById = async (req, res) => {
@@ -173,5 +197,5 @@ const remove = async (req, res) => {
 };
 
 export default {
-    create, getAll, getById, updateForm, update, remove
+    create, getAll, getById, updateForm, update, remove, createForm
 };

@@ -1,15 +1,9 @@
 import { Router } from "express";
 import reviewRouter from "./review.router.js"
 import userRouter from "./user.router.js";
-<<<<<<< HEAD
-//import categoryRouter from "./category.router.js";
-import restaurantRouter from "./restaurant.router.js";
-//import favoriteRouter from "./favorite.router.js";
-=======
 import categoryRouter from "./category.router.js";
-//import restaurantRouter from "./restaurant.router.js";
+import restaurantRouter from "./restaurant.router.js";
 import favoriteRouter from "./favorite.router.js";
->>>>>>> origin/dev
 
 const router = Router();
 

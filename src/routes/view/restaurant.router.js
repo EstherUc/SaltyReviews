@@ -7,7 +7,8 @@ const router = express.Router();
 // ------------------ CRUD de restaurantes ------------------
 
 // ------------------ C (Create) ------------------
-
+// Mostrar formulario para crear restaurantes
+router.get("/create", isAdmin, restaurantViewController.createForm);
 // Crear un restaurante
 router.post("/", isAdmin, restaurantViewController.create);
 

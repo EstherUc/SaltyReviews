@@ -1,8 +1,9 @@
+<%- include('../layout/header'); -%>
+
 <h1>Restaurantes</h1>
-
-
-
 
 <% for (const restaurant of restaurants) { %>
     <%- include('./restCard', { restaurant }) -%>
 <% } %>
+
+<%- include('../layout/footer'); -%>

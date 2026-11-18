@@ -8,7 +8,7 @@ const router = Router();
 
 // ------------------ C (Create) ------------------
 
-// Crear un nuevo restaurante
+// Crear restaurante (solo administradores)
 router.post("/", isAdmin, restaurantApiController.create);
 
 // ------------------ R (Read) ------------------

@@ -1,13 +1,5 @@
-// import { User, Favorite, Review } from "../models/models.js"; 
+import { User, Favorite, Review, Restaurant } from "../models/models.js"; 
 import { Op, fn, col } from "sequelize";
-
-import User from '../models/user.model.js';  //HACK borrar y descomentar el otro import - pruebas
-import Review from '../models/review.model.js';  //HACK borrar y descomentar el otro import - pruebas
-import Restaurant from "../models/restaurant.model.js";
-
-Review.belongsTo(Restaurant, { foreignKey: 'id_restaurant', as: 'restaurant' }); //HACK para pruebas. Cuando estén todos los modelos borrar 
-
-
 
 // ------------------ CRUD de usuarios ------------------
 
