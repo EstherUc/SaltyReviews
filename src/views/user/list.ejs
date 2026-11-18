@@ -11,11 +11,13 @@
 
     <a href="/user/create">Crear usuario</a>
 
-    <section>
-       <h2>Listado de usuarios</h2>
-        <% for (const user of users) {%>
-            <%- include('userCard',{user}) -%>
-        <% } %> 
+    <section class="user-list">
+        
+            <% for (const user of users) {%>
+                 <%- include('userCard',{user}) -%>
+             <% } %> 
+
+        
     </section>
 </main>
 

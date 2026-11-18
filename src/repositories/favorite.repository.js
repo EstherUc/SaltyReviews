@@ -35,13 +35,12 @@ const getAllByUser = async (id_user) => {
             {
                 model: User,
                 as: "user"
-            }
-            // ,
-            // {
-            //     model: Restaurant,
-            //     as: "restaurants"
+            },
+            {
+                model: Restaurant,
+                as: "restaurant"
 
-            // }
+            }
         ]
     });
 
@@ -56,11 +55,11 @@ const getById = async (id) => {
                 model: User,
                 as: "user"
             },
-            /* {
+              {
             model: Restaurant,
-            as: "restaurants"
+            as: "restaurant"
 
-        } */]
+        } ]
 
     });
     return favorite;
