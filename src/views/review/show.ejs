@@ -1,24 +1,25 @@
 <%- include('../layout/header'); -%>
-    <% if(review){%>
-        <%- include('reviewCard',{review}) -%>
+    <%- include('../layout/error') -%>
+        <% if(review){%>
+            <%- include('reviewCard',{review}) -%>
 
-            <%}else{ %>
-                <p>No existe la reseña</p>
-                <%}%>
+                <% } else if (!locals.error) { %>
+                    <p>No existe la reseña</p>
+                    <% } %>
 
-                    <% if (review) { %>
+                        <% if (review) { %>
 
-                        <a href="/restaurant/<%= review.id_restaurant %>">
-                            Volver al restaurante
-                        </a>
-
-                        <% if (authUser && authUser.rol==="admin" ) { %>
-
-                            <a href="/review">
-                                Volver al panel de reseñas
+                            <a href="/restaurant/<%= review.id_restaurant %>">
+                                Volver al restaurante
                             </a>
 
-                            <% } %>
+                            <% if (authUser && authUser.rol==="admin" ) { %>
+
+                                <a href="/review">
+                                    Volver al panel de reseñas
+                                </a>
 
                                 <% } %>
-                                    <%- include('../layout/footer'); -%>
+
+                                    <% } %>
+                                        <%- include('../layout/footer'); -%>
