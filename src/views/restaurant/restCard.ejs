@@ -1,16 +1,40 @@
-<article class="restaurant.card">
+<article class="restaurant-card">
     <div class="card-left">
         <img src="https://placehold.co/400" alt="">
 
-        <form action="/favorite" method="POST">
+        <% const isFavorite=typeof favoriteIds !=="undefined" && favoriteIds.includes(Number(restaurant.id_restaurant));
+            %>
 
-            <input type="hidden" name="id_restaurant" value="<%= restaurant.id_restaurant %>">
+            <% if (authUser) { %>
 
-            <button type="submit">
-                ❤️
-            </button>
+                <form action="/favorite/toggle" method="POST">
 
-        </form>
+                    <input type="hidden" name="id_restaurant" value="<%= restaurant.id_restaurant %>">
+
+                    <input type="hidden" name="returnTo" value="<%= currentUrl %>">
+
+                    <button type="submit" class="favorite-toggle <%= isFavorite ? 'is-active' : '' %>"
+                        aria-label="<%= isFavorite ? 'Quitar de favoritos' : 'Añadir a favoritos' %>"
+                        aria-pressed="<%= isFavorite ? 'true' : 'false' %>">
+
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                            fill="<%= isFavorite ? 'currentColor' : 'none' %>" stroke="currentColor" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <path
+                                d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
+                        </svg>
+
+                    </button>
+
+                </form>
+
+                <% } else { %>
+
+                    <a href="/auth/login" class="favorite-toggle" aria-label="Inicia sesión para añadir a favoritos">
+                        ♡
+                    </a>
+
+                    <% } %>
 
     </div>
     <div class="card-right">
@@ -35,7 +59,7 @@
                         Sin valoraciones
                         <% } %>
         </p>
-        <a href="/restaurant/<%= restaurant.id_restaurant %>">
+        <a id="ver-restaurant-btn" href="/restaurant/<%= restaurant.id_restaurant %>">
             Ver restaurante
         </a>
 

@@ -1,4 +1,4 @@
-import { User, Favorite, Review, Restaurant } from "../models/models.js"; 
+import { User, Favorite, Review, Restaurant } from "../models/models.js";
 import { Op, fn, col } from "sequelize";
 
 // ------------------ CRUD de usuarios ------------------
@@ -19,7 +19,7 @@ const create = async (data) => {
 // ------------------ R (Read) ------------------
 
 //obtener todos los restaurantes
-const getAll = async() => {
+const getAll = async () => {
 
     const restaurant = await Restaurant.findAll();
     return restaurant;
@@ -30,6 +30,18 @@ const getAll = async() => {
 const getById = async (id) => {
     const restaurant = await Restaurant.findByPk(id)
     return restaurant;
+};
+
+// Obtener restaurantes de una categoría concreta
+const getByCategoryId = async (id_category) => {
+
+    const restaurants = await Restaurant.findAll({
+        where: {
+            id_category: id_category
+        }
+    });
+
+    return restaurants;
 };
 
 
@@ -68,13 +80,13 @@ const update = async (id, data) => {
     if (!restaurant) {
         return null;
     }
-        
-   restaurant.name_restaurant = data.name_restaurant;
+
+    restaurant.name_restaurant = data.name_restaurant;
     restaurant.address = data.address;
     restaurant.id_category = data.id_category;
 
     await restaurant.save();
-return restaurant;
+    return restaurant;
 };
 
 
@@ -87,7 +99,7 @@ const modify = async (id, data) => {
         return null;
     }
 
-     // Modificar únicamente los campos enviados
+    // Modificar únicamente los campos enviados
     if (data.name_restaurant !== undefined) {
         restaurant.name_restaurant = data.name_restaurant;
     }
@@ -124,6 +136,7 @@ export default {
     create,
     getAll,
     getById,
+    getByCategoryId,
     getByRestaurant,
     getAverageRating,
     update,

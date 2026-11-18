@@ -1,30 +1,41 @@
-<h2>Escribir una reseña</h2>
+<% const reviewData=locals.formData || {}; %>
 
-<form action="/review" method="POST">
+    <h2>Escribir una reseña</h2>
 
-    <!-- Restaurante al que pertenece la reseña -->
-    <input type="hidden" name="id_restaurant" value="<%= restaurant.id_restaurant %>">
+    <!-- Mostrar errores -->
+    <%- include('../layout/error') -%>
 
-    <div>
-        <label for="title">Título</label>
+        <form action="/review" method="POST">
 
-        <input type="text" name="title" id="title" maxlength="100" required>
-    </div>
+            <!-- ID del restaurante -->
+            <input type="hidden" name="id_restaurant" value="<%= restaurant.id_restaurant %>">
 
-    <div>
-        <label for="rating">Puntuación</label>
+            <!-- TÍTULO -->
+            <div>
+                <label for="title">Título</label>
 
-        <input type="number" name="rating" id="rating" min="1" max="5" required>
-    </div>
+                <input type="text" name="title" id="title" maxlength="100" value="<%= reviewData.title || '' %>"
+                    required>
+            </div>
 
-    <div>
-        <label for="comment">Comentario</label>
+            <!-- PUNTUACIÓN -->
+            <div>
+                <label for="rating">Puntuación</label>
 
-        <textarea id="comment" name="comment" required></textarea>
-    </div>
+                <input type="number" name="rating" id="rating" min="1" max="5" step="1"
+                    value="<%= reviewData.rating || '' %>" required>
+            </div>
 
-    <button type="submit">
-        Publicar reseña
-    </button>
+            <!-- COMENTARIO -->
+            <div>
+                <label for="comment">Comentario</label>
 
-</form>
+                <textarea id="comment" name="comment" maxlength="300"
+                    required><%= reviewData.comment || '' %></textarea>
+            </div>
+
+            <button type="submit">
+                Publicar reseña
+            </button>
+
+        </form>

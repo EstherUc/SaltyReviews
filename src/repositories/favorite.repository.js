@@ -23,6 +23,41 @@ const create = async (data) => {
     } */
 };
 
+// Añadir o quitar un restaurante de favoritos
+const toggle = async (id_user, id_restaurant) => {
+
+    // Buscamos si el usuario ya tiene ese restaurante
+    const existingFavorite = await Favorite.findOne({
+        where: {
+            id_user,
+            id_restaurant
+        }
+    });
+
+    if (existingFavorite) {
+
+        // Si existe, quitamos el restaurante de favoritos
+        await Favorite.destroy({
+            where: {
+                id_user,
+                id_restaurant
+            }
+        });
+
+        return false;
+    }
+
+    // Si no existe, lo añadimos
+    await Favorite.findOrCreate({
+        where: {
+            id_user,
+            id_restaurant
+        }
+    });
+
+    return true;
+};
+
 
 // ------------------ R (Read)---------------------------------------------
 // endpoint lista de favoritos
@@ -35,13 +70,12 @@ const getAllByUser = async (id_user) => {
             {
                 model: User,
                 as: "user"
-            }
-            // ,
-            // {
-            //     model: Restaurant,
-            //     as: "restaurants"
+            },
+            {
+                model: Restaurant,
+                as: "restaurant"
 
-            // }
+            }
         ]
     });
 
@@ -56,14 +90,27 @@ const getById = async (id) => {
                 model: User,
                 as: "user"
             },
-            /* {
-            model: Restaurant,
-            as: "restaurants"
+            {
+                model: Restaurant,
+                as: "restaurant"
 
-        } */]
+            }]
 
     });
     return favorite;
+};
+
+// Obtener las IDs de los restaurantes favoritos de un usuario
+const getRestaurantIdsByUser = async (id_user) => {
+
+    const favorites = await Favorite.findAll({
+        where: {
+            id_user
+        },
+        attributes: ["id_restaurant"]
+    });
+
+    return favorites.map(favorite => favorite.id_restaurant);
 };
 
 
@@ -82,19 +129,25 @@ const update = async (id, data) => {
 };
 
 
-
-
-
 // ------------------------ D (Delete)----------------------------
 //borrar un solo favorito
-const remove = async (id) => {
-    const favorite = await Favorite.findByPk(id);
-    if (favorite) {
-        await favorite.destroy();
-        return favorite;
+const remove = async (id, id_user) => {
+
+    const favorite = await Favorite.findOne({
+        where: {
+            id_favorites: id,
+            id_user
+        }
+    });
+
+    if (!favorite) {
+        return null;
     }
-    return null;
-}
+
+    await favorite.destroy();
+
+    return favorite;
+};
 
 //borrar todos los favoritos
 const removeAllByUser = async (userId) => {
@@ -111,9 +164,11 @@ const removeAllByUser = async (userId) => {
 
 export default {
     create,
+    toggle,
+    getRestaurantIdsByUser,
     getAllByUser,
     getById,
     update,
     remove,
     removeAllByUser
-}
+};

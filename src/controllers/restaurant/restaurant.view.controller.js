@@ -1,6 +1,7 @@
 import restaurantRepository from "../../repositories/restaurant.repository.js";
 import categoriesRepo from "../../repositories/category.repository.js";
 import reviewRepository from "../../repositories/review.repository.js";
+import favoriteRepository from "../../repositories/favorite.repository.js";
 
 // ------------------ CRUD de restaurant ----------------------------
 
@@ -73,9 +74,18 @@ const getAll = async (req, res) => {
             })
         );
 
+        let favoriteIds = [];
+
+        if (req.session?.user) {
+            favoriteIds = await favoriteRepository.getRestaurantIdsByUser(
+                req.session.user.id_user
+            );
+        }
+
         // Mostrar los restaurantes y sus puntuaciones
         return res.render("restaurant/list", {
-            restaurants: restaurantsWithRating
+            restaurants: restaurantsWithRating,
+            favoriteIds
         });
 
     } catch (error) {
@@ -110,7 +120,9 @@ const getById = async (req, res) => {
         // 5. Enviar restaurante y reseñas a la vista
         return res.render("restaurant/show", {
             restaurant,
-            reviews
+            reviews,
+            formData: {},
+            error: null
         });
 
     } catch (error) {
