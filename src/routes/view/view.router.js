@@ -5,6 +5,7 @@ import categoryRouter from "./category.router.js";
 import restaurantRouter from "./restaurant.router.js";
 import favoriteRouter from "./favorite.router.js";
 import authRouter from "./auth.router.js";
+import homeViewController from "../../controllers/home/home.view.controller.js";
 
 
 const router = Router();
@@ -14,19 +15,13 @@ const router = Router();
 //     res.send("<h1>Welcome from the SaltyReviews view</h1>");
 // });
 
+//Ruta de la vista de inicio - http://localhost:3000/home
+// Mostrar Home
+router.get("/home", homeViewController.getHome);
+
 // Redirigir la raíz a Home
 router.get("/", (req, res) => {
     res.redirect("/home");
-});
-
-// Mostrar la página Home
-router.get("/home", (req, res) => {
-    res.render("home/home");
-});
-
-//Ruta de la vista de inicio - http://localhost:3000/home
-router.get("/home", (req, res) => {
-    res.render("home/home");
 });
 
 //rutas de las vistas de reseñas
@@ -36,13 +31,13 @@ router.use("/review", reviewRouter);
 router.use("/user", userRouter);
 
 //Rutas de categorias
-router.use("/category",categoryRouter); 
+router.use("/category", categoryRouter);
 
 //Rutas de favoritos
-router.use("/favorite",favoriteRouter); 
+router.use("/favorite", favoriteRouter);
 
 //Rutas de restaurantes
-router.use("/restaurant",restaurantRouter); 
+router.use("/restaurant", restaurantRouter);
 
 //ruta de autentificación - registo, login y logout
 router.use("/auth", authRouter);
