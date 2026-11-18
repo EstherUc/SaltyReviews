@@ -5,20 +5,25 @@
 
         <% if (restaurant) { %>
 
-            <h1>
-                <%= restaurant.name_restaurant %>
-            </h1>
+            <h3>Información del restaurante</h3>
+            
 
             <section class="restaurant-detail">
-                <h3>Información del restaurante</h3>
-
+                
                 <div class="restaurant-detail-image">
                     <img src="<%= restaurant.image_url || '/uploads/restaurants/Sin_foto.png' %>"
                         alt="<%= restaurant.name_restaurant %>">
 
                 </div>
-
+                
+                
+                
                 <div class="restaurant-detail-info">
+                    <h2>
+                        <%= restaurant.name_restaurant %>
+    
+                    </h2>
+            
                     <p><strong>Nombre:</strong>
                         <%= restaurant.name_restaurant %>
                     </p>

@@ -12,19 +12,23 @@
                 </p>
                 <% } %>
 
+                <section class="restaurant-list">
+
                     <% if (reviews.length===0) { %>
-
+    
                         <p>No hay reseñas registradas.</p>
-
+    
                         <% } else { %>
-
+    
                             <% for (const review of reviews) { %>
-
+    
                                 <%- include('reviewCard', { review }) -%>
-
+    
                                     <% } %>
-
+    
                                         <% } %>
+                </section>
+
 
     </main>
 
