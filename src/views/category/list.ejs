@@ -1,14 +1,15 @@
 <%- include('../layout/header'); -%>
 
 <main>
-    <h1>Categorias</h1>
+    
+    <h2>Listado de categorias</h2>
 
     <% if (authUser && authUser.rol === "admin") { %>
-        <a href="/category/create">Crear categoria</a>
+        <a href="/category/create" class="btn btn-primary">Crear categoria</a>
     <% } %>
 
-    <section>
-       <h2>Listado de categorias</h2>
+    <section class="category-list">
+       
         <% for (const category of categories) {%>
             <%- include('categoryCard',{category}) -%>
         <% } %> 
