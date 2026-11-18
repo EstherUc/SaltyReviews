@@ -28,7 +28,7 @@
                     <li><a href="/category">Gestionar categorías</a></li>
                 <% } %>
                 <% if(!authUser){ %>
-                    <li><a href="/auth/login">Iniciar sesión</a></li>
+                    <li ><a href="/auth/login">Iniciar sesión</a></li>
                 <% }else{ %>
                     <li><a href="/user/<%= authUser.id_user %>">Mi perfil</a></li>
                     <li><a href="/favorite">Favoritos</a></li>

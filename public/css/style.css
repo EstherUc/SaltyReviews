@@ -1,34 +1,6 @@
-/* =========================================================
-   SALTYREVIEWS — SISTEMA DE ESTILOS
-   ========================================================= */
 
-/* 1. VARIABLES Y RESET
+/* 1. Generales
    --------------------------------------------------------- */
-:root {
-    --color-background: #FAF8F5;
-    --color-surface: #FFFFFF;
-    --color-primary: #2C4C3B;
-    --color-primary-light: #85B79A;
-    --color-accent: #EAB308;
-    --color-text: #292D29;
-    --color-text-muted: #777C76;
-    --color-border: #E8E5DF;
-    --color-danger: #A13E36;
-    --color-danger-bg: #F8EAE8;
-    --color-success: #2C6B49;
-
-    --radius-sm: 8px;
-    --radius-md: 12px;
-    --radius-lg: 18px;
-    --radius-pill: 999px;
-
-    --shadow-card: 0 3px 14px rgba(44, 76, 59, 0.07);
-    --shadow-hover: 0 8px 24px rgba(44, 76, 59, 0.12);
-
-    --content-width: 1180px;
-    --page-gutter: clamp(18px, 5vw, 56px);
-    --section-space: 42px;
-}
 
 *,
 *::before,
@@ -303,8 +275,6 @@ button.btn-danger:hover {
 }
 
 /* 4. FORMULARIOS
-   Importante: no se aplican márgenes a TODOS los formularios
-   ni a TODOS sus botones.
    --------------------------------------------------------- */
 form {
     width: 100%;
@@ -506,6 +476,12 @@ main > section:has(> form) {
 .favorite-toggle svg {
     width: 22px;
     height: 22px;
+}
+
+.favorite-toggle.logout{
+    position: absolute;
+    top: 10px;
+    left: 10px;
 }
 
 /* 7. FAVORITOS
