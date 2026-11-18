@@ -82,64 +82,65 @@ const getById = async (id) => {
 };
 
 
-
-// //HACK cuando esté favorite quitar y dejar la buena
-// const getById = async (id) => {
-//     const user = await User.findByPk(id, {
-//         include: {
-//             model: Review,
-//             as: "reviews",
-//             attributes: ["id_reviews", "title", "rating", "comment"]
-//         }
-//     });
-//     return user;
-// };
-
-
 //buscar por email
 //para buscar si el email pertenece a algún otro usaurio (distinto del usuario del id mandado)
 // o sin id mandado sería buscar cualquier usuario que ya tenga ese email
 const findEmail = async (email, id=null) => { 
 
-    let existEmail = null;
-
-    //si recibimos id miramos emails de otros usuarios  
-    if(id !== null){
+    try {
         
-        existEmail = await User.findOne({
-            where: {
-                email: email,
-                id_user : {
-                    [Op.ne]: id  //no miramos ese id (usario) en la busqueda (ne = not equal, distinto)
-                }
+            let existEmail = null;
+        
+            //si recibimos id miramos emails de otros usuarios  
+            if(id !== null){
+                
+                existEmail = await User.findOne({
+                    where: {
+                        email: email,
+                        id_user : {
+                            [Op.ne]: id  //no miramos ese id (usario) en la busqueda (ne = not equal, distinto)
+                        }
+                    }
+                });
+        
+            }else{
+        
+                //si no recibimos id (buscamos en todos los usuarios)
+                existEmail = await User.findOne({
+                    where: {
+                        email: email
+                    }
+                });
+        
             }
-        });
-
-    }else{
-
-        //si no recibimos id (buscamos en todos los usuarios)
-        existEmail = await User.findOne({
-            where: {
-                email: email
-            }
-        });
-
+        
+            return existEmail;
+        
+    } catch (error) {
+        console.error(error);
+        throwError(error);
     }
-
-    return existEmail;
 
 }
 
 //buscar un usuario por su nombre
 const getByUsername = async (username) => {
 
-    const user = await User.findOne({
-        where: {
-            username: username
-        }
-    });
+    try {
+        
+        const user = await User.findOne({
+            where: {
+                username: username
+            }
+        });
+    
+        return user;
 
-    return user;
+    } catch (error) {
+        console.error(error);
+        throwError(error);
+    }
+
 };
 
 
@@ -147,11 +148,18 @@ const getByUsername = async (username) => {
 
 //actualizar un usuario completamente
 const update = async (id, data) => {
-    const { username, email, password_hash } = data;
 
-    const user = await User.findByPk(id);
+    try {
+        
+        const { username, email, password_hash } = data;
+    
+        const user = await User.findByPk(id);
+        
+        if (!user) {
+            throw new NotFoundError("Usuario no encontrado");
+        }
 
-    if (user) {
+        
         user.username = username;
         user.email = email;
 
@@ -163,33 +171,46 @@ const update = async (id, data) => {
 
         await user.save();
         return user;
+        
+
+    } catch (error) {
+        console.error(error);
+        throwError(error);
     }
 
-    return null;
 };
 
 
 //modificar parcialmente un usuario
 const modify = async (id, data) => {
-    const { username, email, password_hash } = data;
 
-    const user = await User.findByPk(id);
-
-    if (!user) {
-        return null;
-    }
-
-    user.username = username || user.username;
-    user.email = email || user.email;
-
-    //cambiar contraseña solo si viene una nueva
-    if(password_hash !== undefined){
+    try {
         
-        user.password_hash = password_hash;
+        const { username, email, password_hash } = data;
+    
+        const user = await User.findByPk(id);
+    
+        if (!user) {
+            throw new NotFoundError("Usuario no encontrado");
+        }
+    
+        user.username = username || user.username;
+        user.email = email || user.email;
+    
+        //cambiar contraseña solo si viene una nueva
+        if(password_hash !== undefined){
+            
+            user.password_hash = password_hash;
+        }
+    
+        await user.save();
+        return user;
+
+    } catch (error) {
+        console.error(error);
+        throwError(error);
     }
 
-    await user.save();
-    return user;
 };
 
 
@@ -198,14 +219,23 @@ const modify = async (id, data) => {
 
 //eliminar un usuario
 const remove = async (id) => {
-    const user = await User.findByPk(id);
 
-    if (user) {
+    try {
+        
+        const user = await User.findByPk(id);
+    
+        if (!user) {
+            throw new NotFoundError("Usuario no encontrado");
+        }
+        
         await user.destroy();
         return user;
+        
+    } catch (error) {
+        console.error(error);
+        throwError(error);
     }
 
-    return null;
 };
 
 

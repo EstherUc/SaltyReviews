@@ -50,6 +50,15 @@ class NotFoundError extends ErrorWithStatus {
         this.name="NotFoundError";
     }
 }
+
+class ForeignKeyConstraintError extends ErrorWithStatus {
+    constructor(message = "No se puede realizar la operación porque existen registros relacionados") {
+        super(message, 409); 
+        this.name = "ForeignKeyConstraintError";
+    }
+}
+
+
 const errorFamilies = {
     SequelizeUniqueConstraintError: { // valores que no se pueden repetir
         default: UniqueConstraintError,
@@ -60,7 +69,7 @@ const errorFamilies = {
         default: ValidationError
     },
     SequelizeForeignKeyConstraintError: { // clave foranea que no apunta correctamente
-        default: GenericError
+        default: ForeignKeyConstraintError
     },
     SequelizeDatabaseError:{ // error de base de datos
         default: GenericError
@@ -128,5 +137,6 @@ export {
     UniqueEmailError,
     UniqueUsernameError,
     throwError,
-    NotFoundError
+    NotFoundError,
+    ForeignKeyConstraintError
 }

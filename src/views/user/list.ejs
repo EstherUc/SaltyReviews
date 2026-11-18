@@ -5,6 +5,10 @@
 
     <%- include('../layout/error') -%>
 
+    <% if (query.message) { %>
+        <p><%= query.message %></p>
+    <% } %>
+
     <a href="/user/create">Crear usuario</a>
 
     <section>
