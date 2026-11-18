@@ -11,9 +11,12 @@ import { throwError, NotFoundError } from "../utils/errors.js";
  * Utiliza el método create de Sequelize para insertar
  * un nuevo registro en el modelo Favorite.
  *
+ * Si ocurre un error, lo procesa mediante throwError.
+ *
  * @async
  * @param {Object} data - Datos del favorito que se quiere crear.
  * @returns {Promise<Favorite>} Favorito creado.
+ * @throws {Error} Error procesado mediante throwError si falla la operación.
  */
 const create = async (data) => {
 
@@ -28,22 +31,28 @@ const create = async (data) => {
     }
     
 };
+
 /**
  * Añade o elimina un restaurante de los favoritos de un usuario.
  *
- * Primero comprueba si existe un favorito asociado
- * al usuario y al restaurante indicados.
+ * Primero comprueba que el restaurante exista en la base de datos.
+ * Si no existe, lanza un NotFoundError.
  *
- * Si existe, elimina el registro de favoritos y devuelve false.
- * Si no existe, crea el registro mediante findOrCreate
- * y devuelve true.
+ * Después comprueba si el usuario ya tiene ese restaurante
+ * registrado entre sus favoritos.
+ *
+ * Si existe, elimina el registro y devuelve false.
+ * Si no existe, lo añade mediante findOrCreate y devuelve true.
+ *
+ * Si ocurre un error, lo procesa mediante throwError.
  *
  * @async
  * @param {number} id_user - Identificador del usuario.
  * @param {number} id_restaurant - Identificador del restaurante.
  * @returns {Promise<boolean>} true si se añade el favorito o false si se elimina.
+ * @throws {NotFoundError} Si el restaurante no existe.
+ * @throws {Error} Error procesado mediante throwError si falla la operación.
  */
-
 const toggle = async (id_user, id_restaurant) => {
 
     try {
@@ -103,9 +112,12 @@ const toggle = async (id_user, id_restaurant) => {
  * Incluye los datos del usuario y del restaurante
  * asociados a cada favorito.
  *
+ * Si ocurre un error, lo procesa mediante throwError.
+ *
  * @async
  * @param {number} id_user - Identificador del usuario.
  * @returns {Promise<Favorite[]>} Lista de favoritos del usuario con sus relaciones.
+ * @throws {Error} Error procesado mediante throwError si falla la consulta.
  */
 const getAllByUser = async (id_user) => {
 
@@ -137,7 +149,20 @@ const getAllByUser = async (id_user) => {
 
 };
 
-// endpoint dato individual
+/**
+ * Obtiene un favorito mediante su identificador.
+ *
+ * Busca el favorito utilizando su clave primaria
+ * e incluye los datos del usuario y del restaurante asociados.
+ *
+ * Si el favorito no existe, devuelve null.
+ * Si ocurre un error, lo procesa mediante throwError.
+ *
+ * @async
+ * @param {number} id - Identificador del favorito.
+ * @returns {Promise<Favorite|null>} Favorito encontrado o null si no existe.
+ * @throws {Error} Error procesado mediante throwError si falla la consulta.
+ */
 const getById = async (id) => {
 
     try {
@@ -166,17 +191,21 @@ const getById = async (id) => {
 
 
 /**
- * Obtiene un favorito mediante su identificador.
+ * Obtiene los identificadores de los restaurantes favoritos de un usuario.
  *
- * Busca el favorito utilizando su clave primaria
- * e incluye los datos del usuario y del restaurante asociados.
+ * Busca los favoritos asociados al usuario y recupera
+ * únicamente el campo id_restaurant de cada registro.
  *
- * Si el favorito no existe, devuelve null.
+ * Utiliza map para generar un array con los identificadores.
+ *
+ * Si ocurre un error, lo procesa mediante throwError.
  *
  * @async
- * @param {number} id - Identificador del favorito.
- * @returns {Promise<Favorite|null>} Favorito encontrado o null si no existe.
+ * @param {number} id_user - Identificador del usuario.
+ * @returns {Promise<number[]>} Lista de identificadores de restaurantes favoritos.
+ * @throws {Error} Error procesado mediante throwError si falla la consulta.
  */
+
 const getRestaurantIdsByUser = async (id_user) => {
 
     try {
@@ -199,6 +228,22 @@ const getRestaurantIdsByUser = async (id_user) => {
 
 
 // ---------------- U (Update) -----------------------------------
+
+/**
+ * Actualiza el campo want_to_visit de un favorito existente.
+ *
+ * Busca el favorito mediante su identificador.
+ * Si existe, modifica el valor de want_to_visit
+ * y guarda los cambios utilizando save de Sequelize.
+ *
+ * Si el favorito no existe, devuelve null.
+ *
+ * @async
+ * @param {number} id - Identificador del favorito que se quiere actualizar.
+ * @param {Object} data - Datos que se quieren actualizar.
+ * @param {boolean} data.want_to_visit - Nuevo valor del campo want_to_visit.
+ * @returns {Promise<Favorite|null>} Favorito actualizado o null si no existe.
+ */
 const update = async (id, data) => {
     const favorite = await Favorite.findByPk(id);
 
@@ -221,12 +266,16 @@ const update = async (id, data) => {
  * del favorito como con el identificador del usuario.
  *
  * Si lo encuentra, elimina el registro mediante destroy.
- * Si no existe, devuelve null.
+ * Si no existe, lanza un NotFoundError.
+ *
+ * Si ocurre un error, lo procesa mediante throwError.
  *
  * @async
  * @param {number} id - Identificador del favorito que se quiere eliminar.
  * @param {number} id_user - Identificador del usuario propietario del favorito.
- * @returns {Promise<Favorite|null>} Favorito eliminado o null si no existe.
+ * @returns {Promise<Favorite>} Favorito eliminado.
+ * @throws {NotFoundError} Si el favorito no existe.
+ * @throws {Error} Error procesado mediante throwError si falla la operación.
  */
 const remove = async (id, id_user) => {
 
@@ -255,6 +304,7 @@ const remove = async (id, id_user) => {
 };
 
 
+
 /**
  * Elimina todos los favoritos asociados a un usuario.
  *
@@ -263,9 +313,12 @@ const remove = async (id, id_user) => {
  *
  * Devuelve el número de registros eliminados.
  *
+ * Si ocurre un error, lo procesa mediante throwError.
+ *
  * @async
  * @param {number} userId - Identificador del usuario.
  * @returns {Promise<number>} Número de favoritos eliminados.
+ * @throws {Error} Error procesado mediante throwError si falla la operación.
  */
 const removeAllByUser = async (userId) => {
 
