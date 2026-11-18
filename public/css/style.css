@@ -387,21 +387,19 @@ form button {
 /* ========================================
    8. USUARIOS Y CATEGORÍAS
 ======================================== */
+.user-list{
+    width: 100%;
+    display: grid; 
+    grid-template-columns: repeat(3, 1fr);   
+    gap: 20px;
+    
+    
 
-.user-card,
-.category-card {
-    max-width: 100%;
 }
 
-.user-card > div {
-    display: flex;
-    align-items: center;
-    gap: 15px;
-    flex-wrap: wrap;
-    margin-top: 15px;
-}
 
-.user-card form,
+
+
 .category-card form {
     width: auto;
 }
@@ -473,10 +471,20 @@ form button {
 
 #ver-restaurant-btn{
     text-decoration: underline;
+    transition: color 0.3s linear;
 }
+
+#ver-restaurant-btn:hover{
+   
+    color: var(--color-mustard);
+    
+}
+
 
 @media (max-width: 768px){
     .restaurant-card{
         display: block;
     }
 }
+
+
