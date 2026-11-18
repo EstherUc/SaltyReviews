@@ -151,3 +151,87 @@ main section {
     color: var(--color-text-light);
     font-size: 13px;
 }
+
+
+/* ========================================
+   3. BOTONES
+======================================== */
+
+button,
+.btn {
+    border: none;
+    border-radius: var(--border-radius-small);
+    padding: 11px 20px;
+    font-weight: 600;
+    transition: all 0.2s ease;
+}
+
+button[type="submit"],
+.btn-primary {
+    background-color: var(--color-green);
+    color: var(--color-white);
+}
+
+button[type="submit"]:hover,
+.btn-primary:hover {
+    background-color: #203B2D;
+}
+
+form button {
+    margin-top: 10px;
+}
+
+/* Enlaces con apariencia de botón */
+
+main > a {
+    color: var(--color-green);
+    font-weight: 600;
+}
+
+/* ========================================
+   4. FORMULARIOS
+======================================== */
+
+form {
+    width: 100%;
+}
+
+form div {
+    margin-bottom: 18px;
+}
+
+label {
+    display: block;
+    margin-bottom: 7px;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--color-green);
+}
+
+input,
+textarea,
+select {
+    width: 100%;
+    padding: 12px 14px;
+    border: 1px solid var(--color-border);
+    border-radius: var(--border-radius-small);
+    background-color: var(--color-white);
+    color: var(--color-text);
+    outline: none;
+    transition: border-color 0.2s ease;
+}
+
+input:focus,
+textarea:focus,
+select:focus {
+    border-color: var(--color-green);
+}
+
+textarea {
+    min-height: 130px;
+    resize: vertical;
+}
+
+form button {
+    margin-top: 8px;
+}
