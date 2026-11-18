@@ -5,21 +5,21 @@ import favoriteRepository from "../../repositories/favorite.repository.js";
 // ------------------ C (Create) ------------------
 
 //crear un favorito
-const create = async(req,res) => {
+const create = async (req, res) => {
 
     const id_user = req.session.user.id_user;
 
     const id_restaurant = Number(req.body.id_restaurant);
 
-    if(!Number.isInteger(id_restaurant) || id_restaurant <=0){
+    if (!Number.isInteger(id_restaurant) || id_restaurant <= 0) {
         return res.status(400).send("ID de restaurante es incorrecta")
     }
 
-  
+
     await favoriteRepository.create({
         id_user,
         id_restaurant,
-        
+
     });
 
     //vuelve a la lista de favoritos del usuario
@@ -27,10 +27,74 @@ const create = async(req,res) => {
 
 };
 
+// Añadir o quitar un restaurante de favoritos
+const toggle = async (req, res) => {
+
+    try {
+
+        // Usuario autenticado
+        const id_user = req.session.user.id_user;
+
+        // Restaurante seleccionado
+        const id_restaurant = Number(req.body.id_restaurant);
+
+        if (
+            !Number.isSafeInteger(id_restaurant) ||
+            id_restaurant <= 0
+        ) {
+            return res.status(400).send(
+                "El restaurante seleccionado no es válido"
+            );
+        }
+
+        // Añadir o quitar favorito
+        await favoriteRepository.toggle(
+            id_user,
+            id_restaurant
+        );
+
+        // Recuperar la página de origen
+        const returnTo = req.body.returnTo;
+
+        let destination = "/home";
+
+        if (
+            typeof returnTo === "string" &&
+            returnTo.startsWith("/") &&
+            !returnTo.startsWith("//") &&
+            !returnTo.includes("\\")
+        ) {
+            const url = new URL(returnTo, "http://localhost");
+
+            const allowed =
+                url.pathname === "/home" ||
+                url.pathname === "/restaurant" ||
+                url.pathname === "/favorite" ||
+                /^\/restaurant\/\d+$/.test(url.pathname) ||
+                /^\/user\/\d+$/.test(url.pathname);
+
+            if (allowed) {
+                destination = url.pathname + url.search;
+            }
+        }
+
+        // Volver a la página anterior
+        return res.redirect(303, destination);
+
+    } catch (error) {
+
+        console.error("Error al modificar favoritos:", error);
+
+        return res.status(500).send(
+            "No se ha podido modificar el favorito"
+        );
+    }
+};
+
 // ------------------ R (Read) ------------------
 
 //mostrar lista con todos los favoritos del usuario
-const getAllByUser = async(req,res) => {
+const getAllByUser = async (req, res) => {
 
     const id_user = req.session.user.id_user;
 
@@ -98,29 +162,29 @@ const want_to_visit = req.body.want_to_visit === "true";
 // ------------------ D (Delete) ------------------
 
 //eliminar un favorito
-const remove = async(req,res) => {
+const remove = async (req, res) => {
 
     const id_favorite = parseInt(req.params.id);
-    const deleted = await favoriteRepository.remove(id_favorite);
-
+    const deleted = await favoriteRepository.remove(
+        id_favorite,
+        req.session.user.id_user
+    );
     //comprobar si existe el favorito
     if (!id_favorite) {
 
         return res.status(404).send("Favorito no encontrado");
     }
 
-    
     res.redirect("/favorite");
-
 };
 
 //eliminar todos los favoritos de un usuario
-const removeAllByUser = async(req,res) => {
+const removeAllByUser = async (req, res) => {
 
     const id_user = req.session.user.id_user;
 
     await favoriteRepository.removeAllByUser(id_user);
-    
+
 
     res.redirect("/favorite");
 
@@ -128,9 +192,8 @@ const removeAllByUser = async(req,res) => {
 
 export default {
     create,
+    toggle,
     getAllByUser,
-    //getById,
-    //update,
     remove,
     removeAllByUser
 };

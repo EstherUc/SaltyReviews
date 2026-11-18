@@ -37,7 +37,9 @@ CREATE TABLE IF NOT EXISTS public."Favorites"
     want_to_visit boolean,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    PRIMARY KEY (id_favorites)
+    PRIMARY KEY (id_favorites),
+    CONSTRAINT favorites_user_restaurant_unique
+    UNIQUE (id_user, id_restaurant)
 );
 
 CREATE TABLE IF NOT EXISTS public."Restaurants"

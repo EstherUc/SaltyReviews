@@ -17,7 +17,8 @@ router.get("/", favoriteViewController.getAllByUser);
 // ------------------ C (Create) ------------------
 
 // Añadir un favorito
-router.post("/", favoriteViewController.create);
+router.post("/toggle", favoriteViewController.toggle);
+// router.post("/", favoriteViewController.create);
 
 
 
