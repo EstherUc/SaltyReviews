@@ -159,6 +159,7 @@ const update = async (id, data) => {
     restaurant.name_restaurant = data.name_restaurant;
     restaurant.address = data.address;
     restaurant.id_category = data.id_category;
+    restaurant.image_url = data.image_url;
 
     await restaurant.save();
     return restaurant;
@@ -207,6 +208,10 @@ const modify = async (id, data) => {
 
     if (data.id_category !== undefined) {
         restaurant.id_category = data.id_category;
+    }
+
+    if (data.image_url !== undefined) {
+        restaurant.image_url = data.image_url;
     }
 
     await restaurant.save();

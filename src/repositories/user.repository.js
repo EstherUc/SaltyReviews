@@ -103,7 +103,9 @@ const getById = async (id) => {
                             attributes: [
                                 "id_restaurant",
                                 "name_restaurant",
-                                "address"
+                                "address",
+                                "image_url"
+
                             ]
                         }
                     ]

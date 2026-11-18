@@ -16,7 +16,12 @@ address: {
 id_category: {
     type: DataTypes.INTEGER,
 
+},
+image_url: {
+    type: DataTypes.STRING(255),
+    allowNull: true
 }
+
 },{
     tableName: "Restaurants",
     timestamps: false

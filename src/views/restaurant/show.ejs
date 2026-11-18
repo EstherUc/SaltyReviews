@@ -13,29 +13,34 @@
                 <h3>Información del restaurante</h3>
 
                 <div class="restaurant-detail-image">
-                    <img src="https://placehold.co/600x400" alt="Imagen de <%= restaurant.name_restaurant %>">
+                    <img src="<%= restaurant.image_url || '/uploads/restaurants/Sin_foto.png' %>"
+                        alt="<%= restaurant.name_restaurant %>">
+
                 </div>
 
                 <div class="restaurant-detail-info">
-                    <p><strong>Nombre:</strong> <%= restaurant.name_restaurant %>
+                    <p><strong>Nombre:</strong>
+                        <%= restaurant.name_restaurant %>
                     </p>
-                    <p><strong>Dirección:</strong> <%= restaurant.address %>
+                    <p><strong>Dirección:</strong>
+                        <%= restaurant.address %>
                     </p>
-                    <p><strong>Categoría: </strong><%= restaurant.id_category %>
+                    <p><strong>Categoría: </strong>
+                        <%= restaurant.id_category %>
                     </p>
-                    
+
                 </div>
 
             </section>
 
-                    <% if (authUser && authUser.rol==="admin" ) { %>
+            <% if (authUser && authUser.rol==="admin" ) { %>
 
-                        <section class="admin-actions">
+                <section class="admin-actions">
 
-                            <h3>Administrar restaurante</h3>
+                    <h3>Administrar restaurante</h3>
 
                     <!-- EDITAR -->
-                    <a   class="btn btn-secondary"  href="/restaurant/<%= restaurant.id_restaurant %>/update">
+                    <a class="btn btn-secondary" href="/restaurant/<%= restaurant.id_restaurant %>/update">
                         ✏️ Editar restaurante
                     </a>
 
@@ -46,9 +51,9 @@
                         </button>
                     </form>
 
-                        </section>
+                </section>
 
-                        <% } %>
+                <% } %>
 
                     <!-- FORMULARIO DE RESEÑAS -->
                     <section class="restaurant-reviews-layout">
@@ -56,53 +61,53 @@
                         <div class="create-review">
 
                             <% if (authUser) { %>
-    
+
                                 <%- include('../review/create', { restaurant }) -%>
-    
+
                                     <% } else { %>
-    
+
                                         <p>
                                             Debes iniciar sesión para escribir una reseña.
                                         </p>
-    
+
                                         <a class="btn btn-primary" href="/auth/login">
                                             Iniciar sesión
                                         </a>
-    
+
                                         <% } %>
                         </div>
 
 
-                    <!-- RESEÑAS DEL RESTAURANTE -->
-                    <div class="restaurant-reviews-list">
+                        <!-- RESEÑAS DEL RESTAURANTE -->
+                        <div class="restaurant-reviews-list">
 
-                                <h2>Reseñas de <%= restaurant.name_restaurant %>
-                                </h2>
+                            <h2>Reseñas de <%= restaurant.name_restaurant %>
+                            </h2>
 
-                                <% if (reviews.length===0) { %>
+                            <% if (reviews.length===0) { %>
 
-                                    <p>
-                                        Este restaurante todavía no tiene reseñas.
-                                        ¡Sé el primero en valorarlo!
-                                    </p>
+                                <p>
+                                    Este restaurante todavía no tiene reseñas.
+                                    ¡Sé el primero en valorarlo!
+                                </p>
 
-                                    <% } else { %>
+                                <% } else { %>
 
-                                        <% for (const review of reviews) { %>
+                                    <% for (const review of reviews) { %>
 
-                                            <%- include('../review/reviewCard', { review }) -%>
+                                        <%- include('../review/reviewCard', { review }) -%>
+
+                                            <% } %>
 
                                                 <% } %>
 
-                                                    <% } %>
-
-                                </div>
-                            </section>
+                        </div>
+                    </section>
                     <% } else { %>
                         <p>No existe el restaurante</p>
                         <% } %>
 
-                                    <a href="/restaurant">Volver</a>
+                            <a href="/restaurant">Volver</a>
 
     </main>
 
