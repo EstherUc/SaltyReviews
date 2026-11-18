@@ -1,6 +1,6 @@
-import { Op } from "sequelize";
-
 import Category from "../models/category.model.js";
+import { throwError, NotFoundError } from "../utils/errors.js";
+import { fn, col, where, Op } from "sequelize";
 
 
 // ------------------ CRUD de hero ----------------------------
@@ -9,8 +9,16 @@ import Category from "../models/category.model.js";
 
 // endpoint para crear dato
 const create = async (data) => {
-    const category = await Category.create(data)
-    return category;
+
+    try {
+
+        const category = await Category.create(data)
+        return category;
+
+    } catch (error) {
+        console.error(error);
+        throwError(error);
+    }
 }
 
 
@@ -18,69 +26,121 @@ const create = async (data) => {
 
 // endpoint lista de datos
 const getAll = async () => {
-    const categories = await Category.findAll();
-    return categories;
+
+    try {
+
+        const categories = await Category.findAll();
+        return categories;
+
+    } catch (error) {
+        console.error(error);
+        throwError(error);
+    }
 };
 
 // endpoint dato individual
 const getById = async (id) => {
-    const category = await Category.findByPk(id);
-    return category;
+
+    try {
+
+        const category = await Category.findByPk(id);
+        return category;
+
+    } catch (error) {
+        console.error(error);
+        throwError(error);
+    }
 };
 
 //buscar por nombre
 const findName = async (name_category) => {
-    if (typeof name_category !== "string" || !name_category.trim()) {
-        return null;
-    }
-
-    const existName = await Category.findOne({
-        where: {
-            name_category: name_category.trim()
+    try {
+        if (typeof name_category !== "string" || !name_category.trim()) {
+            return null;
         }
-    });
 
-    return existName;
+        const normalizedName = name_category.trim().toLowerCase();
+
+        const existName = await Category.findOne({
+            where: where(
+                fn("LOWER", col("name_category")),
+                normalizedName
+            )
+        });
+
+        return existName;
+
+    } catch (error) {
+        console.error("Error en findName:", error);
+        throw error;
+    }
 };
+
 
 
 // ---------------- U (Update) -----------------------------------
 
 // endpoint para cambiar dato por completo
 const update = async (id, data) => {
-    const { name_category } = data;
-    const category = await Category.findByPk(id);
-    if (category) {
-        category.name_category = name_category;
-        await category.save();
-        return category;
-    } else {
-        return null;
+
+    try {
+
+        const { name_category } = data;
+        const category = await Category.findByPk(id);
+        if (category) {
+            category.name_category = name_category;
+            await category.save();
+            return category;
+        } else {
+            return null;
+        }
+
+    } catch (error) {
+        console.error(error);
+        throwError(error);
     }
 
 }
 
 const modify = async (id, data) => {
-    const { name_category } = data;
-    const category = await Category.findByPk(id);
-    if (!category) {
-        return null;
+
+    try {
+
+        const { name_category } = data;
+        const category = await Category.findByPk(id);
+        if (!category) {
+            return null;
+        }
+        category.name_category = name_category || category.name_category;
+        await category.save();
+        return category;
+
+    } catch (error) {
+        console.error(error);
+        throwError(error);
     }
-    category.name_category = name_category || category.name_category;
-    await category.save();
-    return category;
 }
 
 
 // ------------------------ D (Delete)------------
 
 const remove = async (id) => {
-    const category = await Category.findByPk(id);
-    if (category) {
+
+    try {
+
+        const category = await Category.findByPk(id);
+
+        if (!category) {
+            throw new NotFoundError("Categoria no encontrada");
+        }
+
         await category.destroy();
         return category;
+
+    } catch (error) {
+        console.error(error);
+        throwError(error);
     }
-    return null;
 }
 
 export default {

@@ -16,4 +16,18 @@
     </section>
 </main>
 
-<%- include('../layout/footer'); -%>
+                    <%- include('../layout/error') -%>
+
+                        <% if (query.message) { %>
+                            <p class="success">
+                                <%= query.message %>
+                            </p>
+                            <% } %>
+
+                                <% for (const category of categories) {%>
+                                    <%- include('categoryCard',{category}) -%>
+                                        <% } %>
+                </section>
+    </main>
+
+    <%- include('../layout/footer'); -%>
