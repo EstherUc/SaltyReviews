@@ -4,7 +4,16 @@ import { Favorite, Restaurant, User } from "../models/models.js"
 
 
 // ------------------ C (Create)------------------------------------
-// endpoint para crear un favorito evitando duplicados
+/**
+ * Crea un nuevo registro de favorito en la base de datos.
+ *
+ * Utiliza el método create de Sequelize para insertar
+ * un nuevo registro en el modelo Favorite.
+ *
+ * @async
+ * @param {Object} data - Datos del favorito que se quiere crear.
+ * @returns {Promise<Favorite>} Favorito creado.
+ */
 const create = async (data) => {
     const favorite = await Favorite.create(data);
     return favorite;
@@ -22,8 +31,22 @@ const create = async (data) => {
 
     } */
 };
+/**
+ * Añade o elimina un restaurante de los favoritos de un usuario.
+ *
+ * Primero comprueba si existe un favorito asociado
+ * al usuario y al restaurante indicados.
+ *
+ * Si existe, elimina el registro de favoritos y devuelve false.
+ * Si no existe, crea el registro mediante findOrCreate
+ * y devuelve true.
+ *
+ * @async
+ * @param {number} id_user - Identificador del usuario.
+ * @param {number} id_restaurant - Identificador del restaurante.
+ * @returns {Promise<boolean>} true si se añade el favorito o false si se elimina.
+ */
 
-// Añadir o quitar un restaurante de favoritos
 const toggle = async (id_user, id_restaurant) => {
 
     // Buscamos si el usuario ya tiene ese restaurante
@@ -60,7 +83,19 @@ const toggle = async (id_user, id_restaurant) => {
 
 
 // ------------------ R (Read)---------------------------------------------
-// endpoint lista de favoritos
+/**
+ * Obtiene todos los favoritos de un usuario.
+ *
+ * Filtra los registros del modelo Favorite mediante
+ * el identificador del usuario.
+ *
+ * Incluye los datos del usuario y del restaurante
+ * asociados a cada favorito.
+ *
+ * @async
+ * @param {number} id_user - Identificador del usuario.
+ * @returns {Promise<Favorite[]>} Lista de favoritos del usuario con sus relaciones.
+ */
 const getAllByUser = async (id_user) => {
     const favorites = await Favorite.findAll({
         where: {
@@ -100,7 +135,19 @@ const getById = async (id) => {
     return favorite;
 };
 
-// Obtener las IDs de los restaurantes favoritos de un usuario
+
+/**
+ * Obtiene un favorito mediante su identificador.
+ *
+ * Busca el favorito utilizando su clave primaria
+ * e incluye los datos del usuario y del restaurante asociados.
+ *
+ * Si el favorito no existe, devuelve null.
+ *
+ * @async
+ * @param {number} id - Identificador del favorito.
+ * @returns {Promise<Favorite|null>} Favorito encontrado o null si no existe.
+ */
 const getRestaurantIdsByUser = async (id_user) => {
 
     const favorites = await Favorite.findAll({
@@ -130,7 +177,20 @@ const update = async (id, data) => {
 
 
 // ------------------------ D (Delete)----------------------------
-//borrar un solo favorito
+/**
+ * Elimina un favorito concreto perteneciente a un usuario.
+ *
+ * Busca un registro que coincida tanto con el identificador
+ * del favorito como con el identificador del usuario.
+ *
+ * Si lo encuentra, elimina el registro mediante destroy.
+ * Si no existe, devuelve null.
+ *
+ * @async
+ * @param {number} id - Identificador del favorito que se quiere eliminar.
+ * @param {number} id_user - Identificador del usuario propietario del favorito.
+ * @returns {Promise<Favorite|null>} Favorito eliminado o null si no existe.
+ */
 const remove = async (id, id_user) => {
 
     const favorite = await Favorite.findOne({
@@ -149,7 +209,19 @@ const remove = async (id, id_user) => {
     return favorite;
 };
 
-//borrar todos los favoritos
+
+/**
+ * Elimina todos los favoritos asociados a un usuario.
+ *
+ * Utiliza el método destroy de Sequelize para eliminar
+ * todos los registros cuyo id_user coincida con el recibido.
+ *
+ * Devuelve el número de registros eliminados.
+ *
+ * @async
+ * @param {number} userId - Identificador del usuario.
+ * @returns {Promise<number>} Número de favoritos eliminados.
+ */
 const removeAllByUser = async (userId) => {
     const deletedFavs = await Favorite.destroy({
         where: {

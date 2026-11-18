@@ -5,7 +5,20 @@ import { throwError, NotFoundError } from "../utils/errors.js";
 // ------------------ CRUD de review ----------------------------
 
 // ------------------ C (Create)
-// endpoint para crear dato
+
+/**
+ * Crea una nueva reseña en la base de datos.
+ *
+ * Utiliza el método create de Sequelize para insertar
+ * un nuevo registro en el modelo Review.
+ *
+ * Si ocurre un error, lo procesa mediante throwError.
+ *
+ * @async
+ * @param {Object} data - Datos de la reseña que se quiere crear.
+ * @returns {Promise<Review>} Reseña creada.
+ * @throws {Error} Error procesado mediante throwError si falla la operación.
+ */
 const create = async (data) => {
     try {
         const review = await Review.create(data);
@@ -17,7 +30,19 @@ const create = async (data) => {
 };
 
 // ------------------ R (Read)---------------------------------------------
-// endpoint lista de todas las reseñas con sus usuarios 
+/**
+ * Obtiene todas las reseñas registradas en la base de datos.
+ *
+ * Utiliza findAll de Sequelize e incluye los datos
+ * del usuario asociado a cada reseña.
+ *
+ * De cada usuario recupera únicamente su nombre
+ * de usuario y dirección de correo electrónico.
+ *
+ * @async
+ * @returns {Promise<Review[]>} Lista de reseñas con sus usuarios asociados.
+ * @throws {Error} Error procesado mediante throwError si falla la consulta.
+ */
 const getAll = async () => {
     try {
         const reviews = await Review.findAll({
@@ -36,7 +61,21 @@ const getAll = async () => {
     }
 };
 
-// Obtener las reseñas de un restaurante concreto
+
+/**
+ * Obtiene todas las reseñas asociadas a un restaurante concreto.
+ *
+ * Filtra las reseñas mediante el identificador del restaurante.
+ * Incluye el nombre del usuario que ha publicado cada reseña.
+ *
+ * Los resultados se ordenan por fecha de creación,
+ * mostrando primero las reseñas más recientes.
+ *
+ * @async
+ * @param {number} id_restaurant - Identificador del restaurante.
+ * @returns {Promise<Review[]>} Lista de reseñas del restaurante, ordenadas de más reciente a más antigua.
+ * @throws {Error} Error procesado mediante throwError si falla la consulta.
+ */
 const getByRestaurantId = async (id_restaurant) => {
     try {
         const reviews = await Review.findAll({
@@ -59,7 +98,20 @@ const getByRestaurantId = async (id_restaurant) => {
     }
 };
 
-// endpoint dato individual
+/**
+ * Obtiene una reseña mediante su identificador.
+ *
+ * Busca la reseña utilizando su clave primaria
+ * e incluye el nombre y el email del usuario asociado.
+ *
+ * Si no existe una reseña con ese identificador,
+ * devuelve null.
+ *
+ * @async
+ * @param {number} id - Identificador de la reseña.
+ * @returns {Promise<Review|null>} Reseña encontrada o null si no existe.
+ * @throws {Error} Error procesado mediante throwError si falla la consulta.
+ */
 const getById = async (id) => {
     try {
         const review = await Review.findByPk(id, {
@@ -77,7 +129,25 @@ const getById = async (id) => {
 };
 
 // ---------------- U (Update) -----------------------------------
-// endpoint para cambiar dato por completo
+
+/**
+ * Actualiza completamente los datos de una reseña existente.
+ *
+ * Busca la reseña mediante su identificador y actualiza
+ * su título, puntuación y comentario.
+ *
+ * Guarda los cambios utilizando el método save de Sequelize.
+ * Si la reseña no existe, devuelve null.
+ *
+ * @async
+ * @param {number} id - Identificador de la reseña que se quiere actualizar.
+ * @param {Object} data - Datos para actualizar la reseña.
+ * @param {string} data.title - Nuevo título de la reseña.
+ * @param {number} data.rating - Nueva puntuación de la reseña.
+ * @param {string} data.comment - Nuevo comentario de la reseña.
+ * @returns {Promise<Review|null>} Reseña actualizada o null si no existe.
+ * @throws {Error} Error procesado mediante throwError si falla la operación.
+ */
 const update = async (id, data) => {
     try {
         const { title, rating, comment } = data;
@@ -96,7 +166,27 @@ const update = async (id, data) => {
         throwError(error);
     }
 }
-
+/**
+ * Modifica parcialmente los datos de una reseña existente.
+ *
+ * Busca la reseña mediante su identificador y modifica
+ * los campos proporcionados.
+ *
+ * Si no se proporciona un nuevo título, puntuación
+ * o comentario, conserva el valor anterior.
+ *
+ * Guarda los cambios mediante save de Sequelize.
+ * Si la reseña no existe, devuelve null.
+ *
+ * @async
+ * @param {number} id - Identificador de la reseña que se quiere modificar.
+ * @param {Object} data - Datos que se quieren modificar.
+ * @param {string} [data.title] - Nuevo título de la reseña.
+ * @param {number} [data.rating] - Nueva puntuación de la reseña.
+ * @param {string} [data.comment] - Nuevo comentario de la reseña.
+ * @returns {Promise<Review|null>} Reseña modificada o null si no existe.
+ * @throws {Error} Error procesado mediante throwError si falla la operación.
+ */
 const modify = async (id, data) => {
     try {
         const { title, rating, comment } = data;
@@ -116,6 +206,21 @@ const modify = async (id, data) => {
 }
 
 // ------------------------ D (Delete)------------
+
+/**
+ * Elimina una reseña de la base de datos.
+ *
+ * Busca la reseña mediante su identificador y,
+ * si existe, elimina su registro utilizando destroy de Sequelize.
+ *
+ * Si la reseña no existe, devuelve null.
+ *
+ * @async
+ * @param {number} id - Identificador de la reseña que se quiere eliminar.
+ * @returns {Promise<Review|null>} Reseña eliminada o null si no existe.
+ * @throws {Error} Error procesado mediante throwError si falla la eliminación.
+ */
+
 const remove = async (id) => {
     try {
         const review = await Review.findByPk(id);

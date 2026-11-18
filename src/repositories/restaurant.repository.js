@@ -1,12 +1,21 @@
 import { User, Favorite, Review, Restaurant } from "../models/models.js";
 import { Op, fn, col } from "sequelize";
 
-// ------------------ CRUD de usuarios ------------------
+// ------------------ CRUD de restaurantes ------------------
 
 
 // ------------------ C (Create) ------------------
 
-//crear un resturante
+/**
+ * Crea un nuevo restaurante en la base de datos.
+ *
+ * Utiliza el método create de Sequelize para insertar
+ * un nuevo registro en el modelo Restaurant.
+ *
+ * @async
+ * @param {Object} data - Datos del restaurante que se quiere crear.
+ * @returns {Promise<Restaurant>} Restaurante creado.
+ */
 const create = async (data) => {
 
     const restaurant = await Restaurant.create(data);
@@ -18,7 +27,15 @@ const create = async (data) => {
 
 // ------------------ R (Read) ------------------
 
-//obtener todos los restaurantes
+/**
+ * Obtiene todos los restaurantes registrados en la base de datos.
+ *
+ * Utiliza el método findAll de Sequelize para recuperar
+ * todos los registros del modelo Restaurant.
+ *
+ * @async
+ * @returns {Promise<Restaurant[]>} Lista de restaurantes registrados.
+ */
 const getAll = async () => {
 
     const restaurant = await Restaurant.findAll();
@@ -26,13 +43,33 @@ const getAll = async () => {
 };
 
 
-// Obtener un restaurante por su ID
+/**
+ * Obtiene un restaurante mediante su identificador.
+ *
+ * Busca el restaurante utilizando su clave primaria
+ * mediante el método findByPk de Sequelize.
+ *
+ * Si el restaurante no existe, devuelve null.
+ *
+ * @async
+ * @param {number} id - Identificador del restaurante.
+ * @returns {Promise<Restaurant|null>} Restaurante encontrado o null si no existe.
+ */
 const getById = async (id) => {
     const restaurant = await Restaurant.findByPk(id)
     return restaurant;
 };
 
-// Obtener restaurantes de una categoría concreta
+/**
+ * Obtiene todos los restaurantes pertenecientes a una categoría.
+ *
+ * Filtra los registros del modelo Restaurant mediante
+ * el campo id_category utilizando findAll de Sequelize.
+ *
+ * @async
+ * @param {number} id_category - Identificador de la categoría.
+ * @returns {Promise<Restaurant[]>} Lista de restaurantes asociados a la categoría.
+ */
 const getByCategoryId = async (id_category) => {
 
     const restaurants = await Restaurant.findAll({
@@ -45,7 +82,19 @@ const getByCategoryId = async (id_category) => {
 };
 
 
-// Buscar un restaurante por su nombre
+/**
+ * Busca un restaurante mediante su nombre.
+ *
+ * Utiliza el método findOne de Sequelize para localizar
+ * un restaurante cuyo campo name_restaurant coincida
+ * con el nombre proporcionado.
+ *
+ * Si no existe, devuelve null.
+ *
+ * @async
+ * @param {string} name_restaurant - Nombre del restaurante que se quiere buscar.
+ * @returns {Promise<Restaurant|null>} Restaurante encontrado o null si no existe.
+ */
 const getByRestaurant = async (name_restaurant) => {
     const restaurant = await Restaurant.findOne({
         where: {
@@ -55,7 +104,16 @@ const getByRestaurant = async (name_restaurant) => {
 
     return restaurant;
 };
-// Calcular la puntuación media de un restaurante
+/**
+ * Calcula la puntuación media de un restaurante a partir de sus reseñas.
+ *
+ * Utiliza la función AVG de Sequelize para calcular
+ * la media de las puntuaciones asociadas al restaurante.
+ *
+ * @async
+ * @param {number} id - Identificador del restaurante.
+ * @returns {Promise<string|null>} Puntuación media del restaurante o null si no tiene valoraciones.
+ */
 const getAverageRating = async (id) => {
 
     const result = await Review.findOne({
@@ -72,7 +130,24 @@ const getAverageRating = async (id) => {
 };
 // ------------------ U (Update) ------------------
 
-//Actualizar completamente un restaurante
+
+/**
+ * Actualiza completamente los datos de un restaurante existente.
+ *
+ * Busca el restaurante mediante su identificador y actualiza
+ * su nombre, dirección y categoría.
+ *
+ * Guarda los cambios mediante el método save de Sequelize.
+ * Si el restaurante no existe, devuelve null.
+ *
+ * @async
+ * @param {number} id - Identificador del restaurante que se quiere actualizar.
+ * @param {Object} data - Datos para actualizar el restaurante.
+ * @param {string} data.name_restaurant - Nuevo nombre del restaurante.
+ * @param {string} data.address - Nueva dirección del restaurante.
+ * @param {number} data.id_category - Identificador de la nueva categoría.
+ * @returns {Promise<Restaurant|null>} Restaurante actualizado o null si no existe.
+ */
 const update = async (id, data) => {
 
     const restaurant = await Restaurant.findByPk(id);
@@ -91,7 +166,29 @@ const update = async (id, data) => {
 
 
 
-// Modificar parcialmente un restaurante
+
+
+/**
+ * Modifica parcialmente los datos de un restaurante existente.
+ *
+ * Busca el restaurante mediante su identificador y modifica
+ * únicamente los campos que se hayan proporcionado.
+ *
+ * Comprueba si cada propiedad es diferente de undefined
+ * antes de actualizar su valor.
+ *
+ * Guarda los cambios mediante el método save de Sequelize.
+ * Si el restaurante no existe, devuelve null.
+ *
+ * @async
+ * @param {number} id - Identificador del restaurante que se quiere modificar.
+ * @param {Object} data - Datos que se quieren modificar.
+ * @param {string} [data.name_restaurant] - Nuevo nombre del restaurante.
+ * @param {string} [data.address] - Nueva dirección del restaurante.
+ * @param {number} [data.id_category] - Identificador de la nueva categoría.
+ * @returns {Promise<Restaurant|null>} Restaurante modificado o null si no existe.
+ */
+
 const modify = async (id, data) => {
     const restaurant = await Restaurant.findByPk(id);
 
@@ -119,7 +216,19 @@ const modify = async (id, data) => {
 
 // ------------------ D (Delete) ------------------
 
-// Eliminar un restaurante
+/**
+ * Elimina un restaurante de la base de datos.
+ *
+ * Busca el restaurante mediante su identificador y,
+ * si existe, elimina su registro utilizando
+ * el método destroy de Sequelize.
+ *
+ * Si el restaurante no existe, devuelve null.
+ *
+ * @async
+ * @param {number} id - Identificador del restaurante que se quiere eliminar.
+ * @returns {Promise<Restaurant|null>} Restaurante eliminado o null si no existe.
+ */
 const remove = async (id) => {
     const restaurant = await Restaurant.findByPk(id);
 
