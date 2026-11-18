@@ -2,9 +2,9 @@
 
 import User from './user.model.js';
 import Restaurant from './restaurant.model.js';
-// import Category from './category.model.js';
+import Category from './category.model.js';
 import Review from './review.model.js';
-// import Favorite from './favorite.model.js';
+import Favorite from './favorite.model.js';
 
 
 // ------------ CATEGORIES Y RESTAURANTS ----------
@@ -55,7 +55,7 @@ Review.belongsTo(Restaurant, { foreignKey: 'id_restaurant', as: 'restaurant' });
 export {
   User,
   Restaurant,
-  // Category,
+  Category,
   Review,
-  // Favorite
+  Favorite
 }

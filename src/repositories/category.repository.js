@@ -1,4 +1,6 @@
-import Category from "../models/models.js";
+import { Op } from "sequelize";
+
+import Category from "../models/category.model.js";
 
 
 // ------------------ CRUD de hero ----------------------------
@@ -23,7 +25,22 @@ const getAll = async () => {
 // endpoint dato individual
 const getById = async (id) => {
     const category = await Category.findByPk(id);
-    return hero;
+    return category;
+};
+
+//buscar por nombre
+const findName = async (name_category) => {
+    if (typeof name_category !== "string" || !name_category.trim()) {
+        return null;
+    }
+
+    const existName = await Category.findOne({
+        where: {
+            name_category: name_category.trim()
+        }
+    });
+
+    return existName;
 };
 
 
@@ -70,6 +87,7 @@ export default {
     create,
     getAll,
     getById,
+    findName,
     update,
     modify,
     remove

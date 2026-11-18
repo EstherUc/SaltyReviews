@@ -5,33 +5,44 @@ import categoriesRepo from '../../repositories/category.repository.js';
 
 // ------------------ C (Create) -----------------------------------
 
-const create = (req, res) => {
-    const id = categoriesRepo[categoriesRepo.length - 1].id + 1
-    const { id_category, name_category } = req.body;
-    const category = {
-        id_category,
-        name_category
-    }
-    reviews.push(category)
-    res.redirect("/category/" + id)
+const createForm = (req, res) => {
+    res.render("category/create");
 }
 
-const createForm = (req, res) => {
-    const categoryId = 1 // después vendrá del middleware
-    res.render("category/create", { category_id: categoryId });
+const create = async (req, res) => {
+
+    const { name_category } = req.body;
+
+    const existCat = await categoriesRepo.findName(name_category); //comprobamos si la categoria ya está registrada
+
+    if (existCat) {
+        return res.status(409).send("Ya existe una categoria con ese nombre"); // HTTP 409 - Conflicto - Intento de crear un recurso duplicado    
+    }
+
+    const category = await categoriesRepo.create({
+        name_category
+    });
+    res.redirect("/category/" + category.id_category)
 }
+
 
 
 // ------------------ R (Read)---------------------------------------------
 
-const getAll = async(req, res) => {
+const getAll = async (req, res) => {
     const categories = await categoriesRepo.getAll();
     res.render("category/list", { categories })
 };
 
-const getById = (req, res) => {
+const getById = async (req, res) => {
+
     const id = parseInt(req.params.id);
-    const caterogy = categoriesRepo.find(u => u.id === id)
+    const category = await categoriesRepo.getById(id)
+
+    if (!category) {
+        return res.status(404).send("Categoria no encontrada");
+    }
+
     res.render("category/show", { category })
 };
 
@@ -39,31 +50,54 @@ const getById = (req, res) => {
 // ---------------- U (Update) -------------------------------------------
 // endpoint para cambiar dato por completo
 
-const update = (req, res) => {
-    const { id_category, name_category } = req.body;
-    const id = req.params.id;
-    const category = categoriesRepo.find(u => u.id === id)
-    category.id_category = id_category;
-    category.name_category = name_category;
-    res.redirect("/category/" + category.id);
+const update = async (req, res) => {
+
+    const id = parseInt(req.params.id);
+    const category = await categoriesRepo.getById(id)
+
+    if (!category) {
+        return res.status(404).send("Categoria no encontrada");
+    }
+
+    const existCategory = await categoriesRepo.findName(name_category);
+
+    if (existCategory) {
+        return res.status(409).send("La categoria ya existe"); // HTTP 409 - Conflicto - Intento de crear un recurso duplicado    
+    }
+
+    let catUpdate;
+    catUpdate = await categoriesRepo.update(id, category);
+
+    if (catUpdate) {
+        res.redirect("/category/" + catUpdate.id_category);
+    } else {
+        res.redirect("/category");
+    }
 }
 
-const updateForm = (req, res) => {
+const updateForm = async (req, res) => {
     const id = req.params.id;
-    const category = categoriesRepo.find(u => u.id === id)
+    const category = await categoriesRepo.getById(id)
+
+    if (!category) {
+        return res.status(404).send("Categoria no encontrada");
+    }
+
     res.render("category/update", { category })
 }
 
 
 // ------------------------ D (Delete)----------------------------------
 
-const remove = (req, res) => {
+const remove = async (req, res) => {
     const id = parseInt(req.params.id);
-    const index = categoriesRepo.findIndex(u => u.id === id);
-    let category;
-    if (index > -1) {
-        category = categoriesRepo.splice(index, 1);
+    const category = await categoriesRepo.remove(id); //eliminamos
+
+    //si existe usuario es que lo ha borrado y existía en bd
+    if (!category) {
+        return res.status(404).send("Categoria no encontrada");
     }
+
     res.redirect("/category");
 }
 
