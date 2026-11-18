@@ -1,93 +1,105 @@
 <%- include('../layout/header', { title: restaurant ? restaurant.name_restaurant : 'Restaurante no encontrado' }); -%>
 
-    <% if (restaurant) { %>
+    <main>
 
-        <h1>
-            <%= restaurant.name_restaurant %>
-        </h1>
 
-        <section>
-            <h3>Información del restaurante</h3>
+        <% if (restaurant) { %>
 
-            <p>Nombre: <%= restaurant.name_restaurant %>
-            </p>
-            <p>Dirección: <%= restaurant.address %>
-            </p>
-            <p>Categoría: <%= restaurant.id_category %>
-            </p>
-        </section>
+            <h1>
+                <%= restaurant.name_restaurant %>
+            </h1>
 
-        <% if (authUser && authUser.rol==="admin" ) { %>
+            <!-- Mensajes de confirmación -->
+            <% if (query.message) { %>
+                <p class="success">
+                    <%= query.message %>
+                </p>
+                <% } %>
 
-            <section class="admin-actions">
+                    <section>
+                        <h3>Información del restaurante</h3>
 
-                <h3>Administrar restaurante</h3>
+                        <p>Nombre: <%= restaurant.name_restaurant %>
+                        </p>
+                        <p>Dirección: <%= restaurant.address %>
+                        </p>
+                        <p>Categoría: <%= restaurant.id_category %>
+                        </p>
+                    </section>
 
-                <!-- EDITAR -->
-                <a href="/restaurant/<%= restaurant.id_restaurant %>/update">
-                    ✏️ Editar restaurante
-                </a>
+                    <% if (authUser && authUser.rol==="admin" ) { %>
 
-                <!-- ELIMINAR -->
-                <form action="/restaurant/<%= restaurant.id_restaurant %>/delete" method="POST">
-                    <button type="submit">
-                        🗑️ Eliminar restaurante
-                    </button>
-                </form>
+                        <section class="admin-actions">
 
-            </section>
+                            <h3>Administrar restaurante</h3>
 
-            <% } %>
+                            <!-- EDITAR -->
+                            <a href="/restaurant/<%= restaurant.id_restaurant %>/update">
+                                ✏️ Editar restaurante
+                            </a>
 
-                <!-- FORMULARIO DE RESEÑAS -->
-                <section class="create-review">
+                            <!-- ELIMINAR -->
+                            <form action="/restaurant/<%= restaurant.id_restaurant %>/delete" method="POST">
+                                <button type="submit">
+                                    🗑️ Eliminar restaurante
+                                </button>
+                            </form>
 
-                    <% if (authUser) { %>
+                        </section>
 
-                        <%- include('../review/create', { restaurant }) -%>
+                        <% } %>
 
+                            <!-- FORMULARIO DE RESEÑAS -->
+                            <section class="create-review">
+
+                                <% if (authUser) { %>
+
+                                    <%- include('../review/create', { restaurant }) -%>
+
+                                        <% } else { %>
+
+                                            <p>
+                                                Debes iniciar sesión para escribir una reseña.
+                                            </p>
+
+                                            <a href="/auth/login">
+                                                Iniciar sesión
+                                            </a>
+
+                                            <% } %>
+
+                            </section>
+
+                            <!-- RESEÑAS DEL RESTAURANTE -->
+                            <section class="restaurant-reviews">
+
+                                <h2>Reseñas de <%= restaurant.name_restaurant %>
+                                </h2>
+
+                                <% if (reviews.length===0) { %>
+
+                                    <p>
+                                        Este restaurante todavía no tiene reseñas.
+                                        ¡Sé el primero en valorarlo!
+                                    </p>
+
+                                    <% } else { %>
+
+                                        <% for (const review of reviews) { %>
+
+                                            <%- include('../review/reviewCard', { review }) -%>
+
+                                                <% } %>
+
+                                                    <% } %>
+
+                            </section>
                             <% } else { %>
-
-                                <p>
-                                    Debes iniciar sesión para escribir una reseña.
-                                </p>
-
-                                <a href="/auth/login">
-                                    Iniciar sesión
-                                </a>
-
+                                <p>No existe el restaurante</p>
                                 <% } %>
 
-                </section>
+                                    <a href="/restaurant">Volver</a>
 
-                <!-- RESEÑAS DEL RESTAURANTE -->
-                <section class="restaurant-reviews">
+    </main>
 
-                    <h2>Reseñas de <%= restaurant.name_restaurant %>
-                    </h2>
-
-                    <% if (reviews.length===0) { %>
-
-                        <p>
-                            Este restaurante todavía no tiene reseñas.
-                            ¡Sé el primero en valorarlo!
-                        </p>
-
-                        <% } else { %>
-
-                            <% for (const review of reviews) { %>
-
-                                <%- include('../review/reviewCard', { review }) -%>
-
-                                    <% } %>
-
-                                        <% } %>
-
-                </section>
-                <% } else { %>
-                    <p>No existe el restaurante</p>
-                    <% } %>
-
-                        <a href="/restaurant">Volver</a>
-
-                        <%- include('../layout/footer'); -%>
+    <%- include('../layout/footer'); -%>

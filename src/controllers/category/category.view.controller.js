@@ -11,18 +11,27 @@ const createForm = (req, res) => {
 
 const create = async (req, res) => {
 
-    const { name_category } = req.body;
+    try {
 
-    const existCat = await categoriesRepo.findName(name_category); //comprobamos si la categoria ya está registrada
+        const { name_category } = req.body;
+        const formData = name_category;
 
-    if (existCat) {
-        return res.status(409).send("Ya existe una categoria con ese nombre"); // HTTP 409 - Conflicto - Intento de crear un recurso duplicado    
+        const normalizedName = name_category.trim().toLowerCase();
+
+        const existCat = await categoriesRepo.findName(normalizedName); //comprobamos si la categoria ya está registrada
+
+        if (existCat) {
+            return res.status(400).render("category/create", { category: formData, error: "Ya existe una categoría con ese nombre" });
+        }
+        const category = await categoriesRepo.create({
+            name_category
+        });
+        res.redirect("/category/" + category.id_category)
+
+    } catch (error) {
+        console.error(error);
+        res.status(error.status || 500).render("category/create", { category: FormData, error: error.message });
     }
-
-    const category = await categoriesRepo.create({
-        name_category
-    });
-    res.redirect("/category/" + category.id_category)
 }
 
 
@@ -30,20 +39,35 @@ const create = async (req, res) => {
 // ------------------ R (Read)---------------------------------------------
 
 const getAll = async (req, res) => {
-    const categories = await categoriesRepo.getAll();
-    res.render("category/list", { categories })
+
+    try {
+
+        const categories = await categoriesRepo.getAll();
+        res.render("category/list", { categories })
+
+    } catch (error) {
+        console.error(error);
+        res.status(error.status || 500).render("category/list", { categories: [], error: error.message });
+    }
 };
 
 const getById = async (req, res) => {
 
-    const id = parseInt(req.params.id);
-    const category = await categoriesRepo.getById(id)
+    try {
 
-    if (!category) {
-        return res.status(404).send("Categoria no encontrada");
+        const id = parseInt(req.params.id);
+        const category = await categoriesRepo.getById(id)
+
+        if (!category) {
+            return res.status(404).send("Categoria no encontrada");
+        }
+
+        res.render("category/show", { category })
+
+    } catch (error) {
+        console.error(error);
+        res.status(error.status || 500).render("category/show", { category: null, error: error.message });
     }
-
-    res.render("category/show", { category })
 };
 
 
@@ -76,29 +100,43 @@ const update = async (req, res) => {
 }
 
 const updateForm = async (req, res) => {
-    const id = req.params.id;
-    const category = await categoriesRepo.getById(id)
 
-    if (!category) {
-        return res.status(404).send("Categoria no encontrada");
+    try {
+
+        const id = req.params.id;
+        const category = await categoriesRepo.getById(id)
+
+        if (!category) {
+            return res.status(404).send("Categoria no encontrada");
+        }
+
+        res.render("category/update", { category })
+
+    } catch (error) {
+        console.error(error);
+        res.status(error.status || 500).render("category/show", { category: null, error: error.message });
     }
-
-    res.render("category/update", { category })
 }
 
 
 // ------------------------ D (Delete)----------------------------------
 
 const remove = async (req, res) => {
-    const id = parseInt(req.params.id);
-    const category = await categoriesRepo.remove(id); //eliminamos
 
-    //si existe usuario es que lo ha borrado y existía en bd
-    if (!category) {
-        return res.status(404).send("Categoria no encontrada");
+    try {
+
+        const id = parseInt(req.params.id);
+        await categoriesRepo.remove(id); //eliminamos
+
+        res.redirect("/category?message=Categoria+eliminada+correctamente");
+
+    } catch (error) {
+        console.error(error);
+
+        const categories = await categoriesRepo.getAll();
+
+        res.status(error.status || 500).render("category/list", { categories: categories, error: error.message });
     }
-
-    res.redirect("/category");
 }
 
 export default {
