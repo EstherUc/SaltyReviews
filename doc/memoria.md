@@ -1,85 +1,85 @@
-Memoria de SaltyReviews
+# Memoria de desarrollo del proyecto
 
+## 1. Estructura inicial
 
-1. Estructura inicial
 
 Lo primero fue preparar la estructura inicial del proyecto y dejar listo el entorno para poder empezar a trabajar.
 
-Creamos los primeros archivos del proyecto.
-Preparamos los esquemas de la base de datos.
-Añadimos los scripts necesarios para crear las tablas y cargar datos de prueba.
-Instalamos y configuramos las dependencias.
-Dejamos Docker preparado para poder ejecutar el proyecto.
+- Creamos los primeros archivos del proyecto.
+- Preparamos los esquemas de la base de datos.
+- Añadimos los scripts necesarios para crear las tablas y cargar datos de prueba.
+- Instalamos y configuramos las dependencias.
+- Dejamos Docker preparado para poder ejecutar el proyecto.
 
 En este punto todavía no teníamos desarrolladas las funcionalidades, simplemente estábamos preparando todo lo necesario para empezar.
 
+## 2. Routers y navegación
 
-2. Routers y navegación
 
 Una vez preparada la estructura inicial, empezamos a organizar cómo íbamos a gestionar las diferentes partes de la aplicación.
 
-Preparamos el archivo index.js.
-Corregimos los datos de prueba, añadiendo el campo title a las reviews.
-Creamos el router principal.
-Separamos las rutas de las API y las rutas de las vistas.
-Empezamos a rellenar los archivos de los diferentes módulos.
+- Preparamos el archivo `index.js`.
+- Corregimos los datos de prueba, añadiendo el campo `title` a las reviews.
+- Creamos el router principal.
+- Separamos las rutas de las API y las rutas de las vistas.
+- Empezamos a rellenar los archivos de los diferentes módulos.
 
 La idea era tener separado lo que iba a devolver datos (API) de lo que iba a mostrar las páginas de la aplicación (vistas).
 
+## 3. CRUD de usuarios
 
-3. CRUD de usuarios
 
 Una de las primeras funcionalidades que empezamos a desarrollar fue la gestión de usuarios.
 
 Fuimos implementando poco a poco las operaciones CRUD, tanto para la API como para las vistas:
 
-Crear usuarios.
-Consultar usuarios.
-Modificar usuarios.
-Eliminar usuarios.
+- Crear usuarios.
+- Consultar usuarios.
+- Modificar usuarios.
+- Eliminar usuarios.
 
 Durante esta parte también tuvimos que corregir algunos problemas de enrutamiento y resolver conflictos al integrar los cambios de las diferentes ramas.
 
+## 4. CRUD de reviews
 
-4. CRUD de reviews
 
 Después empezamos con la parte de las reviews.
 
 Creamos los archivos necesarios para poder trabajar con ellas:
 
-Vistas.
-Controladores.
-API.
-Rutas.
+- Vistas.
+- Controladores.
+- API.
+- Rutas.
 
 En un primer momento implementamos la creación y eliminación de reviews.
 
 Más adelante fuimos ampliando esta parte para poder relacionar las reseñas con los usuarios que las escribían.
 
+## 5. Modelos y base de datos
 
-5. Modelos y base de datos
 
 A medida que el proyecto iba creciendo, vimos que necesitábamos organizar mejor los archivos comunes y la forma de trabajar con la base de datos.
 
 Creamos la estructura de carpetas y archivos para:
 
-repositories.
-models.
-config.
+- `repositories`.
+- `models`.
+- `config`.
 
 También empezamos a modificar las tablas y relaciones de la base de datos.
 
 Entre otras cosas:
 
-Modificamos la tabla Users.
-Creamos user.model.js.
-Corregimos algunos problemas con el esquema de la base de datos.
-Arreglamos la relación Category.hasMany - Restaurant.
+- Modificamos la tabla `Users`.
+- Creamos `user.model.js`.
+- Corregimos algunos problemas con el esquema de la base de datos.
+- Arreglamos la relación `Category.hasMany - Restaurant`.
 
 Esta parte nos sirvió para dejar una estructura más organizada y poder trabajar mejor con Sequelize.
 
+## 6. Integración de usuarios y reviews
 
-6. Integración de usuarios y reviews
 
 Seguimos avanzando con los usuarios y las reviews.
 
@@ -87,18 +87,18 @@ En esta fase empezamos a adaptar los controladores para trabajar con Sequelize e
 
 Los cambios principales fueron:
 
-Creamos user.repository.
-Reconstruimos user.api.controller utilizando Sequelize.
-Adaptamos user.view.controller.
-Hicimos algunos retoques en las vistas EJS.
-Creamos el repositorio de reviews.
-Arreglamos los controladores de reviews.
-Realizamos algunos cambios en la base de datos.
+- Creamos `user.repository`.
+- Reconstruimos `user.api.controller` utilizando Sequelize.
+- Adaptamos `user.view.controller`.
+- Hicimos algunos retoques en las vistas EJS.
+- Creamos el repositorio de reviews.
+- Arreglamos los controladores de reviews.
+- Realizamos algunos cambios en la base de datos.
 
 También empezamos a conectar mejor las reviews con los usuarios, para que cada reseña estuviese relacionada con la persona que la había publicado.
 
+## 7. Vistas e imports
 
-7. Vistas e imports
 
 Una vez que teníamos más avanzada la parte de usuarios y reviews, empezamos a probar cómo funcionaban ambas partes juntas.
 
@@ -108,8 +108,8 @@ También corregimos algunos imports y problemas que estaban dando las API.
 
 Fue una fase más centrada en arreglar cosas y conseguir que lo que habíamos desarrollado hasta entonces funcionase correctamente.
 
+## 8. Middlewares y header
 
-8. Middlewares y header
 
 Empezamos a trabajar en los middlewares y en algunos aspectos de la navegación.
 
@@ -117,8 +117,8 @@ También incorporamos enlaces dinámicos en el header, para que la navegación s
 
 Esto nos serviría más adelante para poder mostrar diferentes opciones dependiendo de si el usuario había iniciado sesión o no.
 
+## 9. Autenticación y permisos
 
-9. Autenticación y permisos
 
 En esta parte empezamos a implementar la autenticación.
 
@@ -130,23 +130,23 @@ Esto era importante porque no queríamos que cualquier usuario pudiese realizar 
 
 Más adelante fuimos ampliando esta parte para diferenciar los permisos de usuarios normales y administradores.
 
+## 10. Sistema de favoritos
 
-10. Sistema de favoritos
 
 Esta parte tuvo un cambio importante respecto a lo que habíamos pensado inicialmente.
 
-La primera idea
+### La primera idea
 
-Al principio habíamos pensado en añadir un campo booleano llamado quieroVisitar en la tabla de restaurantes.
+Al principio habíamos pensado en añadir un campo booleano llamado `quieroVisitar` en la tabla de restaurantes.
 
 La idea era bastante sencilla:
 
-Si el campo tenía un 0, el restaurante no estaba marcado como favorito.
-Si tenía un 1, el restaurante estaba marcado como favorito.
+- Si el campo tenía un `0`, el restaurante no estaba marcado como favorito.
+- Si tenía un `1`, el restaurante estaba marcado como favorito.
 
 Así, el botón de favoritos aparecería vacío o relleno dependiendo del valor de ese campo.
 
-Por qué cambiamos de idea
+### Por qué cambiamos de idea
 
 Cuando empezamos a pensar cómo funcionaría realmente, nos dimos cuenta de que esta solución se nos quedaba corta.
 
@@ -156,7 +156,7 @@ Por ejemplo, un restaurante puede ser favorito para una persona y no serlo para 
 
 Por eso decidimos cambiar el planteamiento.
 
-Cómo lo hicimos finalmente
+### Cómo lo hicimos finalmente
 
 En lugar de utilizar un campo booleano, creamos una relación entre usuarios y restaurantes mediante una tabla de favoritos.
 
@@ -164,40 +164,40 @@ De esta manera, cada registro representa que un usuario concreto ha guardado un 
 
 Así conseguimos que:
 
-Un usuario pueda tener muchos restaurantes favoritos.
-Un restaurante pueda ser favorito para muchos usuarios.
-Cada usuario gestione sus favoritos de manera independiente.
+- Un usuario pueda tener muchos restaurantes favoritos.
+- Un restaurante pueda ser favorito para muchos usuarios.
+- Cada usuario gestione sus favoritos de manera independiente.
 
 También desarrollamos las operaciones necesarias para añadir y eliminar favoritos, tanto en la API como en las vistas.
 
-Cómo funciona ahora el botón
+### Cómo funciona ahora el botón
 
 El botón ya no depende de un campo booleano del restaurante, sino de si existe una relación entre el usuario que ha iniciado sesión y ese restaurante.
 
-Si existe esa relación, el botón aparece relleno.
-Si no existe, aparece vacío.
-Al pulsarlo, se añade o elimina el favorito correspondiente.
+- Si existe esa relación, el botón aparece relleno.
+- Si no existe, aparece vacío.
+- Al pulsarlo, se añade o elimina el favorito correspondiente.
 
-También creamos la carpeta favorites dentro de views y fuimos integrando esta funcionalidad con usuarios y reviews.
+También creamos la carpeta `favorites` dentro de `views` y fuimos integrando esta funcionalidad con usuarios y reviews.
 
 Creo que este cambio fue importante porque nos permitió plantear los favoritos de una forma mucho más lógica y evitar una estructura que nos habría dado problemas más adelante.
 
+## 11. Redirecciones a Home
 
-11. Redirecciones a Home
 
 Seguimos haciendo pequeños ajustes en la navegación de la aplicación.
 
 En este caso, trabajamos en las redirecciones hacia Home para conseguir que el usuario volviese a la página principal cuando correspondiese.
 
+## 12. Header y footer de favoritos
 
-12. Header y footer de favoritos
 
 Aprovechamos para mejorar un poco la parte visual de favoritos.
 
-Añadimos el header y el footer a favorite/list.ejs, ya que queríamos mantener la misma estructura que en el resto de páginas de la aplicación.
+Añadimos el header y el footer a `favorite/list.ejs`, ya que queríamos mantener la misma estructura que en el resto de páginas de la aplicación.
 
+## 13. CRUD de categorías
 
-13. CRUD de categorías
 
 Después seguimos con la parte de categorías.
 
@@ -207,15 +207,16 @@ Al principio quedaron algunos errores pendientes, así que fuimos haciendo corre
 
 Entre los cambios realizados:
 
-Añadimos las vistas de categorías.
-Corregimos errores que habían aparecido durante su desarrollo.
-Arreglamos la creación de categorías.
-Hicimos diferentes ajustes hasta conseguir que funcionase correctamente.
+- Añadimos las vistas de categorías.
+- Corregimos errores que habían aparecido durante su desarrollo.
+- Arreglamos la creación de categorías.
+- Hicimos diferentes ajustes hasta conseguir que funcionase correctamente.
 
 Finalmente conseguimos dejar la parte de categorías funcionando.
 
+## 14. Permisos de categorías y reviews
 
-14. Permisos de categorías y reviews
+**Commits:** `25f509f` → `9170f86` → `8dc3e69`
 
 Una vez que teníamos la autenticación más avanzada, seguimos trabajando en los permisos.
 
@@ -223,32 +224,35 @@ Fuimos añadiendo restricciones para controlar mejor las acciones que podía rea
 
 En concreto:
 
-Añadimos control de permisos para el botón de eliminar.
-Incorporamos permisos específicos para categorías.
-Añadimos permisos para reviews.
-Diferenciamos los permisos de usuarios normales y administradores.
+- Añadimos control de permisos para el botón de eliminar.
+- Incorporamos permisos específicos para categorías.
+- Añadimos permisos para reviews.
+- Diferenciamos los permisos de usuarios normales y administradores.
 
 Con esto conseguimos que determinadas acciones estuviesen restringidas dependiendo del tipo de usuario y sus permisos.
 
+## 15. Estado actual
 
-15. Estado actual
 
-Finalmente integramos los últimos cambios de la rama auth, dejando incorporadas las mejoras de autenticación y permisos.
+Finalmente integramos los últimos cambios de la rama `auth`, dejando incorporadas las mejoras de autenticación y permisos.
 
 A estas alturas, el proyecto ya cuenta con bastantes funcionalidades desarrolladas:
 
-Gestión de usuarios (CRUD).
-Sistema de reviews.
-Autenticación de usuarios.
-Control de permisos.
-Sistema de favoritos.
-Gestión de categorías.
-Relaciones entre usuarios, restaurantes y favoritos.
-Vistas EJS.
-API y rutas.
-Navegación mediante header y footer.
-Base de datos gestionada con Sequelize.
-Cambios de planteamiento
+- Gestión de usuarios (CRUD).
+- Sistema de reviews.
+- Autenticación de usuarios.
+- Control de permisos.
+- Sistema de favoritos.
+- Gestión de categorías.
+- Relaciones entre usuarios, restaurantes y favoritos.
+- Vistas EJS.
+- API y rutas.
+- Navegación mediante header y footer.
+- Base de datos gestionada con Sequelize.
+
+---
+
+## Cambios de planteamiento
 
 Mirando un poco hacia atrás, el proyecto ha ido cambiando bastante desde la idea inicial.
 
