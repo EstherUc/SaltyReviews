@@ -1,12 +1,23 @@
 <%- include('../layout/header'); -%>
 
-<main>
-    <h2> Reviews:</h2>
-    <%- include('create') -%>
-    <% for (review of reviews) {%>
-        <%- include('reviewCard') -%>
-    <% } %>
+    <main>
 
-</main>
+        <h1>Administrar reseñas</h1>
 
-<%- include('../layout/footer'); -%>
+        <% if (reviews.length===0) { %>
+
+            <p>No hay reseñas registradas.</p>
+
+            <% } else { %>
+
+                <% for (const review of reviews) { %>
+
+                    <%- include('reviewCard', { review }) -%>
+
+                        <% } %>
+
+                            <% } %>
+
+    </main>
+
+    <%- include('../layout/footer'); -%>

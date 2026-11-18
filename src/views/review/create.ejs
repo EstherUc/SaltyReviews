@@ -1,13 +1,30 @@
-<h2> Nueva review:</h2>
-<form action="/review" method="post">
-    <label for="title">Título</label>
-    <input type="text" name="title" id="title">
+<h2>Escribir una reseña</h2>
 
-    <label for="rating">Puntuación</label>
-    <input type="number" name="rating" id="rating" min="1" max="5">
+<form action="/review" method="POST">
 
-    <label for="comment">Comentarios</label>
-    <textarea  id="comment" name="comment" required></textarea>  
+    <!-- Restaurante al que pertenece la reseña -->
+    <input type="hidden" name="id_restaurant" value="<%= restaurant.id_restaurant %>">
 
-    <button>Publicar</button>
+    <div>
+        <label for="title">Título</label>
+
+        <input type="text" name="title" id="title" maxlength="100" required>
+    </div>
+
+    <div>
+        <label for="rating">Puntuación</label>
+
+        <input type="number" name="rating" id="rating" min="1" max="5" required>
+    </div>
+
+    <div>
+        <label for="comment">Comentario</label>
+
+        <textarea id="comment" name="comment" required></textarea>
+    </div>
+
+    <button type="submit">
+        Publicar reseña
+    </button>
+
 </form>

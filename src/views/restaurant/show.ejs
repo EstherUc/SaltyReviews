@@ -39,6 +39,51 @@
 
             <% } %>
 
+                <!-- FORMULARIO DE RESEÑAS -->
+                <section class="create-review">
+
+                    <% if (authUser) { %>
+
+                        <%- include('../review/create', { restaurant }) -%>
+
+                            <% } else { %>
+
+                                <p>
+                                    Debes iniciar sesión para escribir una reseña.
+                                </p>
+
+                                <a href="/auth/login">
+                                    Iniciar sesión
+                                </a>
+
+                                <% } %>
+
+                </section>
+
+                <!-- RESEÑAS DEL RESTAURANTE -->
+                <section class="restaurant-reviews">
+
+                    <h2>Reseñas de <%= restaurant.name_restaurant %>
+                    </h2>
+
+                    <% if (reviews.length===0) { %>
+
+                        <p>
+                            Este restaurante todavía no tiene reseñas.
+                            ¡Sé el primero en valorarlo!
+                        </p>
+
+                        <% } else { %>
+
+                            <% for (const review of reviews) { %>
+
+                                <%- include('../review/reviewCard', { review }) -%>
+
+                                    <% } %>
+
+                                        <% } %>
+
+                </section>
                 <% } else { %>
                     <p>No existe el restaurante</p>
                     <% } %>
