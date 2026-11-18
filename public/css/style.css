@@ -912,19 +912,11 @@ main > form[action*="delete-all"] {
 /* 17. Botones generales
    --------------------------------------------------------- */
 
-.btn,
-.btn-primary,
-button,
-input[type="submit"] {
-    background: var(--color-mustard);
-    color: var(--color-text);
-    border: 1px solid var(--color-mustard);
-    font-weight: 700;
-}
+
 
 .btn:hover,
-.btn-primary:hover,
-button:hover,
+.btn-primary,
+button,
 input[type="submit"]:hover {
     background: #D9A307;
     border-color: #D9A307;
@@ -1035,4 +1027,9 @@ button.btn-danger:hover {
 
 #ver-restaurant-btn:hover {
     color: #A17A00;
+}
+
+#back-btn{
+   display: flex;
+   justify-content: flex-end;
 }
