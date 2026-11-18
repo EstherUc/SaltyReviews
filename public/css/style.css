@@ -1,0 +1,153 @@
+/* ========================================
+   2. ESTILOS GENERALES
+======================================== */
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background-color: var(--color-background);
+    color: var(--color-text);
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 16px;
+    line-height: 1.6;
+}
+
+a {
+    color: inherit;
+    text-decoration: none;
+}
+
+button,
+input,
+textarea {
+    font: inherit;
+}
+
+button {
+    cursor: pointer;
+}
+
+img {
+    max-width: 100%;
+    display: block;
+}
+
+
+
+main {
+    width: 90%;
+    max-width: 1200px;
+    margin: 50px auto;
+    min-height: 55vh;
+}
+
+main section {
+    margin-bottom: 36px;
+}
+
+
+/* ========================================
+   1. NAVBAR
+======================================== */
+
+.site-header {
+    background-color: var(--color-green);
+    color: var(--color-white);
+    width: 100%;
+    
+  
+}
+
+.navbar {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 20px 5%;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 30px;
+}
+
+/* LOGOTIPO */
+
+.navbar-logo {
+    font-size: 26px;
+    font-weight: 700;
+   
+}
+
+.navbar-logo span {
+    color: var(--color-mustard);
+}
+
+/* ENLACES */
+
+.navbar-links {
+    display: flex;
+    align-items: center;
+    gap: 28px;
+    list-style: none;
+}
+
+.navbar-links a {
+    font-size: 14px;
+    font-weight: 500;
+    transition: opacity 0.2s ease;
+}
+
+.navbar-links a:hover {
+    opacity: 0.7;
+}
+
+/* BOTÓN CERRAR SESIÓN */
+
+.navbar-logout {
+    background: transparent;
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    border-radius: 8px;
+    padding: 8px 14px;
+    color: var(--color-white);
+    font-size: 14px;
+    transition: background-color 0.2s ease;
+}
+
+.navbar-logout:hover {
+    background-color: rgba(255, 255, 255, 0.12);
+}
+
+
+/* ========================================
+   1,2. RESPONSIVE - NAVBAR
+======================================== */
+
+@media (max-width: 768px) {
+
+    .navbar {
+        flex-direction: column;
+        gap: 18px;
+    }
+
+    .navbar-links {
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 15px 20px;
+    }
+
+}
+/* ========================================
+   2. FOOTER
+======================================== */
+
+.site-footer {
+    margin-top: 80px;
+    padding: 30px 5%;
+    border-top: 1px solid var(--color-border);
+    text-align: center;
+    color: var(--color-text-light);
+    font-size: 13px;
+}
