@@ -1,10 +1,24 @@
 <%- include('../layout/header'); -%>
-<% if(review){%>
-    <%- include('reviewCard',{review}) -%>
+    <% if(review){%>
+        <%- include('reviewCard',{review}) -%>
 
-<%}else{ %>
-    <p>No existe la reseña</p>
-<%}%>
+            <%}else{ %>
+                <p>No existe la reseña</p>
+                <%}%>
 
-    <a href="/review">Volver</a>
-<%- include('../layout/footer'); -%>
+                    <% if (review) { %>
+
+                        <a href="/restaurant/<%= review.id_restaurant %>">
+                            Volver al restaurante
+                        </a>
+
+                        <% if (authUser && authUser.rol==="admin" ) { %>
+
+                            <a href="/review">
+                                Volver al panel de reseñas
+                            </a>
+
+                            <% } %>
+
+                                <% } %>
+                                    <%- include('../layout/footer'); -%>
