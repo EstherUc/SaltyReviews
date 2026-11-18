@@ -1,9 +1,12 @@
 <%- include('../layout/header'); -%>
 
-<h2> Reviews:</h2>
-<%- include('create') -%>
-<% for (review of reviews) {%>
-    <%- include('reviewCard') -%>
-<% } %>
+<main>
+    <h2> Reviews:</h2>
+    <%- include('create') -%>
+    <% for (review of reviews) {%>
+        <%- include('reviewCard') -%>
+    <% } %>
+
+</main>
 
 <%- include('../layout/footer'); -%>

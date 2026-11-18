@@ -1,5 +1,5 @@
 /* ========================================
-   2. ESTILOS GENERALES
+   1. ESTILOS GENERALES
 ======================================== */
 
 * {
@@ -51,7 +51,7 @@ main section {
 
 
 /* ========================================
-   1. NAVBAR
+   2. NAVBAR
 ======================================== */
 
 .site-header {
@@ -140,7 +140,7 @@ main section {
 
 }
 /* ========================================
-   2. FOOTER
+   3. FOOTER
 ======================================== */
 
 .site-footer {
@@ -154,7 +154,7 @@ main section {
 
 
 /* ========================================
-   3. BOTONES
+   4. BOTONES
 ======================================== */
 
 button,
@@ -301,9 +301,7 @@ form button {
     font-weight: 700;
 }
 
-/* ========================================
-   RESEÑAS DEL PERFIL
-======================================== */
+/*  RESEÑAS DEL PERFIL  */
 
 .profile-review {
     background-color: var(--color-white);
@@ -383,4 +381,62 @@ form button {
 .card-right p {
     color: var(--color-text-light);
     font-size: 14px;
+}
+
+/* ========================================
+   8. USUARIOS Y CATEGORÍAS
+======================================== */
+
+.user-card,
+.category-card {
+    max-width: 100%;
+}
+
+.user-card > div {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    flex-wrap: wrap;
+    margin-top: 15px;
+}
+
+.user-card form,
+.category-card form {
+    width: auto;
+}
+
+.user-card button,
+.category-card button {
+    background-color: #F5E8E6;
+    color: #A13E36;
+}
+
+.user-card button:hover,
+.category-card button:hover {
+    background-color: #EBD5D1;
+}
+
+
+/* ========================================
+   9. MENSAJES DE EXITO Y ERROR
+======================================== */
+
+/* Error */
+
+.error {
+    background-color:#ca737264 ;
+    color: #B94A48;
+    padding: 8px 24px 8px 8px;
+    border-radius: 2px;
+    display: inline-block;    
+    border-left: 4px solid #B94A48;
+}
+
+.success {
+    background-color: #2c4c3b53 ;
+    color: var(--color-green);
+    padding: 8px 24px 8px 8px;
+    border-radius: 2px;
+    display: inline-block;    
+    border-left: 4px solid var(--color-green);
 }

@@ -7,6 +7,8 @@
     <section>
         <h2>Editar usuario</h2>
 
+        <%- include('../layout/error') -%>
+
         <form action="/user/<%= user.id_user %>/update" method="post">
 
             <div>
