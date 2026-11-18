@@ -1,18 +1,27 @@
 <%- include('../layout/header'); -%>
 
-<main>
-    <h1>Categorias</h1>
+    <main>
+        <h1>Categorias</h1>
 
-    <% if (authUser && authUser.rol === "admin") { %>
-        <a href="/category/create">Crear categoria</a>
-    <% } %>
+        <% if (authUser && authUser.rol==="admin" ) { %>
+            <a href="/category/create">Crear categoria</a>
+            <% } %>
 
-    <section>
-       <h2>Listado de categorias</h2>
-        <% for (const category of categories) {%>
-            <%- include('categoryCard',{category}) -%>
-        <% } %> 
-    </section>
-</main>
+                <section>
+                    <h2>Listado de categorias</h2>
 
-<%- include('../layout/footer'); -%>
+                    <%- include('../layout/error') -%>
+
+                        <% if (query.message) { %>
+                            <p class="success">
+                                <%= query.message %>
+                            </p>
+                            <% } %>
+
+                                <% for (const category of categories) {%>
+                                    <%- include('categoryCard',{category}) -%>
+                                        <% } %>
+                </section>
+    </main>
+
+    <%- include('../layout/footer'); -%>
