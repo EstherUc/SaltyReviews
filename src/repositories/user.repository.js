@@ -7,7 +7,19 @@ import { throwError, NotFoundError } from "../utils/errors.js";
 
 // ------------------ C (Create) ------------------
 
-//crear un usuario
+/**
+ * Crea un nuevo usuario en la base de datos.
+ *
+ * Utiliza el método create de Sequelize para insertar
+ * un nuevo registro en el modelo User.
+ *
+ * Si ocurre un error, lo procesa mediante throwError.
+ *
+ * @async
+ * @param {Object} data - Datos del usuario que se quiere crear.
+ * @returns {Promise<User>} Usuario creado.
+ * @throws {Error} Error procesado mediante throwError si falla la operación.
+ */
 const create = async (data) => {
 
     try {
@@ -25,8 +37,18 @@ const create = async (data) => {
 
 
 // ------------------ R (Read) ------------------
-
-//obtener todos los usuarios
+/**
+ * Obtiene todos los usuarios registrados en la base de datos.
+ *
+ * Utiliza el método findAll de Sequelize para recuperar
+ * todos los registros del modelo User.
+ *
+ * Si ocurre un error, lo procesa mediante throwError.
+ *
+ * @async
+ * @returns {Promise<User[]>} Lista de usuarios registrados.
+ * @throws {Error} Error procesado mediante throwError si falla la consulta.
+ */
 const getAll = async () => {
 
     try {
@@ -41,7 +63,28 @@ const getAll = async () => {
 
 };
 
-//obtener un usuario por su ID
+/**
+ * Obtiene un usuario mediante su identificador.
+ *
+ * Busca el usuario utilizando su clave primaria
+ * e incluye sus restaurantes favoritos y las reseñas
+ * que ha publicado.
+ *
+ * De cada restaurante favorito recupera su identificador,
+ * nombre y dirección.
+ *
+ * De cada reseña recupera su identificador, título,
+ * puntuación y comentario.
+ *
+ * Si el usuario no existe, lanza un NotFoundError.
+ * Si ocurre un error, lo procesa mediante throwError.
+ *
+ * @async
+ * @param {number} id - Identificador del usuario.
+ * @returns {Promise<User>} Usuario encontrado con sus favoritos y reseñas.
+ * @throws {NotFoundError} Si el usuario no existe.
+ * @throws {Error} Error procesado mediante throwError si falla la consulta.
+ */
 const getById = async (id) => {
 
     try {
@@ -88,9 +131,27 @@ const getById = async (id) => {
 };
 
 
-//buscar por email
-//para buscar si el email pertenece a algún otro usaurio (distinto del usuario del id mandado)
-// o sin id mandado sería buscar cualquier usuario que ya tenga ese email
+/**
+ * Busca un usuario mediante su dirección de correo electrónico.
+ *
+ * Si se proporciona un identificador, busca usuarios
+ * con ese correo electrónico excluyendo al usuario
+ * cuyo ID coincida con el indicado.
+ *
+ * Si no se proporciona un identificador, busca cualquier
+ * usuario registrado con ese correo electrónico.
+ *
+ * Utiliza el operador Op.ne de Sequelize para excluir
+ * un identificador concreto de la búsqueda.
+ *
+ * Si no encuentra ningún usuario, devuelve null.
+ *
+ * @async
+ * @param {string} email - Dirección de correo electrónico que se quiere buscar.
+ * @param {number|null} [id=null] - Identificador del usuario que se excluye de la búsqueda.
+ * @returns {Promise<User|null>} Usuario encontrado o null si no existe.
+ * @throws {Error} Error procesado mediante throwError si falla la consulta.
+ */
 const findEmail = async (email, id = null) => {
 
     try {
@@ -129,7 +190,20 @@ const findEmail = async (email, id = null) => {
 
 }
 
-//buscar un usuario por su nombre
+/**
+ * Busca un usuario mediante su nombre de usuario.
+ *
+ * Utiliza el método findOne de Sequelize para localizar
+ * un registro cuyo campo username coincida con
+ * el nombre proporcionado.
+ *
+ * Si no encuentra ningún usuario, devuelve null.
+ *
+ * @async
+ * @param {string} username - Nombre de usuario que se quiere buscar.
+ * @returns {Promise<User|null>} Usuario encontrado o null si no existe.
+ * @throws {Error} Error procesado mediante throwError si falla la consulta.
+ */
 const getByUsername = async (username) => {
 
     try {
@@ -152,7 +226,31 @@ const getByUsername = async (username) => {
 
 // ------------------ U (Update) ------------------
 
-//actualizar un usuario completamente
+
+/**
+ * Actualiza los datos de un usuario existente.
+ *
+ * Busca el usuario mediante su identificador
+ * y actualiza su nombre de usuario y correo electrónico.
+ *
+ * La contraseña únicamente se modifica si se proporciona
+ * un nuevo valor para password_hash.
+ *
+ * Guarda los cambios mediante el método save de Sequelize.
+ *
+ * Si el usuario no existe, lanza un NotFoundError.
+ * Si ocurre un error, lo procesa mediante throwError.
+ *
+ * @async
+ * @param {number} id - Identificador del usuario que se quiere actualizar.
+ * @param {Object} data - Datos para actualizar el usuario.
+ * @param {string} data.username - Nuevo nombre de usuario.
+ * @param {string} data.email - Nueva dirección de correo electrónico.
+ * @param {string} [data.password_hash] - Nuevo hash de contraseña, si se proporciona.
+ * @returns {Promise<User>} Usuario actualizado.
+ * @throws {NotFoundError} Si el usuario no existe.
+ * @throws {Error} Error procesado mediante throwError si falla la operación.
+ */
 const update = async (id, data) => {
 
     try {
@@ -187,7 +285,34 @@ const update = async (id, data) => {
 };
 
 
-//modificar parcialmente un usuario
+
+/**
+ * Modifica parcialmente los datos de un usuario existente.
+ *
+ * Busca el usuario mediante su identificador.
+ *
+ * Actualiza el nombre de usuario y el correo electrónico
+ * cuando se proporcionan valores truthy, manteniendo
+ * los valores anteriores en caso contrario.
+ *
+ * La contraseña únicamente se modifica si se proporciona
+ * un valor diferente de undefined para password_hash.
+ *
+ * Guarda los cambios mediante el método save de Sequelize.
+ *
+ * Si el usuario no existe, lanza un NotFoundError.
+ * Si ocurre un error, lo procesa mediante throwError.
+ *
+ * @async
+ * @param {number} id - Identificador del usuario que se quiere modificar.
+ * @param {Object} data - Datos que se quieren modificar.
+ * @param {string} [data.username] - Nuevo nombre de usuario.
+ * @param {string} [data.email] - Nueva dirección de correo electrónico.
+ * @param {string} [data.password_hash] - Nuevo hash de contraseña, si se proporciona.
+ * @returns {Promise<User>} Usuario modificado.
+ * @throws {NotFoundError} Si el usuario no existe.
+ * @throws {Error} Error procesado mediante throwError si falla la operación.
+ */
 const modify = async (id, data) => {
 
     try {
@@ -223,7 +348,21 @@ const modify = async (id, data) => {
 
 // ------------------ D (Delete) ------------------
 
-//eliminar un usuario
+/**
+ * Elimina un usuario de la base de datos.
+ *
+ * Busca el usuario mediante su identificador
+ * y elimina su registro utilizando destroy de Sequelize.
+ *
+ * Si el usuario no existe, lanza un NotFoundError.
+ * Si ocurre un error, lo procesa mediante throwError.
+ *
+ * @async
+ * @param {number} id - Identificador del usuario que se quiere eliminar.
+ * @returns {Promise<User>} Usuario eliminado.
+ * @throws {NotFoundError} Si el usuario no existe.
+ * @throws {Error} Error procesado mediante throwError si falla la eliminación.
+ */
 const remove = async (id) => {
 
     try {
