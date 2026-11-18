@@ -37,21 +37,26 @@
         <section>
             <h2>Favoritos del usuario</h2>
 
-            <% if (user.favorites.length > 0) { %>
 
-                <% user.favorites.forEach(favorite => { %>
+            <div class="restaurant-list">
 
-                    <h4><%= favorite.id_restaurant %></h4>
+                <% if (user.favorites.length > 0) { %>
+    
+                    <% user.favorites.forEach(favorite => { %>
+    
+                       
+    
+                        <%- include("../favorite/favCard", { favorite }) %>
+    
+                    <% }) %>
+    
+                <% } else { %>
+    
+                    <p>Este usuario todavía no tiene favoritos</p>
+    
+                <% } %>
+            </div>
 
-                    <%- include("../favorite/favCard", { favorite }) %>
-
-                <% }) %>
-
-            <% } else { %>
-
-                <p>Este usuario todavía no tiene favoritos</p>
-
-            <% } %>
         </section>
 
     <% } else { %>

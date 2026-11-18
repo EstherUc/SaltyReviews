@@ -28,7 +28,9 @@ app.use(session({
 // Variables para las vistas EJS
 app.use((req, res, next) => {
     res.locals.query = req.query;
-    res.locals.authUser = req.session?.user; 
+    res.locals.authUser = req.session?.user;
+    res.locals.currentUrl = req.originalUrl;
+
     next();
 });
 
