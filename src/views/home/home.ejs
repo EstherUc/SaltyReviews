@@ -1,5 +1,64 @@
 <%- include('../layout/header'); -%>
 
+    <main>
+
+        <h1>Bienvenido a SaltyReviews</h1>
+
+        <!-- ================= CATEGORÍAS ================= -->
+
+        <section class="home-categories">
+
+            <h2>Filtrar por categoría</h2>
+
+            <nav aria-label="Filtros de restaurantes">
+
+                <!-- Mostrar todos los restaurantes -->
+                <a href="/home">
+                    Todas las categorías
+                </a>
+
+                <!-- Mostrar las categorías disponibles -->
+                <% for (const category of categories) { %>
+
+                    <a href="/home?category=<%= category.id_category %>" 
+                        <% if(selectedCategoryId===category.id_category) { %>
+                        aria-current="page"
+                        <% } %>
+                            >
+                            <%= category.name_category %>
+                    </a>
+
+                    <% } %>
+
+            </nav>
+
+        </section>
 
 
-<%- include('../layout/footer'); -%>
+        <!-- ================= RESTAURANTES ================= -->
+
+        <section class="home-restaurants">
+
+            <h2>Restaurantes</h2>
+
+            <% if (restaurants.length===0) { %>
+
+                <p>
+                    No hay restaurantes disponibles para esta categoría.
+                </p>
+
+                <% } else { %>
+
+                    <% for (const restaurant of restaurants) { %>
+
+                        <%- include('../restaurant/restCard', { restaurant }) -%>
+
+                            <% } %>
+
+                                <% } %>
+
+        </section>
+
+    </main>
+
+    <%- include('../layout/footer'); -%>
