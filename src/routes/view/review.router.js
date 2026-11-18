@@ -1,6 +1,6 @@
 import { Router } from "express";
 import reviewViewController from "../../controllers/review/review.view.controller.js";
-import { isAuthenticated, isReviewOwnerOrAdmin } from "../../middlewares/auth.middleware.js";
+import { isAuthenticated, isReviewOwnerOrAdmin, isAdmin } from "../../middlewares/auth.middleware.js";
 
 const router = Router();
 
@@ -10,14 +10,14 @@ const router = Router();
 // endpoint para crear dato
 
 // vista de formulario
-router.get("/new",isAuthenticated, reviewViewController.createForm);
+router.get("/new", isAuthenticated, reviewViewController.createForm);
 
 // creación de dato
 router.post("/", isAuthenticated, reviewViewController.create);
 
 // ------------------ R (Read)---------------------------------------------
 // endpoint lista de datos
-router.get("/",reviewViewController.getAll);
+router.get("/", isAdmin, reviewViewController.getAll);
 
 // endpoint dato individual
 router.get("/:id", reviewViewController.getById)

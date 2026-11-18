@@ -1,23 +1,17 @@
-//import { Review,User } from "../models/models.js";
-
-import User from '../models/user.model.js';  //HACK borrar y descomentar el otro import - pruebas
-import Review from '../models/review.model.js';  //HACK borrar y descomentar el otro import - pruebas
-
-Review.belongsTo(User, {foreignKey: 'id_user', as: 'user'}); // HACK temporal para pruebas (hasta que estén los modelos terminados)
-
+import { Review, User } from "../models/models.js";
 
 // ------------------ CRUD de review ----------------------------
 
 // ------------------ C (Create)
 // endpoint para crear dato
-const create = async (data)=>{
+const create = async (data) => {
     const review = await Review.create(data)
     return review;
 }
 
 // ------------------ R (Read)---------------------------------------------
 // endpoint lista de todas las reseñas con sus usuarios 
-const getAll = async() => {
+const getAll = async () => {
     const reviews = await Review.findAll({
         include: {
             model: User,
@@ -28,45 +22,57 @@ const getAll = async() => {
     return reviews;
 };
 
-// endpoint dato individual
-const getById = async (id) => {
-    const review = await Review.findByPk(id,{
-        include:{
+// Obtener las reseñas de un restaurante concreto
+const getByRestaurantId = async (id_restaurant) => {
+
+    const reviews = await Review.findAll({
+        where: {
+            id_restaurant: id_restaurant
+        },
+        include: {
             model: User,
             as: "user",
-            attributes: ["username","email"]
+            attributes: ["username"]
+        },
+        order: [["createdAt", "DESC"]]
+    });
+
+    return reviews;
+};
+
+// endpoint dato individual
+const getById = async (id) => {
+    const review = await Review.findByPk(id, {
+        include: {
+            model: User,
+            as: "user",
+            attributes: ["username", "email"]
         }
     });
     return review;
 };
 
-//HACK es para pruebas
-// const getById = async (id) => {
-//     const review = await Review.findByPk(id);
-//     return review;
-// };
-
 // ---------------- U (Update) -----------------------------------
 // endpoint para cambiar dato por completo
-const update =async (id, data)=>{
-    const {title,rating,comment} = data;
-    const review  = await Review.findByPk(id);
-    if(review){
+const update = async (id, data) => {
+    const { title, rating, comment } = data;
+    const review = await Review.findByPk(id);
+    if (review) {
         review.title = title;
         review.rating = rating;
         review.comment = comment;
         await review.save();
         return review;
-    }else{
+    } else {
         return null;
     }
 
 }
 
-const modify = async (id,data)=>{
-    const {title,rating,comment} = data;
-    const review  = await Review.findByPk(id);
-    if(!review){
+const modify = async (id, data) => {
+    const { title, rating, comment } = data;
+    const review = await Review.findByPk(id);
+    if (!review) {
         return null;
     }
     review.title = title || review.title;
@@ -77,9 +83,9 @@ const modify = async (id,data)=>{
 }
 
 // ------------------------ D (Delete)------------
-const remove =async (id)=>{
+const remove = async (id) => {
     const review = await Review.findByPk(id);
-    if(review){
+    if (review) {
         await review.destroy();
         return review;
     }
@@ -89,8 +95,9 @@ const remove =async (id)=>{
 export default {
     create,
     getAll,
+    getByRestaurantId,
     getById,
     update,
     modify,
     remove
-}
+};
