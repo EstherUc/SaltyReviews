@@ -1,0 +1,7 @@
+nodejs:
+  Instalados: 22.22.1+dfsg+~cs22.19.15-1ubuntu1
+  Candidato:  22.22.1+dfsg+~cs22.19.15-1ubuntu1
+  Tabla de versión:
+ *** 22.22.1+dfsg+~cs22.19.15-1ubuntu1 500
+        500 http://es.archive.ubuntu.com/ubuntu resolute/universe amd64 Packages
+        100 /var/lib/dpkg/status
