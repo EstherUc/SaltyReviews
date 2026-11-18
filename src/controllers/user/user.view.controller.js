@@ -187,11 +187,6 @@ const updateForm = async(req, res) => {
         const id = parseInt(req.params.id); //obtenemos el id de la URL
         const user = await userRepository.getById(id); //buscamos el usuario
     
-        //comprobamos si existe
-        // if (!user) {
-        //     return res.status(404).send("Usuario no encontrado");
-        // }
-    
         //obtenemos sus datos sin password
         const { id_user, username, email, rol } = user;
     
