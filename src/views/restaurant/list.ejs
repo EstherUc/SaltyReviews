@@ -1,9 +1,29 @@
 <%- include('../layout/header'); -%>
 
-<h1>Restaurantes</h1>
+    <main>
 
-<% for (const restaurant of restaurants) { %>
-    <%- include('./restCard', { restaurant }) -%>
-<% } %>
+        <h1>Restaurantes</h1>
 
-<%- include('../layout/footer'); -%>
+        <!-- Botón exclusivo para administradores -->
+        <% if (authUser && authUser.rol==="admin" ) { %>
+
+            <a href="/restaurant/create">
+                <button type="button">➕ Crear restaurante</button>
+            </a>
+
+            <% } %>
+
+                <!-- Listado de restaurantes -->
+                <section>
+
+                    <% for (const restaurant of restaurants) { %>
+
+                        <%- include('./restCard', { restaurant }) -%>
+
+                            <% } %>
+
+                </section>
+
+    </main>
+
+    <%- include('../layout/footer'); -%>

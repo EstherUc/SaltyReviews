@@ -39,6 +39,27 @@
             Ver restaurante
         </a>
 
+        <!-- Acciones exclusivas para administradores -->
+        <% if (authUser && authUser.rol==="admin" ) { %>
+
+            <div class="admin-actions">
+
+                <!-- EDITAR RESTAURANTE -->
+                <a href="/restaurant/<%= restaurant.id_restaurant %>/update">
+                    ✏️ Editar
+                </a>
+
+                <!-- ELIMINAR RESTAURANTE -->
+                <form action="/restaurant/<%= restaurant.id_restaurant %>/delete" method="POST">
+                    <button type="submit">
+                        🗑️ Eliminar
+                    </button>
+                </form>
+
+            </div>
+
+            <% } %>
+
     </div>
 
 

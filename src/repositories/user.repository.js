@@ -2,15 +2,6 @@ import { User, Favorite, Review } from "../models/models.js";
 import { Op } from "sequelize";
 import { throwError, NotFoundError } from "../utils/errors.js";
 
-import User from '../models/user.model.js';  //HACK borrar y descomentar el otro import - pruebas
-import Review from '../models/review.model.js';  //HACK borrar y descomentar el otro import - pruebas
-import Favorite from '../models/favorite.model.js'; //HACK borrar y descomentar el otro import - pruebas
-
-User.hasMany(Review, {foreignKey: 'id_user', as: 'reviews'}); //HACK para pruebas. Cuando estén todos los modelos borrar 
-User.hasMany(Favorite, {foreignKey: 'id_user', as: 'favorites'}); //HACK para pruebas. Cuando estén todos los modelos borrar 
-
-
-
 // ------------------ CRUD de usuarios ------------------
 
 
