@@ -4,19 +4,27 @@
 
         <h1>Administrar reseñas</h1>
 
-        <% if (reviews.length===0) { %>
+        <%- include('../layout/error') -%>
 
-            <p>No hay reseñas registradas.</p>
+            <% if (query.message) { %>
+                <p class="success">
+                    <%= query.message %>
+                </p>
+                <% } %>
 
-            <% } else { %>
+                    <% if (reviews.length===0) { %>
 
-                <% for (const review of reviews) { %>
+                        <p>No hay reseñas registradas.</p>
 
-                    <%- include('reviewCard', { review }) -%>
+                        <% } else { %>
 
-                        <% } %>
+                            <% for (const review of reviews) { %>
 
-                            <% } %>
+                                <%- include('reviewCard', { review }) -%>
+
+                                    <% } %>
+
+                                        <% } %>
 
     </main>
 
