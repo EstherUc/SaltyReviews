@@ -1,8 +1,6 @@
-import { Op } from "sequelize";
-
 import Category from "../models/category.model.js";
-
-import { fn, col, where } from "sequelize";
+import { throwError, NotFoundError } from "../utils/errors.js";
+import { fn, col, where, Op } from "sequelize";
 
 
 // ------------------ CRUD de hero ----------------------------
@@ -131,11 +129,13 @@ const remove = async (id) => {
     try {
 
         const category = await Category.findByPk(id);
-        if (category) {
-            await category.destroy();
-            return category;
+
+        if (!category) {
+            throw new NotFoundError("Categoria no encontrada");
         }
-        return null;
+
+        await category.destroy();
+        return category;
 
     } catch (error) {
         console.error(error);

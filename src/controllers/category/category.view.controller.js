@@ -126,18 +126,16 @@ const remove = async (req, res) => {
     try {
 
         const id = parseInt(req.params.id);
-        const category = await categoriesRepo.remove(id); //eliminamos
+        await categoriesRepo.remove(id); //eliminamos
 
-        //si existe categoria es que lo ha borrado y existía en bd
-        if (!category) {
-            return res.status(404).render("Categoria no encontrada");
-        }
-
-        res.redirect("/category");
+        res.redirect("/category?message=Categoria+eliminada+correctamente");
 
     } catch (error) {
         console.error(error);
-        res.status(error.status || 500).render("category/categoryCard", { category: null, error: error.message });
+
+        const categories = await categoriesRepo.getAll();
+
+        res.status(error.status || 500).render("category/list", { categories: categories, error: error.message });
     }
 }
 
