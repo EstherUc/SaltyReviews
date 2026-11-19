@@ -4,6 +4,10 @@
 
         <h1>Bienvenido a SaltyReviews</h1>
 
+        <% if (query.message) { %>
+            <p class="success"><%= query.message %></p>
+        <% } %>
+
         <!-- ================= CATEGORÍAS ================= -->
 
         <section class="home-categories">
@@ -40,6 +44,12 @@
         <section >
 
             <h2>Restaurantes</h2>
+
+            <% if (authUser && authUser.rol === "admin") { %>
+                <a href="/restaurant/create" class="btn btn-primary">
+                    + Crear restaurante
+                </a>
+            <% } %>
 
             <div class="restaurant-list">
 

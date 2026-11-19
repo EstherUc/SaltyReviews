@@ -205,7 +205,9 @@ input[type="submit"] {
 .btn:hover,
 button:hover,
 input[type="submit"]:hover {
-    background: #203B2D;
+    /* background: #203B2D; */
+    background: var(--color-primary);
+    color: var(--color-surface);
 }
 
 .btn:focus-visible,

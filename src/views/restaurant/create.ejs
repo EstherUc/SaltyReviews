@@ -4,6 +4,8 @@
 
         <h1>Crear restaurante</h1>
 
+        <%- include('../layout/error') -%>
+
         <section>
 
             <h2>Datos del nuevo restaurante</h2>
@@ -29,7 +31,7 @@
                                 Nombre del restaurante:
                             </label>
 
-                            <input type="text" id="name_restaurant" name="name_restaurant" maxlength="100" required>
+                            <input type="text" id="name_restaurant" name="name_restaurant" maxlength="100" value="<%= locals.formData ? formData.name_restaurant : '' %>" required>
                         </div>
 
                         <!-- DIRECCIÓN -->
@@ -38,7 +40,7 @@
                                 Dirección:
                             </label>
 
-                            <input type="text" id="address" name="address" maxlength="150" required>
+                            <input type="text" id="address" name="address" maxlength="150" value="<%= locals.formData ? formData.address : '' %>" required>
                         </div>
 
                         <!-- CATEGORÍA -->
@@ -55,7 +57,8 @@
 
                                 <% for (const category of categories) { %>
 
-                                    <option value="<%= category.id_category %>">
+                                    <option value="<%= category.id_category %>"
+                                        <%= locals.formData && String(formData.id_category) === String(category.id_category) ? 'selected' : '' %>>
                                         <%= category.name_category %>
                                     </option>
 

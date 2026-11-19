@@ -69,7 +69,8 @@ SaltyReviews/
 │   └── css/                 # Estilos de la aplicación
 ├── sql/
 │   ├── 01_schema.sql        # Tablas y relaciones
-│   └── 02_seed.sql          # Datos iniciales
+│   ├── 02_seed.sql          # Datos iniciales
+│   └── 03_restaurant_images.sql  # Imágenes y rutas
 ├── src/
 │   ├── config/              # Conexión con PostgreSQL
 │   ├── models/              # Modelos y asociaciones Sequelize
@@ -119,6 +120,7 @@ erDiagram
         varchar name_restaurant
         varchar address
         int id_category FK
+        varchar image_url
     }
     Categories {
         int id_category PK
@@ -158,6 +160,7 @@ classDiagram
         +id_restaurant
         +name_restaurant
         +address
+        +image_url
     }
     class Category {
         +id_category
@@ -237,6 +240,8 @@ Así, **la memoria explica el proyecto y su evolución**, mientras que **JSDoc f
 SaltyReviews nos ha servido para practicar el desarrollo de una aplicación conectada a una base de datos real, organizar el backend por capas y trabajar en equipo con Git. Una de las lecciones más importantes ha sido que algunas decisiones iniciales debían revisarse cuando aparecían necesidades reales, como ocurrió con los favoritos.
 
 Como siguientes mejoras posibles quedan ampliar las pruebas automatizadas (tests), revisar de forma conjunta el tratamiento de errores de todos los módulos y mejorar la API e implementar JWT.
+
+En la parte visual, **algunas secciones del CSS se realizaron con apoyo de IA**, y también utilizamos IA para generar las **fotografías de los restaurantes**. El tercer script SQL, `03_restaurant_images.sql`, asigna sus rutas y establece `Sin_foto.png` como imagen predeterminada.
 
 ---
 

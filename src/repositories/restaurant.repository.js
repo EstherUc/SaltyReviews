@@ -1,5 +1,6 @@
 import { User, Favorite, Review, Restaurant, Category } from "../models/models.js";
 import { Op, fn, col } from "sequelize";
+import { throwError, NotFoundError } from "../utils/errors.js";
 
 // ------------------ CRUD de restaurantes ------------------
 
@@ -18,8 +19,16 @@ import { Op, fn, col } from "sequelize";
  */
 const create = async (data) => {
 
-    const restaurant = await Restaurant.create(data);
-    return restaurant;
+    try {
+        
+        const restaurant = await Restaurant.create(data);
+        return restaurant;
+
+    } catch (error) {
+        console.error(error);
+        throwError(error);
+    }
+
 
 };
 
@@ -246,15 +255,23 @@ const modify = async (id, data) => {
  * @returns {Promise<Restaurant|null>} Restaurante eliminado o null si no existe.
  */
 const remove = async (id) => {
-    const restaurant = await Restaurant.findByPk(id);
 
-    if (!restaurant) {
-        return null;
+    try {
+        
+        const restaurant = await Restaurant.findByPk(id);
+    
+        if (!restaurant) {
+            throw new NotFoundError("Restaurante no encontrado");
+        }
+    
+        await restaurant.destroy();
+    
+        return restaurant;
+
+    } catch (error) {
+        console.error(error);
+        throwError(error);
     }
-
-    await restaurant.destroy();
-
-    return restaurant;
 };
 
 export default {

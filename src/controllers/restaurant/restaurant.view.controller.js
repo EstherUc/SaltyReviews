@@ -10,13 +10,21 @@ import favoriteRepository from "../../repositories/favorite.repository.js";
 
 // Crear un restaurante desde un formulario
 const create = async (req, res) => {
+
+    // Recoger los datos enviados desde el formulario
+    const { name_restaurant, address, id_category } = req.body;
+    const formData = { name_restaurant, address, id_category };
+    let categories = [];
+    
+
     try {
-        // Recoger los datos enviados desde el formulario
-        const { name_restaurant, address, id_category } = req.body;
+
+        //recuperamos las categorías para el formulario
+        categories = await categoriesRepo.getAll();
 
         // Comprobar que se hayan enviado todos los campos obligatorios
         if (!name_restaurant || !address || !id_category) {
-            return res.status(400).send("Todos los campos son obligatorios");
+            return res.status(400).render("restaurant/create", { categories, formData, error: "Todos los campos son obligatorios" });
         }
 
         // Crear el restaurante mediante el repositorio
@@ -27,11 +35,11 @@ const create = async (req, res) => {
         });
 
         // Redirigir a la lista de restaurantes
-        return res.redirect("/restaurant");
+        return res.redirect("/home");
 
     } catch (error) {
         console.error("Error al crear el restaurante:", error);
-        return res.status(500).send("Error al crear el restaurante");
+        return res.status(500).render("restaurant/create", { categories: categories, formData: formData, error: error.status ? error.message : "Ha ocurrido un error de servidor" });
     }
 };
 
@@ -42,12 +50,11 @@ const createForm = async (req, res) => {
         const categories = await categoriesRepo.getAll();
 
         // Mostrar el formulario
-        res.render("restaurant/create", { categories });
+        res.render("restaurant/create", { categories: categories, formData: {}, error: null });
 
     } catch (error) {
-        console.error("Error al cargar el formulario:", error);
-
-        res.status(500).send("Error al cargar el formulario");
+        console.error(error);
+        return res.status(error.status || 500).render("restaurant/create", { categories: [], formData: {}, error: "No se han podido cargar las categorías" });
     }
 };
 
@@ -109,7 +116,7 @@ const getById = async (req, res) => {
 
         // 3. Comprobar que existe
         if (!restaurant) {
-            return res.status(404).send("Restaurante no encontrado");
+            return res.status(404).render("restaurant/show", { restaurant: null, reviews: [], formData: {}, error: "Restaurante no encontrado" });
         }
 
         // 4. Buscar las reseñas de ESTE restaurante
@@ -127,11 +134,8 @@ const getById = async (req, res) => {
 
     } catch (error) {
 
-        console.error("Error al obtener el restaurante:", error);
-
-        return res.status(500).send(
-            "Error al cargar el restaurante"
-        );
+        console.error(error);
+        return res.status(error.status || 500).render("restaurant/show", { restaurant: null, reviews: [], formData: {}, error: error.status ? error.message : "Ha ocurrido un error de servidor" });
     }
 };
 
@@ -211,19 +215,14 @@ const remove = async (req, res) => {
         const id = req.params.id;
 
         // Eliminar el restaurante mediante el repositorio
-        const restaurant = await restaurantRepository.remove(id);
+        await restaurantRepository.remove(id);
 
-        // Comprobar si el restaurante existía
-        if (!restaurant) {
-            return res.status(404).send("Restaurante no encontrado");
-        }
-
-        // Redirigir a la lista de restaurantes
-        return res.redirect("/restaurant");
+        // Redirigir al home con mensaje
+        return res.redirect("/home?message=Restaurante+eliminado+correctamente");
 
     } catch (error) {
-        console.error("Error al eliminar el restaurante:", error);
-        return res.status(500).send("Error al eliminar el restaurante");
+        console.error(error);
+        return res.status(error.status || 500).render("restaurant/show", { restaurant: null, reviews: [], formData: {}, error: error.status ? error.message : "Ha ocurrido un error de servidor" });
     }
 };
 
