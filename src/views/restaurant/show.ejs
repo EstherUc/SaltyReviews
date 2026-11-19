@@ -2,6 +2,8 @@
 
     <main>
 
+        <%- include('../layout/error') -%>
+
 
         <% if (restaurant) { %>
 
@@ -109,9 +111,9 @@
 
                         </div>
                     </section>
-                    <% } else { %>
-                        <p>No existe el restaurante</p>
-                        <% } %>
+                    <% } else if (!locals.error) { %>
+                        <p>Restaurante no encontrado</p>
+                    <% } %>
 
                             <a href="/restaurant">Volver</a>
 
