@@ -1,7 +1,8 @@
 <article class="restaurant-card">
     <div class="card-left">
         <img src="<%= restaurant.image_url || '/uploads/restaurants/Sin_foto.png' %>"
-            alt="<%= restaurant.name_restaurant %>">
+            alt="<%= restaurant.name_restaurant %>"
+            onerror="this.onerror=null;this.src='/uploads/restaurants/Sin_foto.png';">
 
         <% const isFavorite=typeof favoriteIds !=="undefined" && favoriteIds.includes(Number(restaurant.id_restaurant));
             %>

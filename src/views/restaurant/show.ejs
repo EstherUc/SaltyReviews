@@ -12,7 +12,8 @@
                 
                 <div class="restaurant-detail-image">
                     <img src="<%= restaurant.image_url || '/uploads/restaurants/Sin_foto.png' %>"
-                        alt="<%= restaurant.name_restaurant %>">
+                        alt="<%= restaurant.name_restaurant %>"
+                        onerror="this.onerror=null;this.src='/uploads/restaurants/Sin_foto.png';">
 
                 </div>
                 
@@ -31,7 +32,7 @@
                         <%= restaurant.address %>
                     </p>
                     <p><strong>Categoría: </strong>
-                        <%= restaurant.id_category %>
+                        <%= restaurant.category ? restaurant.category.name_category : "Sin categoría" %>
                     </p>
 
                 </div>

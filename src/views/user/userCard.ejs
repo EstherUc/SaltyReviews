@@ -6,7 +6,9 @@
     <p>Rol: <%= user.rol %></p>
 
     <div>
-        <a href="/user/<%= user.id_user %>">Visitar</a>
+        <% if (locals.mostrarVisitar !== false) { %>
+            <a href="/user/<%= user.id_user %>">Visitar</a>
+        <% } %>
 
         <% if (authUser && (authUser.rol === "admin" || Number(authUser.id_user) === Number(user.id_user))) { %>
             <a href="/user/<%= user.id_user %>/update">Editar</a>

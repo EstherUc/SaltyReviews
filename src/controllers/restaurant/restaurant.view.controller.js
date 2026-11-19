@@ -151,8 +151,15 @@ const updateForm = async (req, res) => {
             return res.status(404).send("Restaurante no encontrado");
         }
 
-        // Mostrar el formulario con los datos del restaurante
-        return res.render("restaurant/update", { restaurant });
+        // Obtener las categorías para mostrarlas en el desplegable
+        const categories = await categoriesRepo.getAll();
+
+        // Mostrar el formulario con la categoría actual seleccionada
+        return res.render("restaurant/update", {
+            restaurant,
+            categories,
+            error: null
+        });
 
     } catch (error) {
         console.error("Error al cargar el formulario:", error);

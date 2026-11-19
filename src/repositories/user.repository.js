@@ -1,6 +1,7 @@
 import { User, Favorite, Review, Restaurant } from "../models/models.js";
 import { Op } from "sequelize";
 import { throwError, NotFoundError } from "../utils/errors.js";
+import restaurantRepository from "./restaurant.repository.js";
 
 // ------------------ CRUD de usuarios ------------------
 
@@ -122,6 +123,14 @@ const getById = async (id) => {
         if (!user) {
             throw new NotFoundError("Usuario no encontrado");
         }
+
+        for (const favorite of user.favorites) {
+
+        if (favorite.restaurant) {
+
+            favorite.restaurant.averageRating = await restaurantRepository.getAverageRating(favorite.id_restaurant);
+        }
+}
 
         return user;
 
