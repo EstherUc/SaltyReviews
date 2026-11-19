@@ -18,8 +18,10 @@ id_category: {
 
 },
 image_url: {
-    type: DataTypes.STRING(255),
-    allowNull: true
+     type: DataTypes.STRING(255),
+    allowNull: true,
+    // Si se crea un restaurante sin foto, usar la imagen genérica
+    defaultValue: "/uploads/restaurants/Sin_foto.png"
 }
 
 },{

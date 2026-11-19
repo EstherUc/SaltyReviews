@@ -1,4 +1,4 @@
-import { User, Favorite, Review, Restaurant } from "../models/models.js";
+import { User, Favorite, Review, Restaurant, Category } from "../models/models.js";
 import { Op, fn, col } from "sequelize";
 
 // ------------------ CRUD de restaurantes ------------------
@@ -56,7 +56,15 @@ const getAll = async () => {
  * @returns {Promise<Restaurant|null>} Restaurante encontrado o null si no existe.
  */
 const getById = async (id) => {
-    const restaurant = await Restaurant.findByPk(id)
+    const restaurant = await Restaurant.findByPk(id, {
+            include: [
+                {
+                    model: Category,
+                    as: "category",
+                    attributes: ["id_category", "name_category"]
+                }
+            ]
+        });
     return restaurant;
 };
 
@@ -159,7 +167,10 @@ const update = async (id, data) => {
     restaurant.name_restaurant = data.name_restaurant;
     restaurant.address = data.address;
     restaurant.id_category = data.id_category;
-    restaurant.image_url = data.image_url;
+    // Conservar la foto al editar otros datos si no llega una nueva imagen
+    if (data.image_url !== undefined) {
+        restaurant.image_url = data.image_url;
+    }
 
     await restaurant.save();
     return restaurant;

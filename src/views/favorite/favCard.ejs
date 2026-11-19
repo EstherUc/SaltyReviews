@@ -1,7 +1,8 @@
 <article class="favorite-card">
     <div class="card-left">
         <img src="<%= favorite.restaurant.image_url || '/uploads/restaurants/Sin_foto.png' %>"
-            alt="<%= favorite.restaurant.name_restaurant %>">
+            alt="<%= favorite.restaurant.name_restaurant %>"
+            onerror="this.onerror=null;this.src='/uploads/restaurants/Sin_foto.png';">
 
         <% if ( authUser && Number(authUser.id_user)===Number(favorite.id_user) ) { %>
 
