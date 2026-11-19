@@ -1,0 +1,28 @@
+<%- include('../layout/header'); -%>
+
+<main>
+    
+    <h2>Listado de categorias</h2>
+
+    <% if (authUser && authUser.rol === "admin") { %>
+        <a href="/category/create" class="btn btn-primary">Crear categoria</a>
+    <% } %>
+
+   
+
+            <section class="category-list">
+                    <%- include('../layout/error') -%>
+
+                        <% if (query.message) { %>
+                            <p class="success">
+                                <%= query.message %>
+                            </p>
+                            <% } %>
+
+                                <% for (const category of categories) {%>
+                                    <%- include('categoryCard',{category}) -%>
+                                        <% } %>
+                </section>
+    </main>
+
+    <%- include('../layout/footer'); -%>

@@ -1,0 +1,14 @@
+<article class="category-card">
+
+    <h3>
+        <%= category.name_category %>
+    </h3>
+
+     <% if (authUser && authUser.rol === "admin") { %>
+
+    <form method="post" action="/category/<%= category.id_category %>/delete">
+        <button type="submit" class="btn-danger">Eliminar</button>
+    </form>
+    <% } %>
+
+</article>

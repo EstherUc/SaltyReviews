@@ -1,0 +1,99 @@
+<article class="restaurant-card">
+    <div class="card-left">
+        <img src="<%= restaurant.image_url || '/uploads/restaurants/Sin_foto.png' %>"
+            alt="<%= restaurant.name_restaurant %>"
+            onerror="this.onerror=null;this.src='/uploads/restaurants/Sin_foto.png';">
+
+        <% const isFavorite=typeof favoriteIds !=="undefined" && favoriteIds.includes(Number(restaurant.id_restaurant));
+            %>
+
+            <% if (authUser) { %>
+
+                <form action="/favorite/toggle" method="POST">
+
+                    <input type="hidden" name="id_restaurant" value="<%= restaurant.id_restaurant %>">
+
+                    <input type="hidden" name="returnTo" value="<%= currentUrl %>">
+
+                    <button type="submit" class="favorite-toggle <%= isFavorite ? 'is-active' : '' %>"
+                        aria-label="<%= isFavorite ? 'Quitar de favoritos' : 'Añadir a favoritos' %>"
+                        aria-pressed="<%= isFavorite ? 'true' : 'false' %>">
+
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                            fill="<%= isFavorite ? 'currentColor' : 'none' %>" stroke="currentColor" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <path
+                                d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
+                        </svg>
+
+                    </button>
+
+                </form>
+
+                <% } else { %>
+
+                    <a href="/auth/login"  class="favorite-toggle logout" aria-label="Inicia sesión para añadir a favoritos">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                            fill="transparent" stroke="currentColor" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <path
+                                d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
+                        </svg>
+                    </a>
+
+                    <% } %>
+
+    </div>
+    <div class="card-right">
+
+        <h3>
+            <%= restaurant.name_restaurant %>
+        </h3>
+
+        <p>Dirección: <%= restaurant.address %>
+        </p>
+        <p>
+            Puntuación:
+            <% if (restaurant.averageRating !==null) { %>
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="gold"
+                    stroke="gold" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path
+                        d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 21 12 17.77 5.82 21 7 14.14l-5-4.87 6.91-1.01L12 2z" />
+                </svg>
+
+                <%= Number(restaurant.averageRating).toFixed(1) %>
+                    <% } else { %>
+                        Sin valoraciones
+                        <% } %>
+        </p>
+        <a id="ver-restaurant-btn" href="/restaurant/<%= restaurant.id_restaurant %>">
+            Ver restaurante
+        </a>
+
+        <!-- Acciones exclusivas para administradores -->
+        <% if (authUser && authUser.rol==="admin" ) { %>
+
+            <div class="admin-actions">
+
+                <!-- EDITAR RESTAURANTE -->
+                <a href="/restaurant/<%= restaurant.id_restaurant %>/update">
+                    ✏️ Editar
+                </a>
+
+                <!-- ELIMINAR RESTAURANTE -->
+                <form action="/restaurant/<%= restaurant.id_restaurant %>/delete" method="POST">
+                    <button  class="btn-danger" type="submit">
+                        🗑️ Eliminar
+                    </button>
+                </form>
+
+            </div>
+
+            <% } %>
+
+    </div>
+
+
+
+
+</article>

@@ -1,0 +1,24 @@
+<%- include('../layout/header'); -%>
+
+<main>
+    <h1>Usuarios</h1>
+
+    <%- include('../layout/error') -%>
+
+    <% if (query.message) { %>
+        <p class="success"><%= query.message %></p> 
+    <% } %>
+
+    <a href="/user/create">Crear usuario</a>
+
+    <section class="user-list">
+        
+            <% for (const user of users) {%>
+                 <%- include('userCard',{user}) -%>
+             <% } %> 
+
+        
+    </section>
+</main>
+
+<%- include('../layout/footer'); -%>

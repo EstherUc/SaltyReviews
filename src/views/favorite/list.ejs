@@ -1,0 +1,38 @@
+<%- include('../layout/header'); -%>
+
+<main>
+
+    
+    <h1>Mis favoritos</h1>
+
+    <%- include('../layout/error') -%>
+    <% if (query.message) { %>
+         <p class="success"><%= query.message %></p> 
+    <% } %>
+
+    <form action="/favorite/delete-all" method="POST">
+        <button type="submit">Eliminar todos mis favoritos</button>
+    </form>
+
+    <div class="restaurant-list">
+
+        <% if (favorites.length > 0) { %>
+            
+            
+            <% favorites.forEach(favorite => { %>
+                <section class="favorites-grid">
+                    <%- include("./favCard", { favorite }) %>
+                </section>
+                <% }); %>
+                
+                <% } else { %>
+                    
+                    <p>Todavía no tienes restaurantes favoritos.</p>
+                    
+                    <% } %>
+    </div>
+    
+</main>
+
+<%- include('../layout/footer'); -%>
+        

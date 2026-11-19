@@ -1,0 +1,122 @@
+<%- include('../layout/header', { title: restaurant ? restaurant.name_restaurant : 'Restaurante no encontrado' }); -%>
+
+    <main>
+
+        <%- include('../layout/error') -%>
+
+
+        <% if (restaurant) { %>
+
+            <h3>Información del restaurante</h3>
+            
+
+            <section class="restaurant-detail">
+                
+                <div class="restaurant-detail-image">
+                    <img src="<%= restaurant.image_url || '/uploads/restaurants/Sin_foto.png' %>"
+                        alt="<%= restaurant.name_restaurant %>"
+                        onerror="this.onerror=null;this.src='/uploads/restaurants/Sin_foto.png';">
+
+                </div>
+                
+                
+                
+                <div class="restaurant-detail-info">
+                    <h2>
+                        <%= restaurant.name_restaurant %>
+    
+                    </h2>
+            
+                    <p><strong>Nombre:</strong>
+                        <%= restaurant.name_restaurant %>
+                    </p>
+                    <p><strong>Dirección:</strong>
+                        <%= restaurant.address %>
+                    </p>
+                    <p><strong>Categoría: </strong>
+                        <%= restaurant.category ? restaurant.category.name_category : "Sin categoría" %>
+                    </p>
+
+                </div>
+
+            </section>
+
+            <% if (authUser && authUser.rol==="admin" ) { %>
+
+                <section class="admin-actions">
+
+                    <h3>Administrar restaurante</h3>
+
+                    <!-- EDITAR -->
+                    <a class="btn btn-secondary" href="/restaurant/<%= restaurant.id_restaurant %>/update">
+                        ✏️ Editar restaurante
+                    </a>
+
+                    <!-- ELIMINAR -->
+                    <form action="/restaurant/<%= restaurant.id_restaurant %>/delete" method="POST">
+                        <button type="submit" class="btn-danger">
+                            🗑️ Eliminar restaurante
+                        </button>
+                    </form>
+
+                </section>
+
+                <% } %>
+
+                    <!-- FORMULARIO DE RESEÑAS -->
+                    <section class="restaurant-reviews-layout">
+
+                        <div class="create-review">
+
+                            <% if (authUser) { %>
+
+                                <%- include('../review/create', { restaurant }) -%>
+
+                                    <% } else { %>
+
+                                        <p>
+                                            Debes iniciar sesión para escribir una reseña.
+                                        </p>
+
+                                        <a class="btn btn-primary" href="/auth/login">
+                                            Iniciar sesión
+                                        </a>
+
+                                        <% } %>
+                        </div>
+
+
+                        <!-- RESEÑAS DEL RESTAURANTE -->
+                        <div class="restaurant-reviews-list">
+
+                            <h2>Reseñas de <%= restaurant.name_restaurant %>
+                            </h2>
+
+                            <% if (reviews.length===0) { %>
+
+                                <p>
+                                    Este restaurante todavía no tiene reseñas.
+                                    ¡Sé el primero en valorarlo!
+                                </p>
+
+                                <% } else { %>
+
+                                    <% for (const review of reviews) { %>
+
+                                        <%- include('../review/reviewCard', { review }) -%>
+
+                                            <% } %>
+
+                                                <% } %>
+
+                        </div>
+                    </section>
+                    <% } else if (!locals.error) { %>
+                        <p>Restaurante no encontrado</p>
+                    <% } %>
+
+                            <a href="/restaurant">Volver</a>
+
+    </main>
+
+    <%- include('../layout/footer'); -%>

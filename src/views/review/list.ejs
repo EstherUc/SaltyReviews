@@ -1,0 +1,35 @@
+<%- include('../layout/header'); -%>
+
+    <main>
+
+        <h1>Administrar reseñas</h1>
+
+        <%- include('../layout/error') -%>
+
+            <% if (query.message) { %>
+                <p class="success">
+                    <%= query.message %>
+                </p>
+                <% } %>
+
+                <section class="restaurant-list">
+
+                    <% if (reviews.length===0) { %>
+    
+                        <p>No hay reseñas registradas.</p>
+    
+                        <% } else { %>
+    
+                            <% for (const review of reviews) { %>
+    
+                                <%- include('reviewCard', { review }) -%>
+    
+                                    <% } %>
+    
+                                        <% } %>
+                </section>
+
+
+    </main>
+
+    <%- include('../layout/footer'); -%>

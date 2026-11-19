@@ -1,0 +1,36 @@
+
+<%- include('../layout/header'); -%>
+
+<main>
+
+    <%- include('../layout/error') -%>
+
+    <% if (review) { %>
+
+        <%- include('reviewCard', { review }) -%>
+
+        <div class="admin-actions">
+
+            <a class="btn-secondary" href="/restaurant/<%= review.id_restaurant %>">
+                Volver al restaurante
+            </a>
+
+            <% if (authUser && authUser.rol === "admin") { %>
+
+                <a class="btn-secondary" href="/review">
+                    Volver al panel de reseñas
+                </a>
+
+            <% } %>
+
+        </div>
+
+    <% } else if (!locals.error) { %>
+
+        <p>No existe la reseña</p>
+
+    <% } %>
+
+</main>
+
+<%- include('../layout/footer'); -%>

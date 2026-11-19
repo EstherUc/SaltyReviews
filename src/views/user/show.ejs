@@ -1,0 +1,71 @@
+
+<%- include('../layout/header'); -%>
+
+<main>
+    <h1>Perfil de usuario</h1>
+
+    <% if (user) { %>
+
+        <section>
+            <%- include('userCard', { user, mostrarVisitar: false }) -%>
+        </section>
+
+        <section>
+            <h2>Reseñas del usuario</h2>
+
+            <% if (user.reviews.length > 0) { %>
+
+            <% user.reviews.forEach(review => { %>
+
+            <article class="profile-review">
+                <h4><%= review.title %></h4>
+                <p>Puntuación: <%= review.rating %></p>
+                <p><%= review.comment %></p>
+                <a href="/review/<%= review.id_reviews %>">Ver reseña</a>
+            </article>
+                
+            
+            <% }) %>
+
+            <% } else { %>
+
+                <p>Este usuario todavía no tiene reseñas.</p>
+
+            <% } %>
+        </section>
+
+        <section>
+            <h2>Favoritos del usuario</h2>
+
+
+            <div class="restaurant-list">
+
+                <% if (user.favorites.length > 0) { %>
+    
+                    <% user.favorites.forEach(favorite => { %>
+    
+                       
+    
+                        <%- include("../favorite/favCard", { favorite }) %>
+    
+                    <% }) %>
+    
+                <% } else { %>
+    
+                    <p>Este usuario todavía no tiene favoritos</p>
+    
+                <% } %>
+            </div>
+
+        </section>
+
+    <% } else { %>
+
+        <%- include('../layout/error') -%>
+
+    <% } %>
+
+    <a href="/">Volver</a>
+</main>
+
+<%- include('../layout/footer'); -%>

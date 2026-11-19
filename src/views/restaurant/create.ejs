@@ -1,0 +1,87 @@
+<%- include('../layout/header'); -%>
+
+    <main>
+
+        <h1>Crear restaurante</h1>
+
+        <%- include('../layout/error') -%>
+
+        <section>
+
+            <h2>Datos del nuevo restaurante</h2>
+
+            <% if (categories.length===0) { %>
+
+                <p>
+                    No hay categorías disponibles.
+                    Debes crear una categoría antes de añadir un restaurante.
+                </p>
+
+                <a href="/category/create">
+                    Crear categoría
+                </a>
+
+                <% } else { %>
+
+                    <form action="/restaurant" method="POST">
+
+                        <!-- NOMBRE -->
+                        <div>
+                            <label for="name_restaurant">
+                                Nombre del restaurante:
+                            </label>
+
+                            <input type="text" id="name_restaurant" name="name_restaurant" maxlength="100" value="<%= locals.formData ? formData.name_restaurant : '' %>" required>
+                        </div>
+
+                        <!-- DIRECCIÓN -->
+                        <div>
+                            <label for="address">
+                                Dirección:
+                            </label>
+
+                            <input type="text" id="address" name="address" maxlength="150" value="<%= locals.formData ? formData.address : '' %>" required>
+                        </div>
+
+                        <!-- CATEGORÍA -->
+                        <div>
+                            <label for="id_category">
+                                Categoría:
+                            </label>
+
+                            <select id="id_category" name="id_category" required>
+
+                                <option value="">
+                                    Selecciona una categoría
+                                </option>
+
+                                <% for (const category of categories) { %>
+
+                                    <option value="<%= category.id_category %>"
+                                        <%= locals.formData && String(formData.id_category) === String(category.id_category) ? 'selected' : '' %>>
+                                        <%= category.name_category %>
+                                    </option>
+
+                                    <% } %>
+
+                            </select>
+                        </div>
+
+                        <!-- ENVIAR -->
+                        <button type="submit">
+                            Crear restaurante
+                        </button>
+
+                    </form>
+
+                    <% } %>
+
+        </section>
+
+        <a href="/restaurant">
+            Volver a restaurantes
+        </a>
+
+    </main>
+
+    <%- include('../layout/footer'); -%>
