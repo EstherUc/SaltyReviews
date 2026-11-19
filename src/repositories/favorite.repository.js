@@ -1,5 +1,6 @@
 import { Favorite, Restaurant, User } from "../models/models.js"
 import { throwError, NotFoundError } from "../utils/errors.js";
+import restaurantRepository from "./restaurant.repository.js";
 
 // ------------------ CRUD de favoritos ------------------
 
@@ -139,6 +140,14 @@ const getAllByUser = async (id_user) => {
                 }
             ]
         });
+
+        for (const favorite of favorites) {
+
+        if (favorite.restaurant) {
+
+            favorite.restaurant.averageRating = await restaurantRepository.getAverageRating(favorite.id_restaurant);
+        }
+}
     
         return favorites;
 

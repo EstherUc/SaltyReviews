@@ -17,6 +17,12 @@ SET image_url = CASE name_restaurant
     WHEN 'Forno 21' THEN '/uploads/restaurants/Forno_21.png'
     WHEN 'Masa Madre' THEN '/uploads/restaurants/Masa_Madre.png'
     WHEN 'Café Nube' THEN '/uploads/restaurants/Café_Nube.png'
+    WHEN 'Txoko del Norte' THEN '/uploads/restaurants/Txoko_del_Norte.png'
+    WHEN 'Jardín de Jade' THEN '/uploads/restaurants/Jardin_de_Jade.png'
+    WHEN 'Siam Wok' THEN '/uploads/restaurants/Siam_Wok.png'
+    WHEN 'Andes y Mar' THEN '/uploads/restaurants/Andes_y_Mar.png'
+    WHEN 'La Rueda' THEN '/uploads/restaurants/La_Rueda.png'
+    WHEN 'Café Lumbre' THEN '/uploads/restaurants/Cafe_Lumbre.png'
     ELSE '/uploads/restaurants/Sin_foto.png'
 END
 WHERE image_url IS NULL
